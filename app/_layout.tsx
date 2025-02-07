@@ -14,6 +14,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 // firebase
 import { firebaseConfig } from "@/config/Config"
 import { initializeApp } from "@firebase/app"
+import { getFirestore } from "firebase/firestore";
 
 
 
@@ -23,7 +24,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     // init firebase
     const app = initializeApp(firebaseConfig)
-
+    const db = getFirestore(app)
     
     const colorScheme = useColorScheme();
     const [loaded] = useFonts({

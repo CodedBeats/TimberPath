@@ -5,10 +5,30 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
+// firebase 
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { initializeApp } from "@firebase/app";
+import { firebaseConfig } from "@/config/Config";
+
+
+// temp code for testing
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 export default function HomeScreen() {
     const envCode = process.env.EXPO_PUBLIC_TESTME;
-    let onPress = () => {
-        console.log(envCode)
+    let onPress = async () => {
+        console.log("firebase connection test")
+        try {
+            const querySnapshot = await getDocs(collection(db, "testColl"));
+            querySnapshot.forEach((doc) => {
+                console.log(`doc ID: ${doc.id}, data:`, doc.data())
+            });
+            console.log("success")
+            //console.log(envCode)
+        } catch (error) {
+            console.error("error:", error)
+        }
     }
 
     return (
