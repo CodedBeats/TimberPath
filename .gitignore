@@ -40,3 +40,6 @@ app-example
 
 # info just for running app
 info.md
+
+# sensitive config stuff
+.env
