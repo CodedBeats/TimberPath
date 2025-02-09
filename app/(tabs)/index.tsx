@@ -16,28 +16,22 @@ export default function HomeScreen() {
         console.log(envCode)
     }
 
-    // const onTestFirebasePress = () => {
-    //     console.log("Firebase App:", firebaseApp);
-    //   };
-
-    // const onTestFirebasePress = async () => {
-    //     try {
-    //       // Initialize the Realtime Database instance
-    //       const db = getDatabase(firebaseApp);
-    //       // Create a reference to the root
-    //       const testRef = ref(db, "/");
-    //       // Attempt to read the data at the root
-    //       const snapshot = await get(testRef);
+    // This is testing that the app is connecting to Firebase globally using the config/Config.ts file
+    const onTestFirebasePress = async () => {
+        try {
+          const db = getDatabase(firebaseApp);
+          const testRef = ref(db, "/");
+          const snapshot = await get(testRef);
           
-    //       if (snapshot.exists()) {
-    //         console.log("Firebase connection successful. Data snapshot:", snapshot.val());
-    //       } else {
-    //         console.log("Firebase connected successfully, but no data was found at the root.");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error connecting to Firebase:", error);
-    //     }
-    //   };
+          if (snapshot.exists()) {
+            console.log("Firebase connection successful. Data snapshot:", snapshot.val());
+          } else {
+            console.log("Firebase connected successfully, but no data was found at the root.");
+          }
+        } catch (error) {
+          console.error("Error connecting to Firebase:", error);
+        }
+      };
 
     return (
         <ParallaxScrollView
@@ -94,10 +88,12 @@ export default function HomeScreen() {
                     <ThemedText type="defaultSemiBold">app-example</ThemedText>.
                 </ThemedText>
             </ThemedView>
-            <Button onPress={onPress} title="TEST ENV" />
-            {/* <View style={styles.buttonContainer}>
+            <View style={styles.buttonContainer}>
+                <Button onPress={onPress} title="TEST ENV" />
+            </View>
+            <View style={styles.buttonContainer}>
                 <Button onPress={onTestFirebasePress} title="TEST FIREBASE" />
-            </View> */}
+            </View>
         </ParallaxScrollView>
     );
 }
@@ -119,8 +115,8 @@ const styles = StyleSheet.create({
         left: 0,
         position: "absolute",
     },
-    // buttonContainer: {
-    //   marginVertical: 8,
-    //   marginHorizontal: 16,
-    // },
+    buttonContainer: {
+      marginVertical: 8,
+      marginHorizontal: 16,
+    },
 });
