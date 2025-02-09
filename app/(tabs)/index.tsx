@@ -1,15 +1,43 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import { Image, StyleSheet, Platform, View } from "react-native";
 import { Button } from "react-native";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 
+// import Firebase from the Firebase module folder
+import firebaseApp from "@/config/Config";
+import { getDatabase, ref, get } from "firebase/database";
+
+
 export default function HomeScreen() {
     const envCode = process.env.EXPO_PUBLIC_TESTME;
     let onPress = () => {
         console.log(envCode)
     }
+
+    // const onTestFirebasePress = () => {
+    //     console.log("Firebase App:", firebaseApp);
+    //   };
+
+    // const onTestFirebasePress = async () => {
+    //     try {
+    //       // Initialize the Realtime Database instance
+    //       const db = getDatabase(firebaseApp);
+    //       // Create a reference to the root
+    //       const testRef = ref(db, "/");
+    //       // Attempt to read the data at the root
+    //       const snapshot = await get(testRef);
+          
+    //       if (snapshot.exists()) {
+    //         console.log("Firebase connection successful. Data snapshot:", snapshot.val());
+    //       } else {
+    //         console.log("Firebase connected successfully, but no data was found at the root.");
+    //       }
+    //     } catch (error) {
+    //       console.error("Error connecting to Firebase:", error);
+    //     }
+    //   };
 
     return (
         <ParallaxScrollView
@@ -67,6 +95,9 @@ export default function HomeScreen() {
                 </ThemedText>
             </ThemedView>
             <Button onPress={onPress} title="TEST ENV" />
+            {/* <View style={styles.buttonContainer}>
+                <Button onPress={onTestFirebasePress} title="TEST FIREBASE" />
+            </View> */}
         </ParallaxScrollView>
     );
 }
@@ -88,4 +119,8 @@ const styles = StyleSheet.create({
         left: 0,
         position: "absolute",
     },
+    // buttonContainer: {
+    //   marginVertical: 8,
+    //   marginHorizontal: 16,
+    // },
 });
