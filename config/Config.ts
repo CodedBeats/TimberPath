@@ -1,6 +1,5 @@
-// firebase config
-
-// Code to initialize firebase app globally to have it available in all files
+import { getAuth } from "@firebase/auth"
+import { getFirestore } from "@firebase/firestore"
 import { initializeApp } from "firebase/app";
 
 
@@ -15,7 +14,11 @@ export const firebaseConfig = {
     measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// This will initialize the firebase app globally
+// init firebase
 const app = initializeApp(firebaseConfig);
+// init auth
+const auth = getAuth(app)
+// init firestore
+const db = getFirestore(app)
 
-export default app;
+export { auth, db };

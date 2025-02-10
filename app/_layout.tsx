@@ -11,9 +11,13 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+// contexts
+import { AuthProvider } from "@/contexts/AuthContext";
+import { DBProvider } from "@/contexts/DBContext";
+
 // firebase
-import { firebaseConfig } from "@/config/Config"
-import { initializeApp } from "@firebase/app"
+import { auth, db } from "@/config/Config"
+import { useAuthState } from "react-firebase-hooks/auth"
 
 
 
@@ -21,9 +25,7 @@ import { initializeApp } from "@firebase/app"
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-    // init firebase
-    const app = initializeApp(firebaseConfig)
-
+    const [user, loading] = useAuthState(auth);
     
     const colorScheme = useColorScheme();
     const [loaded] = useFonts({
@@ -41,14 +43,22 @@ export default function RootLayout() {
     }
 
     return (
-        <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-            <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="auto" />
-        </ThemeProvider>
+        <AuthProvider>
+            <DBProvider>
+                <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+                    <StatusBar style="auto" />
+                    <Stack>
+                        {user ? (
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        ) : (
+                            <>
+                                <Stack.Screen name="(auth)/SignIn" />
+                                <Stack.Screen name="(auth)/SignUp" />
+                            </>
+                        )}
+                    </Stack>
+                </ThemeProvider>
+            </DBProvider>
+        </AuthProvider>
     );
 }

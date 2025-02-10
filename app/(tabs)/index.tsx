@@ -4,58 +4,52 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import firebaseApp from "@/config/Config";
-import { getDatabase, ref, get } from "firebase/database";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "expo-router";
+
+// firebase
+import { collection, getDocs } from "firebase/firestore";
+
+// context
+import { useAuth } from "@/contexts/AuthContext";
+import { useDB } from "@/contexts/DBContext";
+
 
 export default function Index() {
   const router = useRouter();
-  const auth = getAuth(firebaseApp);
-  const [userEmail, setUserEmail] = useState("Guest");
+  const { user, userEmail, logout } = useAuth()
   const envCode = process.env.EXPO_PUBLIC_TESTME;
+
+  // contexts
+  const db = useDB()
 
   const onTestEnvPress = () => {
     console.log("EXPO_PUBLIC_TESTME:", envCode);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email) {
-        setUserEmail(user.email);
-      } else {
-        setUserEmail("Guest");
-      }
-    });
+    
+  }, []);
 
-    return () => unsubscribe();
-  }, [auth]);
-
+  
+  // fix for firestore rather than realtime db (though this is just a testing func)
   const onTestFirebasePress = async () => {
     try {
-      const db = getDatabase(firebaseApp);
-      const testRef = ref(db, "/");
-      const snapshot = await get(testRef);
+        // get collection
+        const testCollectionRef = collection(db, "testColl")
+        const snapshot = await getDocs(testCollectionRef)
 
-      if (snapshot.exists()) {
-        console.log("Firebase connection successful. Data snapshot:", snapshot.val());
-      } else {
-        console.log("Firebase connected successfully, but no data was found at the root.");
-      }
+        // show all docs 
+        if (!snapshot.empty) {
+            snapshot.forEach((doc) => console.log(`Doc ID: ${doc.id}`, doc.data()));
+        } else {
+            // no docs in collection
+            console.log("Firestore connected successfully, but no documents found.");
+        }
     } catch (error) {
-      console.error("Error connecting to Firebase:", error);
+        console.error("Error connecting to Firestore:", error);
     }
   };
 
-  const onLogoutPress = async () => {
-    try {
-      const auth = getAuth(firebaseApp);
-      await signOut(auth);
-      console.log("Logged out successfully");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
 
   return (
     <ParallaxScrollView
@@ -122,7 +116,7 @@ export default function Index() {
         <Button onPress={() => router.push("./SignIn")} title="Sign In" />
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onLogoutPress} title="Log Out" />
+        <Button onPress={logout} title="Log Out" />
       </View>
       
     </ParallaxScrollView>
