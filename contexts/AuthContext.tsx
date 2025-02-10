@@ -26,6 +26,8 @@ export let AuthProvider = ({children}: {children: React.ReactNode}) => {
     // handle auth changes
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("auth change:", user);
+
             setUser(user)
             setLoading(false)
 
@@ -38,7 +40,9 @@ export let AuthProvider = ({children}: {children: React.ReactNode}) => {
                 setUserEmail("Guest")
             }
         })
-        return unsubscribe
+        return () => {
+            unsubscribe();
+        };
     }, [])
 
     // logout function
@@ -46,6 +50,7 @@ export let AuthProvider = ({children}: {children: React.ReactNode}) => {
         try {
             await signOut(auth)
             console.log("logged out")
+            setUser(null)
         } catch (error) {
             console.error("error logging out: ", error)
         }

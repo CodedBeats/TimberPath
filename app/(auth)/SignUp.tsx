@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import firebaseApp from "@/config/Config";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
 
-const auth = getAuth(firebaseApp);
 
 export default function SignUp() {
+  const auth = getAuth()
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
