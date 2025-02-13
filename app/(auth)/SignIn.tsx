@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image } from "react-native";
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import React, { useState, useEffect, useMemo } from "react";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator } from "react-native";
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import * as Crypto from "expo-crypto";
+
+WebBrowser.maybeCompleteAuthSession();
 
 
 export default function SignIn() {
@@ -14,6 +19,18 @@ export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nonce, setNonce] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const randomValue = Math.random().toString();
+      const generatedNonce = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        randomValue
+      );
+      setNonce(generatedNonce);
+    })();
+  }, []);
 
   const handleSignIn = async () => {
     try {
@@ -46,6 +63,41 @@ export default function SignIn() {
       Alert.alert("Error", (error as any).message);
     }
   }
+
+  const googleConfig = useMemo(() => ({
+    responseType: "id_token token",
+    usePKCE: false,
+    webClientId: process.env.EXPO_PUBLIC_FIREBASE_OAUTH_CREDENTIAL_ID,
+    scopes: ["openid", "profile", "email"],
+    extraParams: {
+      code_challenge_method: "",
+      nonce: nonce,
+    },
+  }), [nonce]);
+
+  const [googleRequest, googleResponse, googlePromptAsync] = Google.useAuthRequest(googleConfig);
+
+
+  useEffect(() => {
+    if (googleResponse?.type === "success") {
+      const { id_token, access_token } = googleResponse.params;
+      if (!id_token || !access_token) {
+        Alert.alert("Error", "No ID token returned from Google.");
+        return;
+      }
+      const credential = GoogleAuthProvider.credential(id_token, access_token);
+      signInWithCredential(auth, credential)
+        .then(() => {
+          Alert.alert("Success", "Signed in with Google!");
+          router.push("/(tabs)");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message);
+        });
+    }
+  }, [googleResponse]);
+
+  
 
   return (
     <ParallaxScrollView
@@ -82,7 +134,10 @@ export default function SignIn() {
       <Button title="Sign In" onPress={handleSignIn} />
       <View style={{ marginVertical: 8 }} />
       <Button title="Forgot Password" onPress={resetPassword} />
+      <View style={{ marginVertical: 8 }} />
+      <Button title="Sign In with Google" onPress={() => googlePromptAsync()} />
     </View>
+    
     </ParallaxScrollView>
   );
 }
@@ -112,5 +167,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: "absolute",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

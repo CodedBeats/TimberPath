@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -8,7 +8,7 @@ import { HelloWave } from "@/components/HelloWave";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
-import { useEffect } from "react";
+import * as Crypto from "expo-crypto";
 
 
 export default function SignUp() {
@@ -16,6 +16,19 @@ export default function SignUp() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [nonce, setNonce] = useState("");
+
+  // Generate a random nonce asynchronously -  this is an extra layer of security to prevent replay attacks
+  useEffect(() => {
+    (async () => {
+      const randomValue = Math.random().toString();
+      const generatedNonce = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        randomValue
+      );
+      setNonce(generatedNonce);
+    })();
+  }, []);
 
   const handleSignUp = async () => {
     try {
@@ -43,20 +56,33 @@ export default function SignUp() {
   };
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    // expoClientId: process.env.EXPO_PUBLIC_FIREBASE_OAUTH_CREDENTIAL_ID,
+    responseType: "id_token token",
+    usePKCE: false,
     webClientId: process.env.EXPO_PUBLIC_FIREBASE_OAUTH_CREDENTIAL_ID,
+    scopes: ["openid", "profile", "email"],
+    extraParams: {
+      code_challenge_method: "",
+      nonce: nonce, // #######   Now we have a randomly generated NONCE and is ready when we need to move it to production    ########
+    },
   });
 
   useEffect(() => {
     if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
+      const { id_token, access_token } = response.params;
+      if (!id_token || !access_token) {
+        Alert.alert("Error", "No ID token returned from Google.");
+        return;
+      }
+      const credential = GoogleAuthProvider.credential(id_token, access_token);
       signInWithCredential(auth, credential)
         .then(() => {
           Alert.alert("Success", "Signed up with Google account!");
           router.push("/(tabs)");
         })
-        .catch((error) => Alert.alert("Error", error.message));
+        .catch((error) => {
+          console.error("Error signing in with Google:", error);
+          Alert.alert("Error ", error.message);
+        });
     }
   }, [response]);
 
@@ -111,6 +137,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     height: 40,
