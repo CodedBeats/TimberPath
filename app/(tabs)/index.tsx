@@ -4,65 +4,60 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import firebaseApp from "@/config/Config";
-import { getDatabase, ref, get } from "firebase/database";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "expo-router";
+
+// firebase
+import { collection, getDocs } from "firebase/firestore";
+
+// context
+import { useAuth } from "@/contexts/AuthContext";
+import { useDB } from "@/contexts/DBContext";
+
 
 export default function Index() {
   const router = useRouter();
-  const auth = getAuth(firebaseApp);
-  const [userEmail, setUserEmail] = useState("Guest");
-  const envCode = process.env.EXPO_PUBLIC_TESTME;
+  const { user, userEmail, logout } = useAuth()
 
-  const onTestEnvPress = () => {
-    console.log("EXPO_PUBLIC_TESTME:", envCode);
-  };
+  // const envCode = process.env.EXPO_PUBLIC_TESTME;
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email) {
-        setUserEmail(user.email);
-      } else {
-        setUserEmail("Guest");
-      }
-    });
+  // contexts
+  const db = useDB()
 
-    return () => unsubscribe();
-  }, [auth]);
+  // const onTestEnvPress = () => {
+  //   console.log("EXPO_PUBLIC_TESTME:", envCode);
+  // };
 
-  const onTestFirebasePress = async () => {
-    try {
-      const db = getDatabase(firebaseApp);
-      const testRef = ref(db, "/");
-      const snapshot = await get(testRef);
+  // useEffect(() => {
+    
+  // }, []);
 
-      if (snapshot.exists()) {
-        console.log("Firebase connection successful. Data snapshot:", snapshot.val());
-      } else {
-        console.log("Firebase connected successfully, but no data was found at the root.");
-      }
-    } catch (error) {
-      console.error("Error connecting to Firebase:", error);
-    }
-  };
+  
+  // fix for firestore rather than realtime db (though this is just a testing func)
+  // const onTestFirebasePress = async () => {
+  //   try {
+  //       // get collection
+  //       const testCollectionRef = collection(db, "testColl")
+  //       const snapshot = await getDocs(testCollectionRef)
 
-  const onLogoutPress = async () => {
-    try {
-      const auth = getAuth(firebaseApp);
-      await signOut(auth);
-      console.log("Logged out successfully");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  //       // show all docs 
+  //       if (!snapshot.empty) {
+  //           snapshot.forEach((doc) => console.log(`Doc ID: ${doc.id}`, doc.data()));
+  //       } else {
+  //           // no docs in collection
+  //           console.log("Firestore connected successfully, but no documents found.");
+  //       }
+  //   } catch (error) {
+  //       console.error("Error connecting to Firestore:", error);
+  //   }
+  // };
+
 
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
         <Image
-          source={require("@/assets/images/partial-react-logo.png")}
+          source={require("@/assets/images/TP-logo300.png")}
           style={styles.reactLogo}
         />
       }
@@ -109,20 +104,20 @@ export default function Index() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <Button onPress={onTestEnvPress} title="TEST ENV" />
       </View>
       <View style={styles.buttonContainer}>
         <Button onPress={onTestFirebasePress} title="TEST FIREBASE" />
-      </View>
-      <View style={styles.buttonContainer}>
+      </View> */}
+      {/* <View style={styles.buttonContainer}>
         <Button onPress={() => router.push("./SignUp")} title="Sign Up" />
       </View>
       <View style={styles.buttonContainer}>
         <Button onPress={() => router.push("./SignIn")} title="Sign In" />
-      </View>
+      </View> */}
       <View style={styles.buttonContainer}>
-        <Button onPress={onLogoutPress} title="Log Out" />
+        <Button onPress={logout} title="Log Out" />
       </View>
       
     </ParallaxScrollView>
