@@ -1,0 +1,46 @@
+import React from 'react';
+import { Platform } from 'react-native';
+import { Tabs } from 'expo-router';
+
+import { FontAwesome } from '@expo/vector-icons';
+import TabBarBackground from '@/components/ui/TabBarBackground';
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
+
+export default function AuthLayout() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <Tabs
+      initialRouteName="SignIn"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarBackground: TabBarBackground,
+        tabBarStyle: Platform.select({
+          ios: { position: 'absolute' }, 
+          default: {},
+        }),
+      }}
+    >
+      <Tabs.Screen
+        name="SignIn"
+        options={{
+          title: 'Sign In',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="user-circle" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="SignUp"
+        options={{
+          title: 'Sign Up',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="user-plus" color={color} />
+          ),
+        }}
+      />
+    </Tabs>
+  );
+}

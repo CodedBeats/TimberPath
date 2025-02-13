@@ -62,12 +62,12 @@ let AuthWrapper = () => {
     // get any changes in user state -> navigate accordingly
     useEffect(() => {
         if (!loading) {
-            if (user) {
+            if (user && user.emailVerified) {
                 // navigate to (tabs) group if signed in
                 router.replace("/(tabs)")
             } else {
                 // navigate to SignIn if not
-                router.replace("/(auth)/SignIn")
+                router.replace("/SignIn")
             }
         }
     }, [user, loading])
@@ -84,8 +84,8 @@ let AuthWrapper = () => {
             }}
         >
             <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="(auth)/SignIn" />
-            <Stack.Screen name="(auth)/SignUp" />
+            <Stack.Screen name="SignIn" />
+            <Stack.Screen name="SignUp" />
         </Stack>
     );
 }
