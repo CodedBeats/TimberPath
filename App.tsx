@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Index from './app/(tabs)/index';
 import SignIn from './app/(auth)/SignIn';
 import SignUp from './app/(auth)/SignUp';
+import Profile from './app/(user)/profile';
 import { RootStackParamList } from '@/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +28,11 @@ export default function App() {
           name="SignUp"
           component={SignUp}
           options={{ title: 'Sign Up' }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ title: 'Profile' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

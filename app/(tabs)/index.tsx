@@ -18,38 +18,8 @@ export default function Index() {
   const router = useRouter();
   const { user, userEmail, logout } = useAuth()
 
-  // const envCode = process.env.EXPO_PUBLIC_TESTME;
-
-  // contexts
   const db = useDB()
 
-  // const onTestEnvPress = () => {
-  //   console.log("EXPO_PUBLIC_TESTME:", envCode);
-  // };
-
-  // useEffect(() => {
-    
-  // }, []);
-
-  
-  // fix for firestore rather than realtime db (though this is just a testing func)
-  // const onTestFirebasePress = async () => {
-  //   try {
-  //       // get collection
-  //       const testCollectionRef = collection(db, "testColl")
-  //       const snapshot = await getDocs(testCollectionRef)
-
-  //       // show all docs 
-  //       if (!snapshot.empty) {
-  //           snapshot.forEach((doc) => console.log(`Doc ID: ${doc.id}`, doc.data()));
-  //       } else {
-  //           // no docs in collection
-  //           console.log("Firestore connected successfully, but no documents found.");
-  //       }
-  //   } catch (error) {
-  //       console.error("Error connecting to Firestore:", error);
-  //   }
-  // };
 
 
   return (
@@ -104,18 +74,9 @@ export default function Index() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
-      {/* <View style={styles.buttonContainer}>
-        <Button onPress={onTestEnvPress} title="TEST ENV" />
-      </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onTestFirebasePress} title="TEST FIREBASE" />
-      </View> */}
-      {/* <View style={styles.buttonContainer}>
-        <Button onPress={() => router.push("./SignUp")} title="Sign Up" />
+        <Button title="Edit Profile" onPress={() => router.push("/profile")} />
       </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={() => router.push("./SignIn")} title="Sign In" />
-      </View> */}
       <View style={styles.buttonContainer}>
         <Button onPress={logout} title="Log Out" />
       </View>
