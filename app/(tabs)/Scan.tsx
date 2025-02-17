@@ -22,8 +22,8 @@ export default function Scan() {
     <SafeAreaView style={styles.safeArea}>
       {/* header */}
       <View style={styles.topBox}>
-        <Text style={styles.header}>Timber Guide</Text>
-        <Text style={styles.subText}>Answer a few questions to find the best timber for your needs</Text>
+        <Text style={styles.header}>Scan Wood</Text>
+        <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it</Text>
       </View>
 
       {/* scan */}
