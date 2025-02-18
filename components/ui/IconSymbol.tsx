@@ -13,6 +13,8 @@ const MAPPING: Record<string, React.ComponentProps<typeof MaterialIcons>['name']
   "camera.fill": "camera",
   "star.fill": "star",
   "book.fill": "book",
+  "person.fill": "person",
+  "shopping-cart.fill": "shopping-cart",
 }
 
 export type IconSymbolName = keyof typeof MAPPING

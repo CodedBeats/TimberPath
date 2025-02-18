@@ -9,6 +9,9 @@ import { collection, getDocs } from "firebase/firestore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
 
+// components
+import { HeaderWithCart } from "../../components/header/SimpleHeader"
+
 
 export default function Index() {
   const router = useRouter();
@@ -22,10 +25,8 @@ export default function Index() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView}>
 
-        {/* header placeholder */}
-        <View style={styles.headerPlaceholder}>
-          <Text>header component with search, cart and profile</Text>
-        </View>
+        {/* header */}
+        <HeaderWithCart />
 
         {/* home/dashboard content */}
         <View style={styles.container}>
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flexGrow: 1,
-    paddingVertical: 20,
+    paddingBottom: 20,
   },
   headerPlaceholder: {
     height: 40,

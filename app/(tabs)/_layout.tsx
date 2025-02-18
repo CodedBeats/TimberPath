@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, View, TouchableOpacity, StyleSheet, Text, GestureResponderEvent } from 'react-native';
-import { useIsFocused } from '@react-navigation/native'; // couldn't figure it out with useRouter (there was so much pain to had here -_-)
+import { useIsFocused } from '@react-navigation/native'; // couldn't figure it out with useRouter (so much pain here -_-)
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';

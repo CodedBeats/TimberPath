@@ -9,6 +9,9 @@ import { collection, getDocs } from "firebase/firestore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
 
+// components
+import { HeaderWithoutCart } from "../../components/header/SimpleHeader"
+
 
 export default function Education() {
   const router = useRouter();
@@ -22,10 +25,8 @@ export default function Education() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView}>
 
-        {/* header placeholder */}
-        <View style={styles.headerPlaceholder}>
-          <Text>header component with search and profile</Text>
-        </View>
+        {/* header */}
+        <HeaderWithoutCart />
 
         {/* education content */}
         <View style={styles.container}>
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flexGrow: 1,
-    paddingVertical: 20,
+    paddingBottom: 20,
   },
   headerPlaceholder: {
     height: 40,
