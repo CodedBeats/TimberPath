@@ -23,12 +23,19 @@ export default function Scan() {
       {/* header */}
       <View style={styles.topBox}>
         <Text style={styles.header}>Scan Wood</Text>
-        <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it</Text>
+        <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it.</Text>
       </View>
 
       {/* scan */}
       <View style={styles.scanContainer}>
 
+      </View>
+
+      
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(scan)/ScansSuggestedWoods")}>
+          <Text style={styles.wideButtonText}>Analyze</Text>
+        </TouchableOpacity>
       </View>
       
     </SafeAreaView>
@@ -45,7 +52,6 @@ const styles = StyleSheet.create({
     topBox: {
         marginHorizontal: 16,
         marginTop: 16,
-        marginBottom: 5,
         padding: 16,
         backgroundColor: '#32003F',
         borderTopLeftRadius: 10,
@@ -67,9 +73,34 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         marginHorizontal: 16,
-        marginBottom: 25,
+        marginVertical: 5,
         borderColor: "#fff",
         borderWidth: 1,
         borderRadius: 10,
+    },
+    btnContainer: {
+      display: "flex",
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#32003F',
+      marginHorizontal: 16,
+      marginBottom: 16,
+      padding: 16,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10,
+      borderColor: "#000",
+      borderTopWidth: 2,
+  },
+    wideButton: {
+        backgroundColor: '#9C3FE4',
+        padding: 12,
+        borderRadius: 10,
+        width: "70%",
+    },
+    wideButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
