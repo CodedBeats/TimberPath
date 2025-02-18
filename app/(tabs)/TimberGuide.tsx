@@ -11,8 +11,14 @@ import { useDB } from "@/contexts/DBContext";
 
 
 export default function TimberGuide() {
-  const router = useRouter();
+  const router = useRouter()
   const { user, userEmail, logout } = useAuth()
+
+  // TODO: fix later to take from state
+  const selectedWoodCriteriaData = {
+    woodType: "ancient",
+    age: "old",
+  }
 
   // contexts
   const db = useDB()
@@ -23,7 +29,7 @@ export default function TimberGuide() {
       {/* header */}
       <View style={styles.topBox}>
         <Text style={styles.header}>Timber Guide</Text>
-        <Text style={styles.subText}>Answer a few questions to find the best timber for your needs</Text>
+        <Text style={styles.subText}>Answer a few questions to find the best timber for your needs.</Text>
       </View>
 
       {/* questions */}
@@ -99,7 +105,11 @@ export default function TimberGuide() {
 
       {/* view suggestions btn container */}
       <View style={styles.bottomBox}>
-        <TouchableOpacity style={styles.wideButton}>
+        <TouchableOpacity style={styles.wideButton} onPress={() => router.push({ 
+          pathname: "/(timberGuide)/GuidesSuggestedWoods", 
+          // pass as string
+          params: { data: JSON.stringify(selectedWoodCriteriaData) } 
+        })}>
           <Text style={styles.wideButtonText}>View Suggestions</Text>
         </TouchableOpacity>
       </View>
