@@ -13,7 +13,7 @@ import { useDB } from "@/contexts/DBContext";
 import { HeaderWithCart } from "../../components/header/SimpleHeader"
 
 
-export default function Index() {
+export default function Products() {
   const router = useRouter();
   const { user, userEmail, logout } = useAuth()
 
@@ -24,45 +24,24 @@ export default function Index() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-
+      
         {/* header */}
         <HeaderWithCart />
 
-        {/* home/dashboard content */}
+        {/* products content */}
         <View style={styles.container}>
           {/* producrs */}
           <View style={[styles.largeBox, styles.largeBox1]}>
             <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Featured Products</Text>
+              <Text style={styles.subBoxHeaderText}>All Products</Text>
+              <View style={styles.buttonContainer}>
+              <Button title="F" />
+            </View>
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered products here</Text>
             </View>
           </View>
-
-          {/* product categories */}
-          <View style={[styles.largeBox, styles.largeBox2]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Shop by Category</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered categories here</Text>
-            </View>
-          </View>
-
-          {/* education */}
-          <View style={[styles.largeBox, styles.largeBox1]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>New Articles</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered articles here</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <Button onPress={logout} title="Log Out" />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -109,6 +88,10 @@ const styles = StyleSheet.create({
   },
   subBoxHeaderContainer: {
     marginBottom: 8,
+    display: 'flex',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   subBoxHeaderText: {
     fontWeight: "bold",
@@ -122,7 +105,6 @@ const styles = StyleSheet.create({
     height: 100,
   },
   buttonContainer: {
-    marginVertical: 8,
-    marginHorizontal: 16,
+    width: 30,
   },
 });
