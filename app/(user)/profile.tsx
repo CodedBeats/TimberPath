@@ -14,12 +14,15 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { getAuth } from "firebase/auth";
+import { useAuth } from "@/contexts/AuthContext";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { HeaderWithCart } from "../../components/header/SimpleHeader"
 
 export default function Profile() {
   const auth = getAuth();
   const db = getFirestore();
   const router = useRouter();
+  const { user, userEmail, logout } = useAuth()
 
   const [loading, setLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
@@ -112,6 +115,7 @@ export default function Profile() {
             />
           }
         >
+      <HeaderWithCart />
     <ScrollView contentContainerStyle={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Your Profile</ThemedText>
@@ -183,9 +187,17 @@ export default function Profile() {
         placeholderTextColor="gray"
       />
 
-      <Button title="Update Profile" onPress={handleUpdateProfile} />
+      <View style={styles.buttonContainer}>
+          <Button title="Update Profile" onPress={handleUpdateProfile} />
+      </View>
       <View style={{ marginVertical: 8 }} />
-      <Button title="Back" onPress={() => router.back()} />
+      <View style={styles.buttonContainer}>
+          <Button onPress={logout} title="Log Out" />
+      </View>
+      <View style={{ marginVertical: 8 }} />
+      <View style={styles.buttonContainer}>
+          <Button title="Back" onPress={() => router.back()} />
+      </View>
     </ScrollView>
     </ParallaxScrollView>
   );
@@ -222,5 +234,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: "absolute",
+  },
+  buttonContainer: {
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
 });

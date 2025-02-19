@@ -5,3 +5,11 @@ export type RootStackParamList = {
     Profile: undefined;
   };
   
+  export type TabParamList = {
+    index: undefined;
+    Products: undefined;
+    Scan: undefined;
+    TimberGuide: undefined;
+    Education: undefined;
+  };
+  

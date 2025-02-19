@@ -14,26 +14,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Index">
-        <Stack.Screen
-          name="Index"
-          component={Index}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{ title: 'Sign In' }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp}
-          options={{ title: 'Sign Up' }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{ title: 'Profile' }}
-        />
+        <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
+        <Stack.Screen name="SignIn" component={SignIn} options={{ title: 'Sign In' }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Sign Up' }} />
+        <Stack.Screen name="Profile" component={Profile} options={{ title: 'Profile' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
