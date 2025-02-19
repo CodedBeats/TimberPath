@@ -10,10 +10,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
 
 // components
-import { HeaderWithCart } from "../../components/header/SimpleHeader"
+import { HeaderWithoutCart } from "../../components/header/SimpleHeader"
 
 
-export default function Index() {
+export default function Education() {
   const router = useRouter();
   const { user, userEmail, logout } = useAuth()
 
@@ -26,43 +26,39 @@ export default function Index() {
       <ScrollView contentContainerStyle={styles.scrollView}>
 
         {/* header */}
-        <HeaderWithCart />
+        <HeaderWithoutCart />
 
-        {/* home/dashboard content */}
+        {/* education content */}
         <View style={styles.container}>
-          {/* producrs */}
+          {/* new articles */}
           <View style={[styles.largeBox, styles.largeBox1]}>
             <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Featured Products</Text>
+              <Text style={styles.subBoxHeaderText}>New Articles</Text>
             </View>
             <View style={styles.subBoxContent}>
-              <Text>dynamically rendered products here</Text>
+              <Text>dynamically rendered new articles here</Text>
             </View>
           </View>
 
-          {/* product categories */}
+          {/* article categories */}
           <View style={[styles.largeBox, styles.largeBox2]}>
             <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Shop by Category</Text>
+              <Text style={styles.subBoxHeaderText}>Browse by Category</Text>
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered categories here</Text>
             </View>
           </View>
 
-          {/* education */}
+          {/* trending articles */}
           <View style={[styles.largeBox, styles.largeBox1]}>
             <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>New Articles</Text>
+              <Text style={styles.subBoxHeaderText}>Trending Articles</Text>
             </View>
             <View style={styles.subBoxContent}>
-              <Text>dynamically rendered articles here</Text>
+              <Text>dynamically rendered trending articles here</Text>
             </View>
           </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <Button onPress={logout} title="Log Out" />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -120,9 +116,5 @@ const styles = StyleSheet.create({
     borderColor: "#222",
     borderWidth: 1,
     height: 100,
-  },
-  buttonContainer: {
-    marginVertical: 8,
-    marginHorizontal: 16,
   },
 });
