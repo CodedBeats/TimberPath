@@ -37,7 +37,7 @@ export default function TabLayout() {
 
       {/* prducts page */}
       <Tabs.Screen
-        name="Products"
+        name="product"
         options={{
           title: 'Products',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="tag.fill" color={color} />,
@@ -46,7 +46,7 @@ export default function TabLayout() {
       
       {/* scan page */}
       <Tabs.Screen
-        name="Scan"
+        name="scan"
         options={{
           title: 'Scan',
           tabBarButton: ({ onPress }) => {
@@ -59,7 +59,7 @@ export default function TabLayout() {
       
       {/* timber guide page */}
       <Tabs.Screen
-        name="TimberGuide"
+        name="timberGuide"
         options={{
           title: 'Timber Guide',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,

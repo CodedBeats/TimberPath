@@ -84,6 +84,7 @@ let AuthWrapper = () => {
             }}
         >
             <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="product/" />
             <Stack.Screen name="SignIn" />
             <Stack.Screen name="SignUp" />
             <Stack.Screen name="(scan)" />

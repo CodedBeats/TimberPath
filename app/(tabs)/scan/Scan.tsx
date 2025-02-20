@@ -30,10 +30,9 @@ export default function Scan() {
       <View style={styles.scanContainer}>
 
       </View>
-
       
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(scan)/ScansSuggestedWoods")}>
+        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")}>
           <Text style={styles.wideButtonText}>Analyze</Text>
         </TouchableOpacity>
       </View>
@@ -91,16 +90,16 @@ const styles = StyleSheet.create({
       borderColor: "#000",
       borderTopWidth: 2,
   },
-    wideButton: {
-        backgroundColor: '#9C3FE4',
-        padding: 12,
-        borderRadius: 10,
-        width: "70%",
-    },
-    wideButtonText: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
+  wideButton: {
+      backgroundColor: '#9C3FE4',
+      padding: 12,
+      borderRadius: 10,
+      width: "70%",
+  },
+  wideButtonText: {
+      color: '#ffffff',
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+  },
 });
