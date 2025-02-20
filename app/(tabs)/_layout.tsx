@@ -59,7 +59,7 @@ export default function TabLayout() {
       
       {/* timber guide page */}
       <Tabs.Screen
-        name="TimberGuide"
+        name="timberGuide"
         options={{
           title: 'Timber Guide',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,
