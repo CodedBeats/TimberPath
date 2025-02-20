@@ -37,7 +37,7 @@ export default function TabLayout() {
 
       {/* prducts page */}
       <Tabs.Screen
-        name="Products"
+        name="product"
         options={{
           title: 'Products',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="tag.fill" color={color} />,

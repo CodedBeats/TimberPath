@@ -91,16 +91,16 @@ const styles = StyleSheet.create({
       borderColor: "#000",
       borderTopWidth: 2,
   },
-    wideButton: {
-        backgroundColor: '#9C3FE4',
-        padding: 12,
-        borderRadius: 10,
-        width: "70%",
-    },
-    wideButtonText: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
+  wideButton: {
+      backgroundColor: '#9C3FE4',
+      padding: 12,
+      borderRadius: 10,
+      width: "70%",
+  },
+  wideButtonText: {
+      color: '#ffffff',
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+  },
 });
