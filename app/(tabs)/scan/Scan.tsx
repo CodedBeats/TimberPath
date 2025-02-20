@@ -33,7 +33,7 @@ export default function Scan() {
 
       
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(scan)/ScansSuggestedWoods")}>
+        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")}>
           <Text style={styles.wideButtonText}>Analyze</Text>
         </TouchableOpacity>
       </View>

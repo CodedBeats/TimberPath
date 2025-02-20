@@ -46,7 +46,7 @@ export default function TabLayout() {
       
       {/* scan page */}
       <Tabs.Screen
-        name="Scan"
+        name="scan"
         options={{
           title: 'Scan',
           tabBarButton: ({ onPress }) => {
