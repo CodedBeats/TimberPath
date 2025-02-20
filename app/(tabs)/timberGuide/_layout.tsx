@@ -1,9 +1,10 @@
 import { Stack } from 'expo-router'
 
-export default function ScanLayout() {
+export default function TimberGuideLayout() {
   return (
-    <Stack
-      screenOptions={{
+    <Stack screenOptions={{ headerShown: true }}>
+      <Stack.Screen name="TimberGuide" options={{ headerShown: false }}/>
+      <Stack.Screen name="GuidesSuggestedWoods" options={{ 
         headerShown: true,
         headerStyle: {
           backgroundColor: "#32003F",
@@ -18,10 +19,10 @@ export default function ScanLayout() {
         headerTintColor: "#aaa",
         // dumb fancy stuff for fun
         animation: "fade",
-        title: "Scan Wood",
+        title: "Timber Guide",
         // remove border
         headerShadowVisible: false,
-      }}
-    />
-  )
+      }} />
+    </Stack>
+  );
 }

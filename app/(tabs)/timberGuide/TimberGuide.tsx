@@ -106,7 +106,7 @@ export default function TimberGuide() {
       {/* view suggestions btn container */}
       <View style={styles.bottomBox}>
         <TouchableOpacity style={styles.wideButton} onPress={() => router.push({ 
-          pathname: "/(timberGuide)/GuidesSuggestedWoods", 
+          pathname: "/(tabs)/timberGuide/GuidesSuggestedWoods", 
           // pass as string
           params: { data: JSON.stringify(selectedWoodCriteriaData) } 
         })}>

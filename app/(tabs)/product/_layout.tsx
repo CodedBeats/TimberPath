@@ -1,13 +1,11 @@
-import { Stack } from "expo-router"
+import { Stack } from 'expo-router'
 
-export default function TimberGuideLayout() {
+export default function ProductLayout() {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: true,
-        headerStyle: {
-          backgroundColor: "#32003F",
-        },
+    <Stack screenOptions={{ headerShown: true }}>
+      <Stack.Screen name="Products" options={{ headerShown: false }}/>
+      <Stack.Screen name="Product" options={{ 
+        title: "Product Detail",
         headerTitleStyle: {
           fontSize: 20,
           fontWeight: "bold",
@@ -18,10 +16,9 @@ export default function TimberGuideLayout() {
         headerTintColor: "#aaa",
         // dumb fancy stuff for fun
         animation: "fade",
-        title: "Timber Guide",
         // remove border
         headerShadowVisible: false,
-      }}
-    />
-  )
+      }} />
+    </Stack>
+  );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useRouter } from "expo-router";
 
 // firebase
@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
 
 // components
-import { HeaderWithCart } from "../../components/header/SimpleHeader"
+import { HeaderWithCart } from "../../../components/header/SimpleHeader"
 
 
 export default function Products() {
@@ -42,6 +42,10 @@ export default function Products() {
               <Text>dynamically rendered products here</Text>
             </View>
           </View>
+            
+          <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/product/Product")}>
+            <Text style={styles.wideButtonText}>Product Example</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -106,5 +110,17 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: 30,
+  },
+  wideButton: {
+      backgroundColor: '#9C3FE4',
+      padding: 12,
+      borderRadius: 10,
+      width: "70%",
+  },
+  wideButtonText: {
+      color: '#ffffff',
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
   },
 });
