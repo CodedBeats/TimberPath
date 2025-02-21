@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams  } from "expo-router";
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -22,10 +23,10 @@ export default function ScansSuggestedWoods() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-          {/* top sub header text */}
-          <View style={styles.connectingHeaderContainer}>
-            <Text style={styles.headerSubText}>The AI has identified the wood, based on its analysis here are the top possibilities with their confidence levels.</Text>
-          </View>
+      {/* top sub header text */}
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={styles.connectingHeaderContainer}>
+        <Text style={styles.headerSubText}>The AI has identified the wood, based on its analysis here are the top possibilities with their confidence levels.</Text>
+      </LinearGradient>
 
       {/* scan */}
       <View style={styles.scanContainer}>
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     connectingHeaderContainer: {
         marginBottom: 16,
         paddingHorizontal: 16,
-        paddingBottom: 15,
+        paddingBottom: 8,
         backgroundColor: "#32003F",
     },
     headerSubText: {
