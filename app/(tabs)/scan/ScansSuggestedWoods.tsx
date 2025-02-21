@@ -1,4 +1,3 @@
-import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams  } from "expo-router";
 import { LinearGradient } from 'expo-linear-gradient'
