@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useRouter } from "expo-router";
 
 // firebase
@@ -15,7 +15,6 @@ import { HeaderWithCart } from "../../components/header/SimpleHeader"
 
 export default function Index() {
   const router = useRouter();
-  const { user, userEmail, logout } = useAuth()
 
   // contexts
   const db = useDB()
@@ -61,9 +60,10 @@ export default function Index() {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button onPress={logout} title="Log Out" />
-        </View>
+        
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddProduct")}>
+          <Text style={styles.btnText}>Add Product</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   )
@@ -122,7 +122,17 @@ const styles = StyleSheet.create({
     height: 100,
   },
   buttonContainer: {
-    marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: "20%",
+    backgroundColor: '#5588cc',
+    // flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 10,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

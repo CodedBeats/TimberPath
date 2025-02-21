@@ -16,7 +16,7 @@ export default function GuidesSuggestedWoods() {
   const params = useLocalSearchParams()
   // convert back to before it was passed as param
   const woodData = params.data ? JSON.parse(params.data as string) : null
-  console.log(woodData.woodType, woodData.age)
+  //console.log(woodData.woodType, woodData.age)
 
   const { user, userEmail, logout } = useAuth()
 
