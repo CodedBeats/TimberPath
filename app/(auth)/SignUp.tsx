@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator } from "react-native";
+import React, { useState, useEffect, useMemo } from "react";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -9,13 +9,26 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
 import * as Crypto from "expo-crypto";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 
 export default function SignUp() {
   const auth = getAuth()
   const router = useRouter();
+  const db = getFirestore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [postCode, setPostCode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [aboutYou, setAboutYou] = useState("");
+  const [jobPosition, setJobPosition] = useState("");
+
   const [nonce, setNonce] = useState("");
 
   // Generate a random nonce asynchronously -  this is an extra layer of security to prevent replay attacks
@@ -34,6 +47,20 @@ export default function SignUp() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        firstName,
+        lastName,
+        address,
+        city,
+        country,
+        postCode,
+        phoneNumber,
+        aboutYou,
+        jobPosition,
+        email: user.email,
+        createdAt: new Date().toISOString(),
+      });
 
       await sendEmailVerification(user);
       Alert.alert(
@@ -120,6 +147,76 @@ export default function SignUp() {
         secureTextEntry
         placeholderTextColor="gray"
       />
+
+
+      {/* Additional profile fields to test */}
+      <TextInput
+          style={styles.input}
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Address"
+          value={address}
+          onChangeText={setAddress}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="City"
+          value={city}
+          onChangeText={setCity}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Country"
+          value={country}
+          onChangeText={setCountry}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Post Code"
+          value={postCode}
+          onChangeText={setPostCode}
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          keyboardType="phone-pad"
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={[styles.input, { height: 60 }]}
+          placeholder="About You"
+          value={aboutYou}
+          onChangeText={setAboutYou}
+          multiline
+          placeholderTextColor="gray"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Job Position"
+          value={jobPosition}
+          onChangeText={setJobPosition}
+          placeholderTextColor="gray"
+        />
+
+
       <Button title="Sign Up" onPress={handleSignUp} />
       <View style={{ marginVertical: 8 }} />
       <Button

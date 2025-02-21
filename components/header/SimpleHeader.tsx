@@ -1,10 +1,19 @@
 import React from "react"
+import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import { useRouter } from "expo-router";
+import { RootStackParamList, TabParamList } from "@/types";
 // icon
 import { IconSymbol } from "@/components/ui/IconSymbol"
 
-
 const HeaderWithCart = () => {
+    const router = useRouter();
+    const navigateToProfile = () => {
+        router.push("/profile");
+      };
+
     return (
         <View style={styles.container}>
             {/* search bar */}
@@ -20,7 +29,7 @@ const HeaderWithCart = () => {
             </TouchableOpacity>
 
             {/* profile icon */}
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
                 <IconSymbol size={24} name="person.fill" color="black" />
             </TouchableOpacity>
         </View>
@@ -28,6 +37,10 @@ const HeaderWithCart = () => {
 };
 
 const HeaderWithoutCart = () => {
+    const router = useRouter();
+    const navigateToProfile = () => {
+        router.push("/profile");
+      };
     return (
         <View style={styles.container}>
             {/* search Bar */}
@@ -38,7 +51,7 @@ const HeaderWithoutCart = () => {
             />
 
             {/* profile Icon */}
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
                 <IconSymbol size={24} name="person.fill" color="black" />
             </TouchableOpacity>
         </View>
