@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router"
 import React from "react"
 import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Product = () => {
     const router = useRouter()
@@ -16,7 +17,7 @@ const Product = () => {
             </View>
 
             {/* Product Details */}
-            <View style={styles.detailsContainer}>
+            <LinearGradient colors={["#410051", "#000"]} style={styles.detailsContainer}>
                 <Text style={styles.productName}>Exterior Timber Varnish</Text>
                 <Text style={styles.productAmount}>500ml</Text>
                 
@@ -29,7 +30,7 @@ const Product = () => {
                         Easy to apply and quick-drying, it’s ideal for small to medium projects.
                     </Text>
                 </ScrollView>
-            </View>
+            </LinearGradient>
 
             {/* Price & Add to Cart */}
             <View style={styles.priceBuyContainer}>
