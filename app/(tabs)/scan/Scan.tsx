@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from "expo-router";
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -8,6 +9,9 @@ import { collection, getDocs } from "firebase/firestore";
 // context
 import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
+
+// components
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn"
 
 
 export default function Scan() {
@@ -21,10 +25,10 @@ export default function Scan() {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* header */}
-      <View style={styles.topBox}>
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={styles.topBox}>
         <Text style={styles.header}>Scan Wood</Text>
         <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it.</Text>
-      </View>
+      </LinearGradient>
 
       {/* scan */}
       <View style={styles.scanContainer}>
@@ -32,9 +36,7 @@ export default function Scan() {
       </View>
       
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")}>
-          <Text style={styles.wideButtonText}>Analyze</Text>
-        </TouchableOpacity>
+        <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
       </View>
       
     </SafeAreaView>
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
     },
     header: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 8,
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#32003F',
       marginHorizontal: 16,
       marginBottom: 16,
-      padding: 16,
+      padding: 12,
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
       borderColor: "#000",
