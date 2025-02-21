@@ -1,12 +1,14 @@
 import React from "react"
-import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { useNavigation, CompositeNavigationProp } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
 import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native"
 import { useRouter } from "expo-router";
-import { RootStackParamList, TabParamList } from "@/types";
+import { RootStackParamList, TabParamList } from "@/types"
+
 // icon
-import { IconSymbol } from "@/components/ui/IconSymbol"
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
+
 
 const HeaderWithCart = () => {
     const router = useRouter();
@@ -25,12 +27,12 @@ const HeaderWithCart = () => {
 
             {/* cart icon */}
             <TouchableOpacity style={styles.iconButton}>
-                <IconSymbol size={24} name="shopping-cart.fill" color="black" />
+                <FontAwesome5 name="shopping-cart" size={22} color="#333" style={styles.cartIcon} />
             </TouchableOpacity>
 
             {/* profile icon */}
             <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
-                <IconSymbol size={24} name="person.fill" color="black" />
+                <FontAwesome5 name="user-alt" size={22} color="#333" />
             </TouchableOpacity>
         </View>
     )
@@ -52,7 +54,7 @@ const HeaderWithoutCart = () => {
 
             {/* profile Icon */}
             <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
-                <IconSymbol size={24} name="person.fill" color="black" />
+                <FontAwesome5 name="user-alt" size={22} color="black" />
             </TouchableOpacity>
         </View>
     )
@@ -85,6 +87,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    // small detail otherwise handle makes it look too far right
+    cartIcon: {
+        transform: [{ translateX: -1 }],
+    }
 });
 
 export { HeaderWithCart, HeaderWithoutCart }
