@@ -102,14 +102,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 4,
     elevation: 3, // android shadow
-    shadowColor: '#520073',
   },
   largeBox2: {
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
     shadowRadius: 4,
     elevation: 3, // android shadow
-    shadowColor: '#C56200',
   },
   subBoxHeaderContainer: {
     marginBottom: 8,

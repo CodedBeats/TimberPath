@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         paddingVertical: 16,
         paddingHorizontal: 12,
-        backgroundColor: "#2A2A2E",
         elevation: 2,
     },
     productName: {
