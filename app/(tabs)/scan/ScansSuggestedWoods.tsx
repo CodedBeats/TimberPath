@@ -24,7 +24,7 @@ export default function ScansSuggestedWoods() {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* top sub header text */}
-      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={styles.connectingHeaderContainer}>
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.connectingHeaderContainer}>
         <Text style={styles.headerSubText}>The AI has identified the wood, based on its analysis here are the top possibilities with their confidence levels.</Text>
       </LinearGradient>
 

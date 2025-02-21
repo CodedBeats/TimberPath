@@ -25,7 +25,7 @@ export default function Scan() {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* header */}
-      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={styles.topBox}>
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.topBox}>
         <Text style={styles.header}>Scan Wood</Text>
         <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it.</Text>
       </LinearGradient>
