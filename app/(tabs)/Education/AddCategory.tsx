@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TextInput, Button, ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../../ThemedText';
-import { HeaderWithoutCart } from '../../header/SimpleHeader';
+import { ThemedText } from '../../../components/ThemedText';
+import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 import { addCategory } from '../../../services/categories';
 
 export default function AddCategory() {

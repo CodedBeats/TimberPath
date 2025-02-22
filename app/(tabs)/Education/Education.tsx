@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { useRouter } from "expo-router";
-import { getNewArticles, getTrendingArticles } from '../../services/articles';
-import { getCategories } from '../../services/categories';
-import { ArticleCard } from '../../components/ArticleCard';
-import { CategoryCard } from '../../components/CategoryCard';
-import { ThemedText } from '../../components/ThemedText';
-import { HeaderWithoutCart } from '../../components/header/SimpleHeader';
+import { getNewArticles, getTrendingArticles } from '../../../services/articles';
+import { getCategories } from '../../../services/categories';
+import { ArticleCard } from '../../../components/ArticleCard';
+import { CategoryCard } from '../../../components/CategoryCard';
+import { ThemedText } from '../../../components/ThemedText';
+import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 
 export default function Education() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function Education() {
         {/* Button to add a new article */}
         <TouchableOpacity 
             style={styles.button} 
-            onPress={() => router.push('/education-add-article')}
+            onPress={() => router.push('./AddArticle')}
           >
             <ThemedText>Add New Article</ThemedText>
           </TouchableOpacity>
@@ -71,7 +71,7 @@ export default function Education() {
         {/* Button to add a new category */}
         <TouchableOpacity 
             style={styles.button} 
-            onPress={() => router.push('/education-add-category')}
+            onPress={() => router.push('./AddCategory')}
           >
             <ThemedText>Add New Category</ThemedText>
           </TouchableOpacity>

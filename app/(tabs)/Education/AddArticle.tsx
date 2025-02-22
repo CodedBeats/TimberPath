@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TextInput, Button, ActivityIndicator, Alert, Image, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../../ThemedText';
-import { HeaderWithoutCart } from '../../header/SimpleHeader';
+import { ThemedText } from '../../../components/ThemedText';
+import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 import { addArticle } from '../../../services/articles';
 import { uploadArticleImage } from '../../../services/storage';
 import * as ImagePicker from 'expo-image-picker';

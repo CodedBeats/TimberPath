@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { getArticleById } from '../../../services/articles';
-import { ThemedText } from '../../ThemedText';
-import { HeaderWithoutCart } from '../../header/SimpleHeader';
+import { ThemedText } from '../../../components/ThemedText';
+import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 
 export default function ArticleDetail() {
   const { articleId } = useLocalSearchParams<{ articleId: string }>();

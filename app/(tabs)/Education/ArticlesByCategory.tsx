@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { getArticlesByCategory } from '../../../services/articles';
-import { ArticleCard } from '../../ArticleCard';
-import { ThemedText } from '../../ThemedText';
-import { HeaderWithoutCart } from '../../header/SimpleHeader';
+import { ArticleCard } from '../../../components/ArticleCard';
+import { ThemedText } from '../../../components/ThemedText';
+import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 
 export default function ArticlesByCategory() {
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
