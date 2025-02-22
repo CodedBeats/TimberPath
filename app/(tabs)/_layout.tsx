@@ -51,7 +51,7 @@ export default function TabLayout() {
           title: 'Scan',
           tabBarButton: ({ onPress }) => {
             const isFocused = useIsFocused(); 
-            console.log(isFocused)
+            // console.log(isFocused)
             return <CustomScanButton focused={isFocused} onPress={onPress} />
           },
         }}
@@ -82,7 +82,7 @@ export default function TabLayout() {
 // custom scan nav btn with (needed for focus detection)
 // (i'll move this at some point....or fix it lol)
 const CustomScanButton = ({ focused, onPress }: { focused: boolean; onPress?: (event: GestureResponderEvent) => void }) => {
-  console.log(focused)
+  // console.log(focused)
 
   return (
     <TouchableOpacity activeOpacity={0.7} style={styles.scanButton} onPress={onPress}>

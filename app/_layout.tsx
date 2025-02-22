@@ -56,8 +56,8 @@ let AuthWrapper = () => {
     const router = useRouter()
 
     // === DEBUG === //
-    console.log("User:", user)
-    console.log("Loading:", loading)
+    // console.log("User:", user)
+    // console.log("Loading:", loading)
 
     // get any changes in user state -> navigate accordingly
     useEffect(() => {
@@ -84,11 +84,9 @@ let AuthWrapper = () => {
             }}
         >
             <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="product/" />
+            <Stack.Screen name="(admin)" />
             <Stack.Screen name="SignIn" />
             <Stack.Screen name="SignUp" />
-            <Stack.Screen name="(scan)" />
-            <Stack.Screen name="(timberGuide)" />
         </Stack>
     );
 }
