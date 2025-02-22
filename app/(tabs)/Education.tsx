@@ -1,87 +1,107 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { useRouter } from "expo-router";
-import { LinearGradient } from 'expo-linear-gradient'
-
-// firebase
-import { collection, getDocs } from "firebase/firestore";
-
-// context
-import { useAuth } from "@/contexts/AuthContext";
-import { useDB } from "@/contexts/DBContext";
-
-// components
-import { HeaderWithoutCart } from "../../components/header/SimpleHeader"
-
+import { getNewArticles, getTrendingArticles } from '../../services/articles';
+import { getCategories } from '../../services/categories';
+import { ArticleCard } from '../../components/ArticleCard';
+import { CategoryCard } from '../../components/CategoryCard';
+import { ThemedText } from '../../components/ThemedText';
+import { HeaderWithoutCart } from '../../components/header/SimpleHeader';
 
 export default function Education() {
   const router = useRouter();
-  const { user, userEmail, logout } = useAuth()
+  const [newArticles, setNewArticles] = useState<any[]>([]);
+  const [trendingArticles, setTrendingArticles] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // contexts
-  const db = useDB()
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [newData, trendingData, categoriesData] = await Promise.all([
+          getNewArticles(5),
+          getTrendingArticles(5),
+          getCategories()
+        ]);
+        setNewArticles(newData);
+        setTrendingArticles(trendingData);
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <ActivityIndicator size="large" color="#fff" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-
-        {/* header */}
         <HeaderWithoutCart />
 
-        {/* education content */}
-        <View style={styles.container}>
-          {/* new articles */}
-          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>New Articles</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered new articles here</Text>
-            </View>
-          </LinearGradient>
+        {/* New Articles Section */}
+        <ThemedText type="title" style={styles.sectionHeader}>New Articles</ThemedText>
+        {newArticles.map(article => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
 
-          {/* article categories */}
-          <LinearGradient colors={["#5c1f03", "#e87809"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox2]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Browse by Category</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered categories here</Text>
-            </View>
-          </LinearGradient>
+        {/* Button to add a new article */}
+        <TouchableOpacity 
+            style={styles.button} 
+            onPress={() => router.push('/education-add-article')}
+          >
+            <ThemedText>Add New Article</ThemedText>
+          </TouchableOpacity>
 
-          {/* trending articles */}
-          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Trending Articles</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered trending articles here</Text>
-            </View>
-          </LinearGradient>
-        </View>
+        {/* Categories Section */}
+        <ThemedText type="title" style={styles.sectionHeader}>Browse by Category</ThemedText>
+        {categories.map(category => (
+          <CategoryCard key={category.id} category={category} />
+        ))}
+
+        {/* Button to add a new category */}
+        <TouchableOpacity 
+            style={styles.button} 
+            onPress={() => router.push('/education-add-category')}
+          >
+            <ThemedText>Add New Category</ThemedText>
+          </TouchableOpacity>
+
+        {/* Trending Articles Section */}
+        <ThemedText type="title" style={styles.sectionHeader}>Trending Articles</ThemedText>
+        {trendingArticles.map(article => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
-
-// styles
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#000',
   },
   scrollView: {
-    flexGrow: 1,
-    paddingBottom: 20,
+    padding: 16,
   },
-  headerPlaceholder: {
-    height: 40,
-    justifyContent: 'center',
+  sectionHeader: {
+    marginBottom: 12,
+  },
+  button: {
+    backgroundColor: '#9C3FE4',
+    padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#888',
     marginBottom: 20,
   },
   container: {
@@ -92,20 +112,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 8,
     marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // android shadow
   },
   largeBox1: {
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3, // android shadow
-    shadowColor: '#520073',
+    backgroundColor: '#520073',
   },
   largeBox2: {
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3, // android shadow
-    shadowColor: '#C56200',
+    backgroundColor: '#C56200',
   },
   subBoxHeaderContainer: {
     marginBottom: 8,
