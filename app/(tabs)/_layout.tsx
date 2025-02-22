@@ -8,6 +8,11 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+// icons
+import AntDesign from '@expo/vector-icons/AntDesign'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+
 export default function TabLayout() {
   const colorScheme = useColorScheme()
 
@@ -20,9 +25,15 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            position: 'absolute',
+            position: "absolute",
+            height: 55,
           },
-          default: {},
+          android: {
+            height: 55,
+          },
+          default: {
+            height: 55,
+          },
         }),
       }}>
 
@@ -40,7 +51,7 @@ export default function TabLayout() {
         name="product"
         options={{
           title: 'Products',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="tag.fill" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="tags" size={24} color={color} />,
         }}
       />
       
@@ -62,7 +73,7 @@ export default function TabLayout() {
         name="timberGuide"
         options={{
           title: 'Timber Guide',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hammer-wrench" size={24} color={color} />,
         }}
       />
       
@@ -71,7 +82,7 @@ export default function TabLayout() {
         name="Education"
         options={{
           title: 'Education',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name="book" size={24} color={color} />,
         }}
       />
     </Tabs>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button } from 'react-native';
 import { useRouter } from "expo-router";
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -31,34 +32,34 @@ export default function Education() {
         {/* education content */}
         <View style={styles.container}>
           {/* new articles */}
-          <View style={[styles.largeBox, styles.largeBox1]}>
+          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>New Articles</Text>
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered new articles here</Text>
             </View>
-          </View>
+          </LinearGradient>
 
           {/* article categories */}
-          <View style={[styles.largeBox, styles.largeBox2]}>
+          <LinearGradient colors={["#5c1f03", "#e87809"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox2]}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>Browse by Category</Text>
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered categories here</Text>
             </View>
-          </View>
+          </LinearGradient>
 
           {/* trending articles */}
-          <View style={[styles.largeBox, styles.largeBox1]}>
+          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>Trending Articles</Text>
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered trending articles here</Text>
             </View>
-          </View>
+          </LinearGradient>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -91,17 +92,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 8,
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3, // android shadow
   },
   largeBox1: {
-    backgroundColor: '#520073',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+    elevation: 3, // android shadow
+    shadowColor: '#520073',
   },
   largeBox2: {
-    backgroundColor: '#C56200',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
+    elevation: 3, // android shadow
+    shadowColor: '#C56200',
   },
   subBoxHeaderContainer: {
     marginBottom: 8,

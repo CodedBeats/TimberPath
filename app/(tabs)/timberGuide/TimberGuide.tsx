@@ -1,13 +1,16 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter } from "expo-router";
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { useRouter } from "expo-router"
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
 
 // context
-import { useAuth } from "@/contexts/AuthContext";
-import { useDB } from "@/contexts/DBContext";
+import { useAuth } from "@/contexts/AuthContext"
+import { useDB } from "@/contexts/DBContext"
+
+// components
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn"
 
 
 export default function TimberGuide() {
@@ -27,14 +30,16 @@ export default function TimberGuide() {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* header */}
-      <View style={styles.topBox}>
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.topBox}>
         <Text style={styles.header}>Timber Guide</Text>
         <Text style={styles.subText}>Answer a few questions to find the best timber for your needs.</Text>
-      </View>
+      </LinearGradient>
 
       {/* questions */}
       <ScrollView style={styles.middleBox}>
-        {/* question: what is your application? */}
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.gradientBox}>
+
+        {/* question: application? */}
         <View style={styles.subBox}>
           <View style={styles.questionRow}>
             <Text style={styles.questionText}>What is your application?</Text>
@@ -44,15 +49,15 @@ export default function TimberGuide() {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.singleButton}>
-              <Text style={styles.buttonText}>Choose</Text>
+              <Text style={styles.buttonText}>Choose ▼</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* question: Does it need to be termite resistant? */}
+        {/* question: outdoor use? */}
         <View style={styles.subBox}>
           <View style={styles.questionRow}>
-            <Text style={styles.questionText}>Does it need to be termite resistant?</Text>
+            <Text style={styles.questionText}>Is it for outdoor use?</Text>
             <TouchableOpacity style={styles.infoIcon}>
               <Text style={styles.infoText}>(i)</Text>
             </TouchableOpacity>
@@ -70,48 +75,104 @@ export default function TimberGuide() {
           </View>
         </View>
 
-        {/* question: what is your application? */}
+        {/* question: termite resistance */}
         <View style={styles.subBox}>
           <View style={styles.questionRow}>
-            <Text style={styles.questionText}>What is your application?</Text>
+            <Text style={styles.questionText}>Does it need to be Termite resistant?</Text>
+            <TouchableOpacity style={styles.infoIcon}>
+              <Text style={styles.infoText}>(i)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>YES</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>NO</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>N/A</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* question: water resistant */}
+        <View style={styles.subBox}>
+          <View style={styles.questionRow}>
+            <Text style={styles.questionText}>Does it need to be Water resistant?</Text>
+            <TouchableOpacity style={styles.infoIcon}>
+              <Text style={styles.infoText}>(i)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>YES</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>NO</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>N/A</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* question: bush fire resistant */}
+        <View style={styles.subBox}>
+          <View style={styles.questionRow}>
+            <Text style={styles.questionText}>Does it need to be Bush Fire resistant?</Text>
+            <TouchableOpacity style={styles.infoIcon}>
+              <Text style={styles.infoText}>(i)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>YES</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>NO</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.multiButton}>
+              <Text style={styles.buttonText}>N/A</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* question: density */}
+        <View style={styles.subBox}>
+          <View style={styles.questionRow}>
+            <Text style={styles.questionText}>What level on desity?</Text>
             <TouchableOpacity style={styles.infoIcon}>
               <Text style={styles.infoText}>(i)</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.singleButton}>
-              <Text style={styles.buttonText}>Choose</Text>
+              <Text style={styles.buttonText}>Choose ▼</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* question: what is your application? */}
+        {/* question: hardness */}
         <View style={styles.subBox}>
           <View style={styles.questionRow}>
-            <Text style={styles.questionText}>What is your application?</Text>
+            <Text style={styles.questionText}>What level of hardness?</Text>
             <TouchableOpacity style={styles.infoIcon}>
               <Text style={styles.infoText}>(i)</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.singleButton}>
-              <Text style={styles.buttonText}>Choose</Text>
+              <Text style={styles.buttonText}>Choose ▼</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* add more */}
+      </LinearGradient>
       </ScrollView>
 
       {/* view suggestions btn container */}
       <View style={styles.bottomBox}>
-        <TouchableOpacity style={styles.wideButton} onPress={() => router.push({ 
-          pathname: "/(tabs)/timberGuide/GuidesSuggestedWoods", 
-          // pass as string
-          params: { data: JSON.stringify(selectedWoodCriteriaData) } 
-        })}>
-          <Text style={styles.wideButtonText}>View Suggestions</Text>
-        </TouchableOpacity>
+        <PrimaryBtn text="View Suggestions" onPress={() => router.push("/(tabs)/timberGuide/GuidesSuggestedWoods")} fontSize={16} />
       </View>
     </SafeAreaView>
   )
@@ -128,7 +189,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         marginTop: 16,
         padding: 16,
-        backgroundColor: '#32003F',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         borderColor: "#000",
@@ -148,9 +208,10 @@ const styles = StyleSheet.create({
     },
     middleBox: {
         flex: 1,
-        padding: 10,
         marginHorizontal: 16,
-        backgroundColor: '#32003F',
+    },
+    gradientBox: {
+      padding: 10,
     },
     subBox: {
         backgroundColor: '#240033',
@@ -184,17 +245,20 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        // width: "40%",
     },
     singleButton: {
         flex: 1,
-        backgroundColor: '#B64702',
+        width: "100%",
+        backgroundColor: '#444',
         padding: 6,
         borderRadius: 8,
         alignItems: 'center',
     },
     multiButton: {
         flex: 1,
-        backgroundColor: '#B64702',
+        backgroundColor: '#444',
         padding: 6,
         borderRadius: 8,
         alignItems: 'center',
@@ -203,7 +267,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#ffffff',
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: '400',
     },
     bottomBox: {
         display: "flex",
@@ -216,7 +280,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         borderColor: "#000",
-        borderTopWidth: 2,
+        borderTopWidth: 3,
     },
     wideButton: {
         backgroundColor: '#9C3FE4',

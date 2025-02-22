@@ -1,16 +1,17 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import { useRouter } from "expo-router";
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
+import { useRouter } from "expo-router"
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore"
 
 // context
-import { useAuth } from "@/contexts/AuthContext";
-import { useDB } from "@/contexts/DBContext";
+import { useAuth } from "@/contexts/AuthContext"
+import { useDB } from "@/contexts/DBContext"
 
 // components
 import { HeaderWithCart } from "../../../components/header/SimpleHeader"
+import { FilterBtn } from '@/components/btns/FilterBtn'
 
 
 export default function Products() {
@@ -31,17 +32,15 @@ export default function Products() {
         {/* products content */}
         <View style={styles.container}>
           {/* producrs */}
-          <View style={[styles.largeBox, styles.largeBox1]}>
+          <LinearGradient colors={["#520073", "#000"]} style={styles.largeBox}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>All Products</Text>
-              <View style={styles.buttonContainer}>
-              <Button title="F" />
-            </View>
+              <FilterBtn onPress={() => console.log("Filter")} />
             </View>
             <View style={styles.subBoxContent}>
               <Text>dynamically rendered products here</Text>
             </View>
-          </View>
+          </LinearGradient>
             
           <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/product/Product")}>
             <Text style={styles.wideButtonText}>Product Example</Text>
@@ -77,15 +76,13 @@ const styles = StyleSheet.create({
   largeBox: {
     borderRadius: 10,
     padding: 8,
+    height: "100%",
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3, // android shadow
-  },
-  largeBox1: {
-    backgroundColor: '#520073',
   },
   largeBox2: {
     backgroundColor: '#C56200',
@@ -106,7 +103,7 @@ const styles = StyleSheet.create({
   subBoxContent: {
     borderColor: "#222",
     borderWidth: 1,
-    height: 100,
+    height: "80%",
   },
   buttonContainer: {
     width: 30,

@@ -1,6 +1,6 @@
-import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams  } from "expo-router";
+import { LinearGradient } from 'expo-linear-gradient'
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -27,9 +27,9 @@ export default function GuidesSuggestedWoods() {
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* top sub header text */}
-      <View style={styles.connectingHeaderContainer}>
+      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.connectingHeaderContainer}>
         <Text style={styles.headerSubText}>Here are some wood suggestions based on your requirements.</Text>
-      </View>
+      </LinearGradient>
 
       {/* scan */}
       <View style={styles.scanContainer}>
