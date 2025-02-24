@@ -66,6 +66,13 @@ export default function Profile() {
     }, [user, db])
 
 
+    // function to format phone number
+    const formatPhoneNumber = (phoneNumber: string): string => {
+        // fancy shit I found on stack overflow lol
+        return phoneNumber.replace(/^(\+\d{2})(\d{3})(\d{3})(\d{3})$/, "$1 $2 $3 $4");
+    }
+
+
     // if (loading) {
     //     return (
     //         <View style={styles.loadingContainer}>
@@ -81,12 +88,19 @@ export default function Profile() {
             {/* top background shape */}
             <View><Text style={styles.tempText}>top background shape section</Text></View>
 
+
             {/* user img and edit btn */}
             <View><Text style={styles.tempText}>user img and edit btn section</Text></View>
 
 
             {/* user details */}
-            <View><Text style={styles.tempText}>user details section</Text></View>
+            <View>
+                <Text style={styles.tempText}>{userData.firstName} {userData.lastName}</Text>
+            </View>
+            <View>
+                <Text style={styles.tempText}>{userData.email} |</Text>
+                <Text style={styles.tempText}>{formatPhoneNumber(userData.phoneNumber)}</Text>
+            </View>
 
 
             {/* extra shtuff container */}
