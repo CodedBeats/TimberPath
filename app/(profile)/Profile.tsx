@@ -108,18 +108,10 @@ export default function Profile() {
 
 
             {/* user img and logout btn */}
-            <View style={styles.userImgLogoutContainer}>
-                {/* user img */}
-                <Image
-                    source={{ uri: "https://static.vecteezy.com/system/resources/thumbnails/019/896/012/small_2x/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png" }}
-                    style={styles.avatar}
-                />
-
-                {/* logout btn */}
-                <TouchableOpacity style={styles.logoutIconContainer} onPress={logout}>
-                    <MaterialIcons style={styles.logoutIcon} name="logout" size={24} color="black" />
-                </TouchableOpacity>
-            </View>
+            <ProfileAvatar 
+                imageUrl="https://static.vecteezy.com/system/resources/thumbnails/019/896/012/small_2x/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+                onLogout={logout} 
+            />
 
             {/* user details */}
             <View style={styles.fullNameContainer}>
@@ -170,6 +162,27 @@ export default function Profile() {
     );
 }
 
+
+// component for fancy styled avatar and logout btn
+const ProfileAvatar = ({ imageUrl, onLogout }: { imageUrl: string; onLogout: () => void }) => {
+    return (
+        <View style={styles.userImgLogoutContainer}>
+            {/* avatar */}
+            <View style={styles.avatarContainer}>
+                <Image
+                    source={{ uri: imageUrl }}
+                    style={styles.avatar}
+                />
+                {/* Logout Button */}
+                <TouchableOpacity style={styles.logoutIconContainer} onPress={onLogout}>
+                    <MaterialIcons name="logout" size={20} color="black" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+
+
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
@@ -202,11 +215,15 @@ const styles = StyleSheet.create({
     },
     // user img and logout btn
     userImgLogoutContainer: {
-        display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        width: "100%",
-        top: 90,
+        justifyContent: "center",
+        marginTop: 90,
+    },
+    avatarContainer: {
+        // relative for absolute positioning of the logout button
+        position: "relative", 
+        width: 100,
+        height: 100,
     },
     avatar: {
         width: 100,
@@ -216,8 +233,8 @@ const styles = StyleSheet.create({
     },
     logoutIconContainer: {
         position: "absolute",
-        bottom: 5,
-        right: "35%",
+        bottom: 0,
+        right: 0,
         backgroundColor: "#eee",
         width: 35,
         height: 35,
@@ -226,17 +243,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderColor: "#000",
         borderWidth: 1,
-        transform: "translateY(5px)",
-    },
-    logoutIcon: {
-        transform: "translateX(2px)",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     // user details
     fullNameContainer: {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: "30%",
+        marginTop: "5%",
     },
     fullNameText: {
         color: "#fff",
