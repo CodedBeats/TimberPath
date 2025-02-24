@@ -11,10 +11,11 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 
 
 const HeaderWithCart = () => {
-    const router = useRouter();
+    const router = useRouter()
+    
     const navigateToProfile = () => {
-        router.push("/profile");
-      };
+        router.push("/(profile)/Profile")
+    }
 
     return (
         <View style={styles.container}>
@@ -41,8 +42,8 @@ const HeaderWithCart = () => {
 const HeaderWithoutCart = () => {
     const router = useRouter();
     const navigateToProfile = () => {
-        router.push("/profile");
-      };
+        router.push("/(profile)/Profile")
+    }
     return (
         <View style={styles.container}>
             {/* search Bar */}
