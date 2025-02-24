@@ -9,12 +9,21 @@ import {
     ActivityIndicator,
     ScrollView,
     SafeAreaView,
+    TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { LinearGradient } from 'expo-linear-gradient'
+
+// icons
+import FontAwesome from '@expo/vector-icons/FontAwesome'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import AntDesign from '@expo/vector-icons/AntDesign'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 
 // context
 import { useAuth } from "@/contexts/AuthContext"
@@ -86,46 +95,76 @@ export default function Profile() {
         <ScrollView contentContainerStyle={styles.container}>
 
             {/* top background shape */}
-            <View><Text style={styles.tempText}>top background shape section</Text></View>
+            <View style={styles.topShape1}></View>
+            <View style={styles.topShape2}></View>
 
 
-            {/* user img and edit btn */}
-            <View><Text style={styles.tempText}>user img and edit btn section</Text></View>
+            {/* fake header to go back */}
+            <View>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <Ionicons style={styles.backBtn} name="arrow-back" size={24} color="#ccc" />
+                </TouchableOpacity>
+            </View>
 
+
+            {/* user img and logout btn */}
+            <View style={styles.userImgLogoutContainer}>
+                {/* user img */}
+                <Image
+                    source={{ uri: "https://static.vecteezy.com/system/resources/thumbnails/019/896/012/small_2x/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png" }}
+                    style={styles.avatar}
+                />
+
+                {/* logout btn */}
+                <TouchableOpacity style={styles.logoutIconContainer} onPress={logout}>
+                    <MaterialIcons style={styles.logoutIcon} name="logout" size={24} color="black" />
+                </TouchableOpacity>
+            </View>
 
             {/* user details */}
-            <View>
-                <Text style={styles.tempText}>{userData.firstName} {userData.lastName}</Text>
+            <View style={styles.fullNameContainer}>
+                <Text style={styles.fullNameText}>{userData.firstName} {userData.lastName}</Text>
             </View>
-            <View>
-                <Text style={styles.tempText}>{userData.email} |</Text>
+            <View style={styles.userDetailsContainer}>
+                <Text style={styles.tempText}>{userData.email} | </Text>
                 <Text style={styles.tempText}>{formatPhoneNumber(userData.phoneNumber)}</Text>
             </View>
 
 
             {/* extra shtuff container */}
-            <View><Text style={styles.tempText}>extra shtuff container</Text></View>
-
+            <LinearGradient colors={["#555", "#111"]} style={styles.extraStuffContainer}>
 
             {/* edit user */}
-            <View><Text style={styles.tempText}>edit user section</Text></View>
+            <View style={styles.badNameContainer}>
+                <TouchableOpacity onPress={() => router.push("/(profile)/EditProfile")}>
+                    <View style={styles.cellContainer}>
+                        <FontAwesome style={styles.icon} name="drivers-license-o" size={20} color="black" />
+                        <Text style={styles.cellText}>Edit Profile Information</Text>
+                    </View>
+                </TouchableOpacity>
+                <View style={styles.cellContainer}>
+                    <Ionicons style={styles.icon} name="language" size={20} color="black" />
+                    <Text style={styles.cellText}>Language</Text>
+                </View>
+            </View>
 
 
             {/* ToS and Privacy Policy */}
-            <View><Text style={styles.tempText}>ToS and Privacy Policy section</Text></View>
-
-            
-
-            
-            <View style={styles.buttonContainer}>
-                <Button title="Edit Profile" onPress={() => router.push("/(profile)/EditProfile")} />
+            <View style={styles.badNameContainer}>
+                <View style={styles.cellContainer}>
+                    <AntDesign style={styles.icon} name="contacts" size={20} color="black" />
+                    <Text style={styles.cellText}>Contact Us</Text>
+                </View>
+                <View style={styles.cellContainer}>
+                    <AntDesign style={styles.icon} name="lock1" size={20} color="black" />
+                    <Text style={styles.cellText}>Privacy Policy</Text>
+                </View>
+                <View style={styles.cellContainer}>
+                    <MaterialCommunityIcons style={styles.icon} name="clipboard-list-outline" size={20} color="black" />
+                    <Text style={styles.cellText}>Terms of Service</Text>
+                </View>
             </View>
-            <View style={styles.buttonContainer}>
-                <Button onPress={logout} title="Log Out" />
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button title="Back" onPress={() => router.back()} />
-            </View>
+            </LinearGradient>
         </ScrollView>
         </SafeAreaView>
     );
@@ -136,6 +175,110 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#000',
     },
+    // background shapes
+    topShape1: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: 100,
+        backgroundColor: "#222",
+    },
+    topShape2: {
+        position: "absolute",
+        top: 100,
+        left: 0,
+        width: "100%",
+        height: 80,
+        backgroundColor: "#222",
+        borderBottomLeftRadius: 80,
+        borderBottomRightRadius: 80,
+    },
+    // fake header
+    backBtn: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+    },
+    // user img and logout btn
+    userImgLogoutContainer: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        top: 90,
+    },
+    avatar: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: "#ccc",
+    },
+    logoutIconContainer: {
+        position: "absolute",
+        bottom: 5,
+        right: "35%",
+        backgroundColor: "#eee",
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#000",
+        borderWidth: 1,
+        transform: "translateY(5px)",
+    },
+    logoutIcon: {
+        transform: "translateX(2px)",
+    },
+    // user details
+    fullNameContainer: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "30%",
+    },
+    fullNameText: {
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: "500",
+    },
+    userDetailsContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    // extra stuff
+    extraStuffContainer: {
+        display: "flex",
+        gap: 20,
+        padding: 15,
+        marginVertical: 8,
+        borderRadius: 8,
+    },
+    badNameContainer: {
+        display: "flex",
+        gap: 4,
+        padding: 8,
+        backgroundColor: "#fff",
+        borderRadius: 8,
+    },
+    cellContainer: {
+        flexDirection: "row",
+        gap: 15,
+        alignItems: "center",
+        paddingVertical: 4,
+    },
+    icon: {
+        maxWidth: 20,
+    },
+    cellText: {
+        color: "#000",
+    },
+
+
     tempText: {
         color: '#fff',
     },
