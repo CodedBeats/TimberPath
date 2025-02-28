@@ -3,8 +3,8 @@ import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, TouchableOpaci
 import { useRouter } from "expo-router";
 import { getNewArticles, getTrendingArticles } from '../../../services/articles';
 import { getCategories } from '../../../services/categories';
-import { ArticleCard } from '../../../components/ArticleCard';
-import { CategoryCard } from '../../../components/CategoryCard';
+import { ArticleCard } from '@/components/cards/ArticleCard';
+import { CategoryCard } from '@/components/cards/CategoryCard';
 import { ThemedText } from '../../../components/ThemedText';
 import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
 

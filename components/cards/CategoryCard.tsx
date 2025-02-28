@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from './ThemedText';
+import { ThemedText } from '../ThemedText';
 
 interface CategoryCardProps {
   category: {
