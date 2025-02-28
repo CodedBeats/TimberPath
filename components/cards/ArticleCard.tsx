@@ -3,7 +3,6 @@ import { TouchableOpacity, View, Text, Image, StyleSheet, ImageBackground, Dimen
 const { width } = Dimensions.get("window")
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
-import { opacity } from "react-native-reanimated/lib/typescript/Colors";
 
 interface ArticleCardProps {
     article: {
@@ -13,9 +12,10 @@ interface ArticleCardProps {
         imageURL?: string;
         timestamp: string;
     };
+    marginBottom?: number;
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
     const router = useRouter();
 
     const handlePress = () => {
@@ -58,12 +58,14 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         overflow: "hidden",
         backgroundColor: "#000",
-        shadowColor: "#fff",
-        shadowOffset: { width: 1, height: 3 },
-        shadowOpacity: 0.3,
+        borderWidth: 1,
+        borderColor: "#000",
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 4 },
+        shadowOpacity: 0.6,
         shadowRadius: 6,
         elevation: 6,
-        margin: 10,
+        marginBottom: 10,
     },
     image: {
         width: "100%",
