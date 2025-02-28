@@ -8,16 +8,22 @@ import {
     View,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { ThemedText } from "../../../components/ThemedText"
+
+// services
+import { getCategories } from "../../../services/categories";
 import {
     getNewArticles,
     getTrendingArticles,
 } from "../../../services/articles";
-import { getCategories } from "../../../services/categories";
-import { ArticleCard } from "@/components/cards/ArticleCard";
-import { CategoryCard } from "@/components/cards/CategoryCard";
-import { ThemedText } from "../../../components/ThemedText";
-import { HeaderWithoutCart } from "../../../components/header/SimpleHeader";
-import { LinearGradient } from "expo-linear-gradient";
+
+// components
+import { ArticleCard } from "@/components/cards/ArticleCard"
+import { CategoryCard } from "@/components/cards/CategoryCard"
+import { HeaderWithoutCart } from "../../../components/header/SimpleHeader"
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
+
 
 export default function Education() {
     const router = useRouter();
@@ -70,39 +76,37 @@ export default function Education() {
                             <ArticleCard key={article.id} article={article} />
                         ))}
                     </ScrollView>
+
+                    <PrimaryBtn onPress={() => router.push("./AddArticle")} text="Add New Article" />
                 </LinearGradient>
 
-                {/* Button to add a new article */}
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => router.push("./AddArticle")}
-                >
-                    <ThemedText>Add New Article</ThemedText>
-                </TouchableOpacity>
 
                 {/* Categories Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
                     Browse by Category
                 </ThemedText>
-                {categories.map((category) => (
-                    <CategoryCard key={category.id} category={category} />
-                ))}
+                <LinearGradient colors={["#8c4b10", "#ffab00"]} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={styles.articleCardsContainer}>
+                    <ScrollView horizontal={true} contentContainerStyle={styles.horizontalScroll}>
+                        {categories.map((category) => (
+                            <CategoryCard key={category.id} category={category} />
+                        ))}
+                    </ScrollView>
 
-                {/* Button to add a new category */}
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => router.push("./AddCategory")}
-                >
-                    <ThemedText>Add New Category</ThemedText>
-                </TouchableOpacity>
+                    <PrimaryBtn onPress={() => router.push("./AddCategory")} text="Add New Category" />
+                </LinearGradient>
+
 
                 {/* Trending Articles Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
                     Trending Articles
                 </ThemedText>
-                {trendingArticles.map((article) => (
-                    <ArticleCard key={article.id} article={article} />
-                ))}
+                <LinearGradient colors={["#540093", "#b400f3"]} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={styles.articleCardsContainer}>
+                    <ScrollView horizontal={true} contentContainerStyle={styles.horizontalScroll}>
+                        {trendingArticles.map((article) => (
+                            <ArticleCard key={article.id} article={article} />
+                        ))}
+                    </ScrollView>
+                </LinearGradient>
             </ScrollView>
         </SafeAreaView>
     );
@@ -121,10 +125,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-start",
         gap: 15,
+        marginBottom: 20,
     },
     articleCardsContainer: {
         padding: 10,
-        marginBottom: 20,
+        marginBottom: 40,
         borderRadius: 12,
     },
     sectionHeader: {

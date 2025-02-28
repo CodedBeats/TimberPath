@@ -1,4 +1,3 @@
-import React from "react";
 import { TouchableOpacity, View, Text, Image, StyleSheet, ImageBackground, Dimensions } from "react-native";
 const { width } = Dimensions.get("window")
 import { useRouter } from "expo-router";
@@ -26,7 +25,7 @@ export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
     };
 
     return (
-        <TouchableOpacity style={styles.card} onPress={handlePress}>
+        <TouchableOpacity style={[styles.card, { marginBottom }]} onPress={handlePress}>
             {/* show background img ig it exists */}
             {article.imageURL ? (
                 <ImageBackground source={{ uri: article.imageURL }} imageStyle={{opacity: 0.5, borderRadius: 12}} style={styles.image}>
@@ -65,7 +64,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.6,
         shadowRadius: 6,
         elevation: 6,
-        marginBottom: 10,
     },
     image: {
         width: "100%",
