@@ -82,6 +82,7 @@ export default function Profile() {
     }
 
 
+    // convert to just user data loaded section displaying loading
     // if (loading) {
     //     return (
     //         <View style={styles.loadingContainer}>
@@ -175,7 +176,7 @@ const ProfileAvatar = ({ imageUrl, onLogout }: { imageUrl: string; onLogout: () 
                 />
                 {/* Logout Button */}
                 <TouchableOpacity style={styles.logoutIconContainer} onPress={onLogout}>
-                    <MaterialIcons name="logout" size={20} color="black" />
+                    <MaterialIcons style={styles.logoutIcon} name="logout" size={20} color="black" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -251,6 +252,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    logoutIcon: {
+        transform: "translateX(2px)",
     },
     // user details
     fullNameContainer: {

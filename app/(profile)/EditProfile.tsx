@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     View,
+    Text,
     TextInput,
     Button,
     StyleSheet,
@@ -8,12 +9,11 @@ import {
     Image,
     ActivityIndicator,
     ScrollView,
-    SafeAreaView
+    SafeAreaView,
+    TouchableOpacity
 } from "react-native";
 import { useRouter } from "expo-router";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { LinearGradient } from 'expo-linear-gradient'
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // context
@@ -21,7 +21,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useDB } from "@/contexts/DBContext"
 
 // components
-import { HeaderWithCart } from "../../components/header/SimpleHeader"
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
 
 
@@ -37,6 +37,7 @@ export default function Profile() {
     const [userData, setUserData] = useState({
         firstName: "",
         lastName: "",
+        fullName: "",
         email: "",
         address: "",
         phoneNumber: "",
@@ -77,7 +78,14 @@ export default function Profile() {
                 console.log("err", "no user logged in");
                 return;
             }
-            await setDoc(doc(db, "users", user.uid), userData, { merge: true });
+
+            // split fullName into first and last name
+            const [firstName, lastName = ""] = userData.fullName.trim().split(" ")
+
+            // update state before sendting to firebase
+            const updatedUserData = { ...userData, firstName, lastName };
+
+            await setDoc(doc(db, "users", user.uid), updatedUserData, { merge: true });
             console.log("success", "profile updated");
         } catch (error) {
             console.log("err", (error as any).message);
@@ -85,6 +93,7 @@ export default function Profile() {
     }
 
 
+    // convert to just user data loaded section displaying loading
     // if (loading) {
     //     return (
     //         <View style={styles.loadingContainer}>
@@ -97,55 +106,80 @@ export default function Profile() {
     return (
         <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.container}>
+            <LinearGradient colors={["#555", "#111"]} style={styles.userDataFields}>
+                {/* FULL NAME */}
+                <View style={styles.userDataCell}>
+                    <Text style={styles.userDataCellTitle}>Full Name</Text>
+                    <TextInput
+                        style={styles.userDataText}
+                        placeholder={"First Name"}
+                        value={userData.fullName}
+                        onChangeText={(text) => setUserData((prev) => ({ ...prev, fullName: text }))}
+                        placeholderTextColor="gray"
+                    />
+                </View>
 
-            {/* inputs */}
-            <TextInput
-                style={styles.input}
-                placeholder={"First Name"}
-                value={userData.firstName}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, firstName: text }))}
-                placeholderTextColor="gray"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Last Name"
-                value={userData.lastName}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, lastName: text }))}
-                placeholderTextColor="gray"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={userData.email}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, email: text }))}
-                placeholderTextColor="gray"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Address"
-                value={userData.address}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, address: text }))}
-                placeholderTextColor="gray"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Phone Number"
-                value={userData.phoneNumber}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, phoneNumber: text }))}
-                placeholderTextColor="gray"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Tradie"
-                value={userData.isTradie}
-                onChangeText={(text) => setUserData((prev) => ({ ...prev, isTradie: text }))}
-                placeholderTextColor="gray"
-            />
+                {/* EMAIL */}
+                <View style={styles.userDataCell}>
+                    <Text style={styles.userDataCellTitle}>Email</Text>
+                    <TextInput
+                        style={styles.userDataText}
+                        placeholder="Email"
+                        value={userData.email}
+                        onChangeText={(text) => setUserData((prev) => ({ ...prev, email: text }))}
+                        placeholderTextColor="gray"
+                    />
+                </View>
+
+                {/* PHONE */}
+                <View style={styles.userDataCell}>
+                    <Text style={styles.userDataCellTitle}>Phone Number</Text>
+                    <TextInput
+                        style={styles.userDataText}
+                        placeholder="Phone Number"
+                        value={userData.phoneNumber}
+                        onChangeText={(text) => setUserData((prev) => ({ ...prev, phoneNumber: text }))}
+                        placeholderTextColor="gray"
+                    />
+                </View>
+
+                {/* ADDRESS */}
+                <View style={styles.userDataCell}>
+                    <Text style={styles.userDataCellTitle}>Address</Text>
+                    <TextInput
+                        style={styles.userDataText}
+                        placeholder="Address"
+                        value={userData.address}
+                        onChangeText={(text) => setUserData((prev) => ({ ...prev, address: text }))}
+                        placeholderTextColor="gray"
+                    />
+                </View>
+
+                <View style={styles.tradeProfessionContainer}>
+                    {/* DISCOUNT */}
+                    <View style={styles.tradeProfessionCell}>
+                        <Text style={styles.userDataCellTitle}>Trade Profession Discount</Text>
+                        <TextInput
+                            style={styles.userDataText}
+                            placeholder="Tradie"
+                            value={userData.isTradie}
+                            onChangeText={(text) => setUserData((prev) => ({ ...prev, isTradie: text }))}
+                            placeholderTextColor="gray"
+                        />
+                    </View>
+
+                    {/* button to upload or see uploaded documents */}
+                    <View style={styles.tradeProfessionCell}>
+                        <Text style={styles.userDataCellTitle}>Submit for Review</Text>
+                        <TouchableOpacity>
+                            <Text>Trade Documents</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
             
-            <View style={styles.buttonContainer}>
-                <Button title="Update Profile" onPress={handleUpdateProfile} />
-            </View>
+                <PrimaryBtn onPress={handleUpdateProfile} text="Update Profile" />
+            </LinearGradient>
         </ScrollView>
         </SafeAreaView>
     )
@@ -165,25 +199,38 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         padding: 16,
     },
-    input: {
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-        color: "gray",
+    userDataFields: {
+        display: "flex",
+        gap: 12,
+        padding: 16,
+        borderRadius: 12,
     },
-    titleContainer: {
+    userDataCell: {
+        marginBottom: 12,
+        backgroundColor: "#fff",
+        padding: 8,
+        paddingLeft: 16,
+        borderRadius: 8,
+    },
+    userDataCellTitle: {
+        color: "#777",
+        fontSize: 10,
+        marginBottom: 2,
+    },
+    userDataText: {
+        color: "#000",
+    },
+    tradeProfessionContainer: {
+        display: "flex",
         flexDirection: "row",
-        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    tradeProfessionCell: {
         marginBottom: 12,
-    },
-    reactLogo: {
-        height: 178,
-        width: 290,
-        position: "absolute",
-    },
-    buttonContainer: {
-        marginVertical: 8,
+        backgroundColor: "#fff",
+        padding: 8,
+        paddingLeft: 16,
+        borderRadius: 8,
+        width: "45%",
     },
 });
