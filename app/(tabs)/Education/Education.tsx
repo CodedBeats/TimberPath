@@ -14,6 +14,7 @@ export default function Education() {
   const [trendingArticles, setTrendingArticles] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +36,19 @@ export default function Education() {
     fetchData();
   }, []);
 
+  const filteredNewArticles = newArticles.filter(article =>
+    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    article.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const filteredTrendingArticles = trendingArticles.filter(article =>
+    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    article.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.safeArea}>
@@ -46,11 +60,11 @@ export default function Education() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <HeaderWithoutCart />
+        <HeaderWithoutCart onSearch={handleSearch} />
 
         {/* New Articles Section */}
         <ThemedText type="title" style={styles.sectionHeader}>New Articles</ThemedText>
-        {newArticles.map(article => (
+        {(searchQuery ? filteredNewArticles : newArticles).map(article => (
           <ArticleCard key={article.id} article={article} />
         ))}
 
@@ -78,7 +92,7 @@ export default function Education() {
 
         {/* Trending Articles Section */}
         <ThemedText type="title" style={styles.sectionHeader}>Trending Articles</ThemedText>
-        {trendingArticles.map(article => (
+        {(searchQuery ? filteredTrendingArticles : trendingArticles).map(article => (
           <ArticleCard key={article.id} article={article} />
         ))}
       </ScrollView>
