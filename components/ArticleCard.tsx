@@ -18,7 +18,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
 
   const handlePress = () => {
     router.push({
-      pathname: './Education/ArticleDetail',
+      pathname: '/Education/ArticleDetail',
       params: { articleId: article.id },
     });
   };
