@@ -19,7 +19,7 @@ export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
 
     const handlePress = () => {
         router.push({
-            pathname: "./ArticleDetail",
+            pathname: "/(tabs)/Education/ArticleDetail",
             params: { articleId: article.id },
         });
     };

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { ThemedText } from "../../../components/ThemedText"
+import { ThemedText } from "../../../components/ThemedText";
 
 // services
 import { getCategories } from "../../../services/categories";
@@ -19,11 +19,10 @@ import {
 } from "../../../services/articles";
 
 // components
-import { ArticleCard } from "@/components/cards/ArticleCard"
-import { CategoryCard } from "@/components/cards/CategoryCard"
-import { HeaderWithoutCart } from "../../../components/header/SimpleHeader"
+import { ArticleCard } from "@/components/cards/ArticleCard";
+import { CategoryCard } from "@/components/cards/CategoryCard";
+import { HeaderWithoutCart } from "../../../components/header/SimpleHeader";
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
-
 
 export default function Education() {
     const router = useRouter();
@@ -31,6 +30,7 @@ export default function Education() {
     const [trendingArticles, setTrendingArticles] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -53,6 +53,21 @@ export default function Education() {
         fetchData();
     }, []);
 
+    const filteredNewArticles = newArticles.filter(
+        (article) =>
+            article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            article.content.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredTrendingArticles = trendingArticles.filter(
+        (article) =>
+            article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            article.content.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+    };
+
     if (loading) {
         return (
             <SafeAreaView style={styles.safeArea}>
@@ -64,44 +79,75 @@ export default function Education() {
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <HeaderWithoutCart />
+                <HeaderWithoutCart onSearch={handleSearch} />
 
                 {/* New Articles Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
                     New Articles
                 </ThemedText>
-                <LinearGradient colors={["#540093", "#b400f3"]} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={styles.articleCardsContainer}>
-                    <ScrollView horizontal={true} contentContainerStyle={styles.horizontalScroll}>
+                <LinearGradient
+                    colors={["#540093", "#b400f3"]}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.articleCardsContainer}
+                >
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={styles.horizontalScroll}
+                    >
                         {newArticles.map((article) => (
                             <ArticleCard key={article.id} article={article} />
                         ))}
                     </ScrollView>
 
-                    <PrimaryBtn onPress={() => router.push("./AddArticle")} text="Add New Article" />
+                    <PrimaryBtn
+                        onPress={() => router.push("./AddArticle")}
+                        text="Add New Article"
+                    />
                 </LinearGradient>
-
 
                 {/* Categories Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
                     Browse by Category
                 </ThemedText>
-                <LinearGradient colors={["#8c4b10", "#ffab00"]} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={styles.articleCardsContainer}>
-                    <ScrollView horizontal={true} contentContainerStyle={styles.horizontalScroll}>
+                <LinearGradient
+                    colors={["#8c4b10", "#ffab00"]}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.articleCardsContainer}
+                >
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={styles.horizontalScroll}
+                    >
                         {categories.map((category) => (
-                            <CategoryCard key={category.id} category={category} />
+                            <CategoryCard
+                                key={category.id}
+                                category={category}
+                            />
                         ))}
                     </ScrollView>
 
-                    <PrimaryBtn onPress={() => router.push("./AddCategory")} text="Add New Category" />
+                    <PrimaryBtn
+                        onPress={() => router.push("./AddCategory")}
+                        text="Add New Category"
+                    />
                 </LinearGradient>
-
 
                 {/* Trending Articles Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
                     Trending Articles
                 </ThemedText>
-                <LinearGradient colors={["#540093", "#b400f3"]} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={styles.articleCardsContainer}>
-                    <ScrollView horizontal={true} contentContainerStyle={styles.horizontalScroll}>
+                <LinearGradient
+                    colors={["#540093", "#b400f3"]}
+                    start={{ x: 0, y: 1 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.articleCardsContainer}
+                >
+                    <ScrollView
+                        horizontal={true}
+                        contentContainerStyle={styles.horizontalScroll}
+                    >
                         {trendingArticles.map((article) => (
                             <ArticleCard key={article.id} article={article} />
                         ))}

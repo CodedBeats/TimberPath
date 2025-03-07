@@ -18,7 +18,7 @@ export function CategoryCard({ category, marginBottom = 10 }: CategoryCardProps)
 
     const handlePress = () => {
         router.push({
-            pathname: "./ArticlesByCategory",
+            pathname: "/(tabs)/Education/ArticlesByCategory",
             params: { categoryId: category.id },
         });
     };
