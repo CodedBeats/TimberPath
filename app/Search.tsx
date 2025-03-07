@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SearchBar } from "@/components/search/SearchBar";
-import { ArticleCard } from "@/components/ArticleCard";
+import { ArticleCard } from "@/components/cards/ArticleCard";
 import { getArticles } from "@/services/articles";
 
 export default function Search() {

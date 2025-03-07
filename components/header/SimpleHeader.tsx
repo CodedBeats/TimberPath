@@ -1,30 +1,37 @@
-import React from "react"
-import { useNavigation, CompositeNavigationProp } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import React from "react";
+import {
+    useNavigation,
+    CompositeNavigationProp,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter, usePathname } from "expo-router";
-import { RootStackParamList, TabParamList } from "@/types"
-import { SearchBar } from '../search/SearchBar';
+import { RootStackParamList, TabParamList } from "@/types";
+import { SearchBar } from "../search/SearchBar";
 
 // icon
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 type HeaderProps = {
     onSearch?: (query: string) => void;
-  };
+};
 
-const HeaderWithCart: React.FC<HeaderProps> = ({ onSearch }) => {
+const HeaderWithCart = ({ onSearch }: HeaderProps) => {
     const router = useRouter();
     const pathname = usePathname();
     const navigateToProfile = () => {
-        router.push("/profile");
-      };
+        router.push("/(profile)/Profile");
+    };
 
-      const handleSearch = (query: string) => {
+    const navigateToCart = () => {
+        router.push("/(tabs)/product/Cart");
+    };
+
+    const handleSearch = (query: string) => {
         router.push({ pathname: "/Search", params: { q: query } });
         onSearch && onSearch(query);
-      };
+    };
 
     return (
         <View style={styles.container}>
@@ -38,29 +45,40 @@ const HeaderWithCart: React.FC<HeaderProps> = ({ onSearch }) => {
             <SearchBar placeholder="Search..." onSearch={handleSearch} />
 
             {/* cart icon */}
-            <TouchableOpacity style={styles.iconButton}>
-                <FontAwesome5 name="shopping-cart" size={22} color="#333" style={styles.cartIcon} />
+            <TouchableOpacity
+                style={styles.iconButton}
+                onPress={navigateToCart}
+            >
+                <FontAwesome5
+                    name="shopping-cart"
+                    size={22}
+                    color="#333"
+                    style={styles.cartIcon}
+                />
             </TouchableOpacity>
 
             {/* profile icon */}
-            <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
+            <TouchableOpacity
+                style={styles.iconButton}
+                onPress={navigateToProfile}
+            >
                 <FontAwesome5 name="user-alt" size={22} color="#333" />
             </TouchableOpacity>
         </View>
-    )
+    );
 };
 
-const HeaderWithoutCart: React.FC<HeaderProps> = ({ onSearch }) => {
+const HeaderWithoutCart = ({ onSearch }: HeaderProps) => {
     const router = useRouter();
-    const pathname = usePathname();
-    const navigateToProfile = () => {
-        router.push("/profile");
-      };
 
-      const handleSearch = (query: string) => {
+    const navigateToProfile = () => {
+        router.push("/(profile)/Profile");
+    };
+
+    const handleSearch = (query: string) => {
         router.push({ pathname: "/Search", params: { q: query } });
         onSearch && onSearch(query);
-      };
+    };
 
     return (
         <View style={styles.container}>
@@ -74,19 +92,22 @@ const HeaderWithoutCart: React.FC<HeaderProps> = ({ onSearch }) => {
             <SearchBar placeholder="Search..." onSearch={handleSearch} />
 
             {/* profile Icon */}
-            <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>
+            <TouchableOpacity
+                style={styles.iconButton}
+                onPress={navigateToProfile}
+            >
                 <FontAwesome5 name="user-alt" size={22} color="black" />
             </TouchableOpacity>
         </View>
-    )
+    );
 };
-
 
 const styles = StyleSheet.create({
     container: {
         marginBottom: 20,
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
         paddingHorizontal: 16,
         paddingVertical: 10,
         backgroundColor: "#222",
@@ -111,7 +132,7 @@ const styles = StyleSheet.create({
     // small detail otherwise handle makes it look too far right
     cartIcon: {
         transform: [{ translateX: -1 }],
-    }
+    },
 });
 
-export { HeaderWithCart, HeaderWithoutCart }
+export { HeaderWithCart, HeaderWithoutCart };

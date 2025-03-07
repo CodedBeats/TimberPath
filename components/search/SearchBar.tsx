@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, TextInputSubmitEditingEventData, NativeSyntheticEvent } from 'react-native';
+import { View, TextInput, StyleSheet, TextInputSubmitEditingEventData, NativeSyntheticEvent, SafeAreaView } from 'react-native';
 import { ThemedView } from '../ThemedView';
 
 type SearchBarProps = {
@@ -20,26 +20,37 @@ export const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...',
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        placeholderTextColor="#7C7C7D"
-        value={query}
-        onChangeText={handleChange}
-        onSubmitEditing={handleSubmitEditing}
-      />
-    </ThemedView>
+    <SafeAreaView style={styles.searchContainer}>
+      <ThemedView style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder}
+          placeholderTextColor="#7C7C7D"
+          value={query}
+          onChangeText={handleChange}
+          onSubmitEditing={handleSubmitEditing}
+        />
+      </ThemedView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  searchContainer: {
+    width: "70%", 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    width: "100%", 
+    height: 35,
     borderRadius: 8,
-    backgroundColor: '#fff',
+    backgroundColor: "#ddd",
     marginVertical: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+
   },
   input: {
     height: 40,

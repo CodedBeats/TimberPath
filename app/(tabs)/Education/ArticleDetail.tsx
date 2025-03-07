@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { Dimensions } from "react-native";
+const { width } = Dimensions.get("window");
+
+// services
 import { getArticleById } from '../../../services/articles';
+
+// components
 import { ThemedText } from '../../../components/ThemedText';
-import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
+
 
 export default function ArticleDetail() {
   const { articleId } = useLocalSearchParams<{ articleId: string }>();
@@ -42,13 +48,21 @@ export default function ArticleDetail() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <HeaderWithoutCart />
       <ScrollView contentContainerStyle={styles.container}>
         {article.imageURL && (
-          <Image source={{ uri: article.imageURL }} style={styles.image} />
+          <View style={styles.imageWrapper}>
+            <Image source={{ uri: article.imageURL }} style={styles.image} />
+            <View style={styles.overlay} />
+          </View>
         )}
-        <ThemedText type="title" style={styles.title}>{article.title}</ThemedText>
-        <ThemedText style={styles.content}>{article.content}</ThemedText>
+        
+        <ThemedText type="title" style={styles.title}>
+          {article.title}
+        </ThemedText>
+
+        <ThemedText style={styles.content}>
+          {article.content}
+        </ThemedText>
       </ScrollView>
     </SafeAreaView>
   );
@@ -57,24 +71,42 @@ export default function ArticleDetail() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
   container: {
-    padding: 16,
+    padding: 20,
+    paddingBottom: 50,
+  },
+  imageWrapper: {
+    position: "relative",
+    width: "100%",
+    // auto adujust the height to the width
+    height: width * 0.6,
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    marginBottom: 16,
-    borderRadius: 8,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
   },
   title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 12,
+    textAlign: "center",
+    paddingHorizontal: 10,
   },
   content: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: '#ccc',
+    fontSize: 14,
+    lineHeight: 22,
+    color: "#ddd",
+    textAlign: "justify",
   },
 });
