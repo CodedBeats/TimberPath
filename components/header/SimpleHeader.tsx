@@ -3,27 +3,39 @@ import { useNavigation, CompositeNavigationProp } from "@react-navigation/native
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs"
 import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native"
-import { useRouter } from "expo-router";
+import { useRouter, usePathname } from "expo-router";
 import { RootStackParamList, TabParamList } from "@/types"
+import { SearchBar } from '../search/SearchBar';
 
 // icon
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 
+type HeaderProps = {
+    onSearch?: (query: string) => void;
+  };
 
-const HeaderWithCart = () => {
+const HeaderWithCart: React.FC<HeaderProps> = ({ onSearch }) => {
     const router = useRouter();
+    const pathname = usePathname();
     const navigateToProfile = () => {
         router.push("/profile");
+      };
+
+      const handleSearch = (query: string) => {
+        router.push({ pathname: "/Search", params: { q: query } });
+        onSearch && onSearch(query);
       };
 
     return (
         <View style={styles.container}>
             {/* search bar */}
-            <TextInput
+            {/* <TextInput
                 style={styles.searchBar}
                 placeholder="Search"
                 placeholderTextColor="#7C7C7D"
-            />
+                onChangeText={handleSearch}
+            /> */}
+            <SearchBar placeholder="Search..." onSearch={handleSearch} />
 
             {/* cart icon */}
             <TouchableOpacity style={styles.iconButton}>
@@ -38,19 +50,28 @@ const HeaderWithCart = () => {
     )
 };
 
-const HeaderWithoutCart = () => {
+const HeaderWithoutCart: React.FC<HeaderProps> = ({ onSearch }) => {
     const router = useRouter();
+    const pathname = usePathname();
     const navigateToProfile = () => {
         router.push("/profile");
       };
+
+      const handleSearch = (query: string) => {
+        router.push({ pathname: "/Search", params: { q: query } });
+        onSearch && onSearch(query);
+      };
+
     return (
         <View style={styles.container}>
             {/* search Bar */}
-            <TextInput
+            {/* <TextInput
                 style={styles.searchBar}
                 placeholder="Search"
                 placeholderTextColor="#7C7C7D"
-            />
+                onChangeText={handleSearch}
+            /> */}
+            <SearchBar placeholder="Search..." onSearch={handleSearch} />
 
             {/* profile Icon */}
             <TouchableOpacity style={styles.iconButton} onPress={navigateToProfile}>

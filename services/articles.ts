@@ -86,3 +86,19 @@ export async function deleteArticle(articleId: string) {
   const docRef = doc(db, "Articles", articleId);
   await deleteDoc(docRef);
 }
+
+
+export async function searchArticles(queryStr: string) {
+  if (!queryStr) return [];
+  const lowerQuery = queryStr.toLowerCase();
+  const q = query(
+    articlesCollection,
+    where("keywords", "array-contains", lowerQuery)
+  );
+  const querySnapshot = await getDocs(q);
+  const articles: any[] = [];
+  querySnapshot.forEach(docSnap => {
+    articles.push({ id: docSnap.id, ...docSnap.data() });
+  });
+  return articles;
+}
