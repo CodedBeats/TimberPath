@@ -17,6 +17,10 @@ const HeaderWithCart = () => {
         router.push("/(profile)/Profile")
     }
 
+    const navigateToCart = () => {
+        router.push("/(tabs)/product/Cart")
+    }
+
     return (
         <View style={styles.container}>
             {/* search bar */}
@@ -27,7 +31,7 @@ const HeaderWithCart = () => {
             />
 
             {/* cart icon */}
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={navigateToCart}>
                 <FontAwesome5 name="shopping-cart" size={22} color="#333" style={styles.cartIcon} />
             </TouchableOpacity>
 

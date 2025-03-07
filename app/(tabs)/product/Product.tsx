@@ -1,5 +1,4 @@
 import { useRouter } from "expo-router"
-import React from "react"
 import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -50,7 +49,7 @@ const Product = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#000", // Darker background for contrast
+        backgroundColor: "#000",
         paddingHorizontal: 16,
         paddingTop: 16,
     },
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginHorizontal: 16,
         overflow: "hidden",
-        elevation: 5, // Shadow effect for depth
+        elevation: 5,
     },
     image: {
         width: "100%",
