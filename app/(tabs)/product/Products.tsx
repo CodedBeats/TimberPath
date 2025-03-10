@@ -1,6 +1,7 @@
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { useRouter } from "expo-router"
 import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useState } from 'react';
 
 // firebase
 import { collection, getDocs } from "firebase/firestore"
@@ -12,6 +13,7 @@ import { useDB } from "@/contexts/DBContext"
 // components
 import { HeaderWithCart } from "../../../components/header/SimpleHeader"
 import { FilterBtn } from '@/components/btns/FilterBtn'
+import ProductCard from '@/components/cards/ProductCard';
 
 
 export default function Products() {
@@ -21,6 +23,26 @@ export default function Products() {
   // contexts
   const db = useDB()
 
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsData: any[] = [];
+        querySnapshot.forEach((doc) => {
+          productsData.push({ id: doc.id, ...doc.data() });
+        });
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, [db]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -31,14 +53,24 @@ export default function Products() {
 
         {/* products content */}
         <View style={styles.container}>
-          {/* producrs */}
           <LinearGradient colors={["#520073", "#000"]} style={styles.largeBox}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>All Products</Text>
               <FilterBtn onPress={() => console.log("Filter")} />
             </View>
             <View style={styles.subBoxContent}>
-              <Text>dynamically rendered products here</Text>
+              {loading ? (
+                <ActivityIndicator size="large" color="#fff" />
+              ) : products.length === 0 ? (
+                <Text style={styles.noProducts}>No products found.</Text>
+              ) : (
+                // Render the products in a grid
+                <View style={styles.productsGrid}>
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </View>
+              )}
             </View>
           </LinearGradient>
             
@@ -119,5 +151,15 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
+  },
+  noProducts: {
+    color: "#fff",
+    textAlign: "center",
+    padding: 10,
+  },
+  productsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
   },
 });
