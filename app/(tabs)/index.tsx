@@ -65,6 +65,9 @@ export default function Index() {
         <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddProduct")}>
           <Text style={styles.btnText}>Add Product</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddSupplier")}>
+          <Text style={styles.btnText}>Add Supplier</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   )
