@@ -1,138 +1,145 @@
-import { useRouter } from "expo-router"
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
-import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/config/Config';
+import { ThemedText } from '@/components/ThemedText';
 
-const Product = () => {
-    const router = useRouter()
-  
+export default function Product() {
+  const { productId } = useLocalSearchParams<{ productId: string }>();
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  const handleAddToCart = () => {
+    console.log("Add to Cart", product.id);
+  };
+
+  useEffect(() => {
+    async function fetchProduct() {
+      if (!productId) return;
+      try {
+        const docRef = doc(db, "products", productId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setProduct({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.error("No such product!");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [productId]);
+
+  if (loading) {
     return (
-        <SafeAreaView style={styles.container}>
-            {/* Product Image */}
-            <View style={styles.imageContainer}>
-                <Image 
-                    source={{ uri: "https://pacificdragons.com.au//app/uploads/apply_varnish.jpeg" }} 
-                    style={styles.image} 
-                />
-            </View>
-
-            {/* Product Details */}
-            <LinearGradient colors={["#410051", "#000"]} style={styles.detailsContainer}>
-                <Text style={styles.productName}>Exterior Timber Varnish</Text>
-                <Text style={styles.productAmount}>500ml</Text>
-                
-                <Text style={styles.productDescriptionName}>Description</Text>
-                <ScrollView>
-                    <Text style={styles.productDescription}>
-                        Protect and enhance outdoor wood with this durable, weather-resistant varnish. 
-                        Perfect for decks, fences, and furniture, it provides a clear semi-gloss finish 
-                        that highlights the wood grain while shielding against UV rays and water damage. 
-                        Easy to apply and quick-drying, it’s ideal for small to medium projects.
-                    </Text>
-                </ScrollView>
-            </LinearGradient>
-
-            {/* Price & Add to Cart */}
-            <View style={styles.priceBuyContainer}>
-                <View style={styles.priceContainer}>
-                    <Text style={styles.priceLabel}>Price</Text>
-                    <Text style={styles.price}>$15.50</Text>
-                </View>
-
-                <TouchableOpacity style={styles.addToCartButton} onPress={() => console.log("Add to Cart")}>
-                    <Text style={styles.addToCartText}>Add to Cart +</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+      <SafeAreaView style={styles.safeArea}>
+        <ActivityIndicator size="large" color="#fff" />
+      </SafeAreaView>
     );
-};
+  }
+
+  if (!product) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <ThemedText>Product not found.</ThemedText>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Product Image */}
+        {product.imageURL && (
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: product.imageURL }} style={styles.image} />
+          </View>
+        )}
+        {/* Product Details */}
+        <View style={styles.detailsContainer}>
+          <ThemedText style={styles.productName}>{product.productName}</ThemedText>
+          <ThemedText style={styles.description}>{product.description}</ThemedText>
+          <ThemedText style={styles.price}>Price: ${product.price}</ThemedText>
+          <ThemedText style={styles.stock}>In Stock: {product.stockQuantity}</ThemedText>
+          <ThemedText style={styles.stock}>Supplied By: {product.supplierName}</ThemedText>
+
+          <TouchableOpacity style={[styles.button, styles.addButton]} onPress={handleAddToCart}>
+            <ThemedText style={styles.buttonText}>Add to Cart</ThemedText>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#000",
-        paddingHorizontal: 16,
-        paddingTop: 16,
-    },
-    imageContainer: {
-        // width: "100%",
-        height: 200,
-        marginHorizontal: 16,
-        overflow: "hidden",
-        elevation: 5,
-    },
-    image: {
-        width: "100%",
-        height: "100%",
-        resizeMode: "cover",
-    },
-    detailsContainer: {
-        flex: 1,
-        marginHorizontal: 16,
-        marginBottom: 16,
-        paddingVertical: 16,
-        paddingHorizontal: 12,
-        elevation: 2,
-    },
-    productName: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#FFF",
-        marginBottom: 4,
-    },
-    productAmount: {
-        fontSize: 16,
-        color: "#B0B0B0",
-        marginBottom: 12,
-    },
-    productDescriptionName: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#FFF",
-        marginTop: 8,
-        paddingBottom: 4,
-        borderBottomWidth: 1,
-        borderBottomColor: "#555",
-    },
-    productDescription: {
-        fontSize: 14,
-        color: "#D0D0D0",
-        marginTop: 4,
-        lineHeight: 20,
-        overflow: "hidden",
-    },
-    priceBuyContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: 16,
-        paddingTop: 0,
-        marginBottom: 25,
-    },
-    priceContainer: {
-        flex: 1,
-    },
-    priceLabel: {
-        fontSize: 16,
-        color: "#A0A0A0",
-    },
-    price: {
-        fontSize: 22,
-        fontWeight: "bold",
-        color: "#fab700",
-    },
-    addToCartButton: {
-        backgroundColor: "#f17700",
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        elevation: 3,
-    },
-    addToCartText: {
-        color: "#FFF",
-        fontSize: 18,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#000",
+  },
+  container: {
+    padding: 16,
+  },
+  imageContainer: {
+    height: 350,  // original was 200
+    marginBottom: 16,
+    overflow: "hidden",
+    borderRadius: 8,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  detailsContainer: {
+    backgroundColor: "#111",
+    padding: 16,
+    borderRadius: 8,
+  },
+  productName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFF",
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 16,
+    color: "#CCC",
+    marginBottom: 8,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fab700",
+    marginBottom: 4,
+  },
+  stock: {
+    fontSize: 16,
+    color: "#fff",
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+  },
+  button: {
+    flex: 1,
+    backgroundColor: '#9C3FE4',
+    paddingVertical: 6,
+    marginHorizontal: 2,
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  addButton: {
+    backgroundColor: '#f17700',
+  },
+  buttonText: {
+    fontSize: 12,
+    color: '#fff',
+  },
 });
 
-export default Product
