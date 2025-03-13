@@ -156,6 +156,9 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: '#000',
+    fontSize: 16,
+    padding: 12,
+    borderRadius: 8,
   },
   button: {
     backgroundColor: '#9C3FE4',

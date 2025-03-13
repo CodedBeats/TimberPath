@@ -1,9 +1,12 @@
 import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, ScrollView } from "react-native"
+import { Picker } from "@react-native-picker/picker";
 
 // context
 import { useDB } from "@/contexts/DBContext";
+import { getSuppliers } from "@/services/suppliers";
+import { getWoods } from "@/services/woods";
 
 const AddProduct = () => {
     // contexts
@@ -15,10 +18,29 @@ const AddProduct = () => {
         price: "",
         stockQuantity: "",
         supplierID: "",
+        supplierName: "", // added and it is optional to type a custom name.
         woodID: "",  // can be null
+        woodCommonName: "", // added and it is optional to type a custom name.
         description: "",
         imageURL: "",
-    })
+    });
+
+    const [suppliers, setSuppliers] = useState<any[]>([]);
+    const [woods, setWoods] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const supplierList = await getSuppliers();
+                const woodList = await getWoods();
+                setSuppliers(supplierList);
+                setWoods(woodList);
+            } catch (error) {
+                console.error("Error fetching suppliers/woods:", error);
+            }
+        }
+        fetchData();
+    }, []);
 
     // handle inpuit changes
     const handleChange = (key: string, value: string) => {
@@ -28,23 +50,25 @@ const AddProduct = () => {
     // validate and format before submit
     const validateAndSubmit = async () => {
         // destructure form data
-        const { description, imageURL, price, productName, stockQuantity, supplierID, woodID } = formData
+        const { description, imageURL, price, productName, stockQuantity, supplierID, woodID } = formData;
     
         // check required fields
         if (!description || !imageURL || !price || !productName || !stockQuantity || !supplierID) {
-            console.log("validation error", "all fields (except Wood ID) are REQUIIRED")
+            console.log("validation error", "all fields (except Wood ID) are REQUIRED");
+            Alert.alert("Validation Error", "Please fill in all required fields.");
             return
         }
     
         // convert int fields
         const parsedPrice = parseFloat(price)
         const parsedStockQuantity = parseInt(stockQuantity, 10)
-        const parsedSupplierID = parseInt(supplierID, 10)
-        const parsedWoodID = woodID ? parseInt(woodID, 10) : null
+        //const parsedSupplierID = parseInt(supplierID, 10)
+        //const parsedWoodID = woodID ? parseInt(woodID, 10) : null
     
         // ensure data types
-        if (isNaN(parsedPrice) || isNaN(parsedStockQuantity) || isNaN(parsedSupplierID)) {
-            console.log("validation err", "Price, Product ID, Stock Quantity and Supplier ID MUST be valid numbers")
+        if (isNaN(parsedPrice) || isNaN(parsedStockQuantity)) {
+            console.log("validation err", "Price, and Stock Quantity MUST be valid numbers");
+            Alert.alert("Validation Error", "Price and Stock Quantity must be valid numbers.");
             return
         }
     
@@ -56,18 +80,20 @@ const AddProduct = () => {
                 price: parsedPrice,
                 productName,
                 stockQuantity: parsedStockQuantity,
-                supplierID: parsedSupplierID,
-                woodID: parsedWoodID, // can be null
+                supplierID,
+                supplierName: formData.supplierName, // added and it is optional to type a custom name.
+                woodID, // can be null
             })
     
             console.log("success", "product added successfully")
             // reset form data
-            setFormData({ description: "", imageURL: "", price: "", productName: "", stockQuantity: "", supplierID: "", woodID: "" })
+            setFormData({ productName: "", price: "", stockQuantity: "", supplierID: "", supplierName: "", woodID: "", woodCommonName: "", description: "", imageURL: "" });
 
         } catch (error) {
-            console.error("err adding product:", error)
+            console.error("Error adding product:", error);
+            Alert.alert("Error", "Failed to add product.");
         }
-    }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -77,8 +103,43 @@ const AddProduct = () => {
                 <InputField label="Product Name" value={formData.productName} onChangeText={(val: any) => handleChange("productName", val)} />
                 <InputField label="Price ($)" value={formData.price} onChangeText={(val: any) => handleChange("price", val)} keyboardType="numeric" />
                 <InputField label="Stock Quantity" value={formData.stockQuantity} onChangeText={(val: any) => handleChange("stockQuantity", val)} keyboardType="numeric" />
-                <InputField label="Supplier ID" value={formData.supplierID} onChangeText={(val: any) => handleChange("supplierID", val)} keyboardType="numeric" />
-                <InputField label="Wood ID (Optional)" value={formData.woodID} onChangeText={(val: any) => handleChange("woodID", val)} keyboardType="numeric" />
+                {/* Supplier Dropdown */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Supplier</Text>
+                    <Picker
+                        selectedValue={formData.supplierID}
+                        style={styles.picker}
+                        onValueChange={(itemValue, itemIndex) => {
+                            // When a supplier is selected, update both supplierID and supplierName
+                            const selected = suppliers.find(s => s.id === itemValue);
+                            handleChange("supplierID", itemValue);
+                            handleChange("supplierName", selected ? selected.supplierName : "");
+                        }}
+                    >
+                        <Picker.Item label="Select Supplier" value="" />
+                        {suppliers.map((supplier) => (
+                            <Picker.Item key={supplier.id} label={supplier.supplierName} value={supplier.id} />
+                        ))}
+                    </Picker>
+                </View>
+                {/* Wood Dropdown */}
+                <View style={styles.inputContainer}>
+                <Text style={styles.label}>Select Wood (Optional)</Text>
+                <Picker
+                    selectedValue={formData.woodID}
+                    style={styles.picker}
+                    onValueChange={(itemValue) => {
+                    const selected = woods.find(w => w.id === itemValue);
+                    handleChange("woodID", itemValue);
+                    handleChange("woodCommonName", selected ? selected.commonName : "");
+                    }}
+                >
+                    <Picker.Item label="Select Wood" value="" />
+                    {woods.map((wood) => (
+                    <Picker.Item key={wood.id} label={wood.commonName} value={wood.id} />
+                    ))}
+                </Picker>
+                </View>
                 <InputField label="Description" value={formData.description} onChangeText={(val: any) => handleChange("description", val)} multiline />
                 <InputField label="Image URL" value={formData.imageURL} onChangeText={(val: any) => handleChange("imageURL", val)} />
 
@@ -145,6 +206,13 @@ const styles = StyleSheet.create({
     multiline: {
         height: 80,
         textAlignVertical: "top",
+    },
+    picker: {
+        backgroundColor: "#2A2A2E",
+        color: "#FFF",
+        padding: 12,
+        borderRadius: 8,
+        fontSize: 16,
     },
     submitButton: {
         backgroundColor: "#9C3FE4",
