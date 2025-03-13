@@ -73,10 +73,6 @@ export default function Products() {
               )}
             </View>
           </LinearGradient>
-            
-          <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/product/Product")}>
-            <Text style={styles.wideButtonText}>Product Example</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
