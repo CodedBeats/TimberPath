@@ -1,122 +1,156 @@
-import React from 'react';
+import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { ThemedText } from '../ThemedText';
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+} from "react-native";
+import { useRouter } from "expo-router";
+import { ThemedText } from "../ThemedText";
 
 const cardSize = 250; // Each card is 100x100
 
 type ProductCardProps = {
-  product: {
-    id: string;
-    productName: string;
-    imageURL?: string;
-  };
+    product: {
+        id: string;
+        productName: string;
+        imageURL?: string;
+        price: number;
+        amount: string;
+    };
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const router = useRouter();
+    const router = useRouter();
 
-  const handleView = () => {
-    router.push({
-      pathname: "/(tabs)/product/Product",
-      params: { productId: product.id },
-    });
-  };
+    const handleView = () => {
+        router.push({
+            pathname: "/(tabs)/product/Product",
+            params: { productId: product.id },
+        });
+    };
 
-  const handleAddToCart = () => {
-    console.log("Add to Cart", product.id);
-  };
+    const handleAddToCart = () => {
+        console.log("Add to Cart", product.id);
+    };
 
-  const truncateTitle = (title: string) =>
-    title.length > 30 ? title.substring(0, 30) + "..." : title;
+    const truncateTitle = (title: string) =>
+        title.length > 30 ? title.substring(0, 30) + "..." : title;
 
-  return (
-    <View style={styles.card}>
-      {product.imageURL ? (
-        <Image source={{ uri: product.imageURL }} style={styles.image} />
-      ) : (
-        <View style={styles.placeholder}>
-          <ThemedText style={styles.placeholderText}>No Image</ThemedText>
-        </View>
-      )}
-      <ThemedText style={styles.title} numberOfLines={1}>
-        {truncateTitle(product.productName)}
-      </ThemedText>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleView}>
-          <ThemedText style={styles.buttonText}>View</ThemedText>
+    return (
+        <TouchableOpacity style={styles.cardContainer} onPress={handleView}>
+            <View style={styles.card}>
+                {/* Image */}
+                <View style={styles.imgContainer}>
+                    {product.imageURL ? (
+                        <Image source={{ uri: product.imageURL }} style={styles.img} />
+                    ) : (
+                        <View style={styles.placeholder}>
+                            <Text style={styles.placeholderText}>No Image</Text>
+                        </View>
+                    )}
+                </View>
+
+                <View style={styles.textContentContainer}>
+                    {/* Title */}
+                    <Text style={styles.title} numberOfLines={1}>
+                        {truncateTitle(product.productName)}
+                    </Text>
+
+                    {/* Amount */}
+                    <Text style={styles.amount}>{product.amount ? product.amount : "no amount :("}</Text>
+
+                    {/* Price & Add to Cart */}
+                    <View style={styles.priceAndAddContainer}>
+                        <Text style={styles.price}>$ {product.price}</Text>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={handleAddToCart}>
+                            <Text style={styles.buttonText}>+</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.addButton]} onPress={handleAddToCart}>
-          <ThemedText style={styles.buttonText}>Add to Cart</ThemedText>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
-    card: {
-      width: cardSize,
-      height: cardSize,
-      margin: 5,
-      backgroundColor: '#fff',
-      borderRadius: 8,
-      padding: 4,
-      alignItems: 'center',
-      justifyContent: 'space-between',
+    cardContainer: {
+        width: "45%",
+        marginBottom: 16,
     },
-    image: {
-      width: cardSize - 8,
-      height: cardSize - 120, // Leaves room for title and buttons
-      borderRadius: 4,
+    card: {
+        width: "90%",
+        backgroundColor: "#000",
+        borderWidth: 1,
+        borderColor: "#000",
+        borderRadius: 12,
+        // alignItems: "center",
+    },
+    textContentContainer: {
+        padding: 4,
+    },
+    imgContainer: {
+        width: "100%",
+        height: 100,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        overflow: "hidden",
+        backgroundColor: "#222",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    img: {
+        width: "100%",
+        height: "100%",
+        resizeMode: "cover",
     },
     placeholder: {
-      width: cardSize - 8,
-      height: cardSize - 120,
-      backgroundColor: '#ccc',
-      borderRadius: 4,
-      alignItems: 'center',
-      justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
     },
     placeholderText: {
-      fontSize: 12,
-      color: '#333',
+        color: "#888",
     },
     title: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: '#000',
-      width: '100%',
-      textAlign: 'center',
-      paddingVertical: 4,
+        fontSize: 16,
+        fontWeight: 500,
+        color: "#fff",
+        marginTop: 8,
     },
-    buttonsContainer: {
-      flexDirection: 'row',
-      width: '100%',
-      justifyContent: 'space-around',
+    amount: {
+        fontSize: 14,
+        color: "#aaa",
+        marginBottom: 8,
     },
-    button: {
-      flex: 1,
-      backgroundColor: '#9C3FE4',
-      paddingVertical: 6,
-      marginHorizontal: 2,
-      borderRadius: 4,
-      alignItems: 'center',
+    priceAndAddContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+        alignItems: "center",
     },
-    addButton: {
-      backgroundColor: '#f17700',
+    price: {
+        fontSize: 18,
+        color: "#fff",
+    },
+    buttonContainer: {
+        backgroundColor: "#ff8c00",
+        paddingHorizontal: 6,
+        height: "80%",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 6,
     },
     buttonText: {
-      fontSize: 12,
-      color: '#fff',
+        fontSize: 24,
+        fontWeight: 500,
+        color: "#fff",
+        textAlignVertical: "center",
+        textAlign: "center",
     },
-  });
-  
-  export default ProductCard;
+});
+
+export default ProductCard;

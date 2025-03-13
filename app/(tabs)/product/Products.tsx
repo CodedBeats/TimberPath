@@ -133,8 +133,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   subBoxContent: {
-    borderColor: "#222",
-    borderWidth: 1,
     height: "80%",
   },
   buttonContainer: {
@@ -158,8 +156,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   productsGrid: {
-    flexDirection: "row",
+    display: "flex",
+    flexDirection: "row",  
     flexWrap: "wrap",
-    justifyContent: "flex-start",
+    gap: 10,
+    justifyContent: "center",
+
+    // flexDirection: "row",
+    // flexWrap: "wrap",
+    // justifyContent: "flex-start",
   },
 });
