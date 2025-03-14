@@ -85,7 +85,9 @@ export default function SignUp() {
   const [request, response, promptAsync] = Google.useAuthRequest({
     responseType: "id_token token",
     usePKCE: false,
-    webClientId: process.env.EXPO_PUBLIC_FIREBASE_OAUTH_CREDENTIAL_ID,
+    webClientId: process.env.EXPO_PUBLIC_FIREBASE_WEB_OAUTH_CREDENTIAL_ID,
+    iosClientId: process.env.EXPO_PUBLIC_FIREBASE_IOS_OAUTH_CREDENTIAL_ID,
+    androidClientId: process.env.EXPO_PUBLIC_FIREBASE_ANDROID_OAUTH_CREDENTIAL_ID,
     scopes: ["openid", "profile", "email"],
     extraParams: {
       code_challenge_method: "",
