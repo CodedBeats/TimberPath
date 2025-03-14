@@ -28,5 +28,5 @@ Before running the project, ensure you have the following installed:
     ```sh
     npx expo start
     ```
-    You should be able to follow the instructions that come up in the terminal.
-    
+    You should be able to follow the instructions that come up in the terminal to run the app on the web, in an emulator, or on your phone.
+
