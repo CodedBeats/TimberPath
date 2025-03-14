@@ -73,10 +73,6 @@ export default function Products() {
               )}
             </View>
           </LinearGradient>
-            
-          <TouchableOpacity style={styles.wideButton} onPress={() => router.push("/product/Product")}>
-            <Text style={styles.wideButtonText}>Product Example</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -133,8 +129,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   subBoxContent: {
-    borderColor: "#222",
-    borderWidth: 1,
     height: "80%",
   },
   buttonContainer: {
@@ -158,8 +152,14 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   productsGrid: {
-    flexDirection: "row",
+    display: "flex",
+    flexDirection: "row",  
     flexWrap: "wrap",
-    justifyContent: "flex-start",
+    gap: 10,
+    justifyContent: "center",
+
+    // flexDirection: "row",
+    // flexWrap: "wrap",
+    // justifyContent: "flex-start",
   },
 });
