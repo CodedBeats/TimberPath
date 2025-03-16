@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, SafeAreaView, ScrollView, Platform } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, SafeAreaView, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -125,7 +125,7 @@ export default function SignUp() {
         resizeMode="contain"
       />
       <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Sign Up to TimberPath!</ThemedText>
+          <ThemedText type="title" style={styles.title}>Sign Up to TimberPath!</ThemedText>
           <HelloWave />
       </ThemedView>
       <Text style={styles.inputInstrcutions2}>* indicates required field</Text>
@@ -217,13 +217,13 @@ export default function SignUp() {
         />
 
 
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
       <View style={{ marginVertical: 8 }} />
-      <Button
-        title="Sign Up with Google"
-        onPress={() => {
-          promptAsync();
-        }} />
+      <TouchableOpacity onPress={() => promptAsync()} style={[styles.button, styles.button2]}>
+        <Text style={styles.buttonText}>Sign Up with Google</Text>
+      </TouchableOpacity>
     </ScrollView>
     </SafeAreaView>
   );
@@ -231,9 +231,7 @@ export default function SignUp() {
 
 const styles = StyleSheet.create({
   safeContainer: {
-    // flex: 1,
     backgroundColor: "#151619",
-    padding: 16,
     height: "100%",
   },
   scrollContainer: {
@@ -244,7 +242,7 @@ const styles = StyleSheet.create({
           marginBottom: 80,
         },
         android: {
-            // maxHeight: 80,
+          // paddingBottom: 200,
         },
     }),
   },
@@ -270,6 +268,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    backgroundColor: "#151619",
+  },
+  title: {
+    color: "#fff",
   },
   reactLogo: {
     height: 178,
@@ -290,5 +292,19 @@ const styles = StyleSheet.create({
     color: "#d10000",
     fontSize: 13,
     marginVertical: 10,
+  },
+  button: {
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2197f2",
+  },
+  button2: {
+    marginBottom: 40
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

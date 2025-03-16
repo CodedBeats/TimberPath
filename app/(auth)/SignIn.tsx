@@ -111,7 +111,7 @@ export default function SignIn() {
         resizeMode="contain"
       />
       <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Sign In to TimberPath!</ThemedText>
+          <ThemedText type="title" style={styles.title}>Sign In to TimberPath!</ThemedText>
           <HelloWave />
       </ThemedView>
       <TextInput
@@ -146,9 +146,7 @@ export default function SignIn() {
 
 const styles = StyleSheet.create({
   safeContainer: {
-    // flex: 1,
     backgroundColor: "#151619",
-    // padding: 16,
     height: "100%",
   },
   scrollContainer: {
@@ -163,7 +161,11 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 16,
+    backgroundColor: "#151619",
+  },
+  title: {
+    color: "#fff",
   },
   input: {
     height: 40,
