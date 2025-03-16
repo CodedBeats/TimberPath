@@ -22,24 +22,15 @@ import { useDB } from "@/contexts/DBContext"
 
 // components
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
-import { useCart } from "@/contexts/CartContext";
 
 
-export default function Checkout() {
-    const router = useRouter();
-    const { totalPrice, clearCart } = useCart();
-    const [loading, setLoading] = useState(false);
-  
-    const handlePayNow = async () => {
-      setLoading(true);
-      // In here we are going to simulate a network call (this is where Stripe integration would occur when we have a backend for the Stripe API) 
-      setTimeout(() => {
-        setLoading(false);
-        Alert.alert("Payment Successful", "Your order has been placed!");
-        clearCart();
-        router.push("./Products");
-      }, 2000);
-    };
+
+export default function CheckoutSample() {
+    const router = useRouter()
+
+    useEffect(() => {
+        
+    }, [])
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -62,7 +53,7 @@ export default function Checkout() {
                     <Text style={styles.checkoutCellTitle}>Card Number</Text>
                     <TextInput
                         style={styles.checkoutCellInput}
-                        placeholder={"0000 0000 0000 0000"}
+                        placeholder={"000-000-000-000"}
                         //value={checkoutData.dataName}
                         //onChangeText={(text) => setCheckoutData((prev) => ({ ...prev, dataName: text }))}
                         placeholderTextColor="gray"
@@ -74,7 +65,7 @@ export default function Checkout() {
                     <Text style={styles.checkoutCellTitle}>Cardholder Name</Text>
                     <TextInput
                         style={styles.checkoutCellInput}
-                        placeholder={"Mr Purple Prince"} // jajaja nice!
+                        placeholder={"Mr Purple Prince"}
                         //value={checkoutData.dataName}
                         //onChangeText={(text) => setCheckoutData((prev) => ({ ...prev, dataName: text }))}
                         placeholderTextColor="gray"
@@ -109,13 +100,9 @@ export default function Checkout() {
 
                 <View style={styles.totalContainer}>
                     <Text style={styles.checkoutCellTitle}>Total</Text>
-                    <Text style={styles.checkoutCellTitle}>$ {totalPrice.toFixed(2)}</Text>
+                    <Text style={styles.checkoutCellTitle}>$15.50</Text>
                 </View>
-                {loading ? (
-                        <ActivityIndicator size="large" color="#fff" />
-                    ) : (
-                        <PrimaryBtn onPress={handlePayNow} text="Pay Now" />
-                    )}
+                <PrimaryBtn onPress={() => console.log("Paying...")} text="Pay Now" />
             </ScrollView>
         </ScrollView>
         </SafeAreaView>

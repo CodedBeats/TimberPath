@@ -15,7 +15,7 @@ import { useRouter } from "expo-router"
 // contexts
 import { AuthProvider, useAuth } from "@/contexts/AuthContext"
 import { DBProvider } from "@/contexts/DBContext"
-
+import { CartProvider } from "@/contexts/CartContext";
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -40,13 +40,15 @@ export default function RootLayout() {
     return (
         <AuthProvider>
             <DBProvider>
+                <CartProvider>
                 <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
                     <StatusBar style="auto" />
                     <AuthWrapper />
                 </ThemeProvider>
+                </CartProvider>
             </DBProvider>
         </AuthProvider>
-    )
+    );
 }
 
 
