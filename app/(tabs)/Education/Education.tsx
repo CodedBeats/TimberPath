@@ -30,7 +30,6 @@ export default function Education() {
     const [trendingArticles, setTrendingArticles] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -53,21 +52,6 @@ export default function Education() {
         fetchData();
     }, []);
 
-    const filteredNewArticles = newArticles.filter(
-        (article) =>
-            article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            article.content.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const filteredTrendingArticles = trendingArticles.filter(
-        (article) =>
-            article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            article.content.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
-    };
-
     if (loading) {
         return (
             <SafeAreaView style={styles.safeArea}>
@@ -79,7 +63,7 @@ export default function Education() {
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <HeaderWithoutCart onSearch={handleSearch} />
+                <HeaderWithoutCart />
 
                 {/* New Articles Section */}
                 <ThemedText type="title" style={styles.sectionHeader}>
@@ -180,6 +164,7 @@ const styles = StyleSheet.create({
     },
     sectionHeader: {
         marginBottom: 12,
+        color: "#fff",
     },
     button: {
         backgroundColor: "#9C3FE4",

@@ -9,13 +9,9 @@ import { SearchBar } from "../search/SearchBar";
 // icon
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-type HeaderProps = {
-    onSearch?: (query: string) => void;
-};
 
 const HeaderWithCart = () => {
     const router = useRouter();
-    const pathname = usePathname();
     const navigateToProfile = () => {
         router.push("/(profile)/Profile");
     };
@@ -27,12 +23,6 @@ const HeaderWithCart = () => {
     return (
         <View style={styles.container}>
             {/* search bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
             <SearchBar />
 
             {/* cart icon */}
@@ -69,12 +59,6 @@ const HeaderWithoutCart = () => {
     return (
         <View style={styles.container}>
             {/* search Bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
             <SearchBar />
 
             {/* profile Icon */}
