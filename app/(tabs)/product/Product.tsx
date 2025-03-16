@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View, Button } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View, Button, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/config/Config';
@@ -110,6 +110,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
         paddingHorizontal: 16,
         paddingTop: 16,
+        ...Platform.select({
+            ios: {
+                marginTop: 30,
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
     imageContainer: {
         // width: "100%",
