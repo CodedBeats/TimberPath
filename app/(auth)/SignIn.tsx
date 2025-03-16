@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text } from "react-native";
 import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -134,6 +134,7 @@ export default function SignIn() {
         placeholderTextColor="gray"
       />
       <Button title="Sign In" onPress={handleSignIn} />
+      <Text style={styles.inputInstrcutions}>If you can't sign in, check your email for an account verification</Text>
       <View style={{ marginVertical: 8 }} />
       <Button title="Forgot Password" onPress={resetPassword} />
       <View style={{ marginVertical: 8 }} />
@@ -174,5 +175,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  inputInstrcutions: {
+    textAlign: "center",
+    color: "#d10000",
+    fontSize: 13,
+    marginVertical: 8,
+    lineHeight: 13,
   },
 });

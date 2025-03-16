@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const handleView = () => {
         router.push({
             pathname: "/(tabs)/product/Product",
-            params: { productId: product.id },
+            params: { productId: product.id, fromSearch: "true" },
         });
     };
 
