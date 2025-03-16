@@ -15,11 +15,20 @@ export default function AuthLayout() {
       initialRouteName="SignIn"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: "#fff",
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
-          ios: { position: 'absolute' }, 
-          default: {},
+          ios: {
+            position: "absolute",
+            height: 80,
+          },
+          android: {
+            height: 55,
+            backgroundColor: "#121212",
+          },
+          default: {
+            height: 55,
+          },
         }),
       }}
     >

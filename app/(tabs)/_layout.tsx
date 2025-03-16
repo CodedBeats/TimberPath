@@ -31,7 +31,6 @@ export default function TabLayout() {
           android: {
             height: 55,
             backgroundColor: "#121212",
-            tintColor: "#fff",
           },
           default: {
             height: 55,
