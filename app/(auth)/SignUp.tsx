@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView, Text } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView, Text, SafeAreaView } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -118,20 +118,17 @@ export default function SignUp() {
   
 
   return (
-      <ParallaxScrollView
-            headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-            headerImage={
-              <Image
-                source={require("@/assets/images/TP-logo300.png")}
-                style={styles.reactLogo}
-              />
-            }
-          >
-    <View style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Sign Up to TimberPath!</ThemedText>
-            <HelloWave />
-        </ThemedView>
+    <SafeAreaView style={styles.safeContainer}>
+    <ScrollView style={styles.scrollContainer}>
+      <Image
+        source={require("@/assets/images/TP-logo300.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title">Sign Up to TimberPath!</ThemedText>
+          <HelloWave />
+      </ThemedView>
       <Text style={styles.inputInstrcutions2}>* indicates required field</Text>
       <TextInput
         style={styles.input}
@@ -228,16 +225,26 @@ export default function SignUp() {
         onPress={() => {
           promptAsync();
         }} />
-    </View>
-    </ParallaxScrollView>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
+  safeContainer: {
+    // flex: 1,
+    backgroundColor: "#151619",
     padding: 16,
+    height: "100%",
+  },
+  scrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+  },
+  logo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 32,
   },
   loadingContainer: {
     flex: 1,

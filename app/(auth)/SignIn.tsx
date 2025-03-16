@@ -10,6 +10,8 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as Crypto from "expo-crypto";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -102,20 +104,17 @@ export default function SignIn() {
   
 
   return (
-    <ParallaxScrollView
-          headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-          headerImage={
-            <Image
-              source={require("@/assets/images/TP-logo300.png")}
-              style={styles.reactLogo}
-            />
-          }
-        >
-    <View style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Sign In to TimberPath!</ThemedText>
-            <HelloWave />
-        </ThemedView>
+    <SafeAreaView style={styles.safeContainer}>
+    <ScrollView style={styles.scrollContainer}>
+      <Image
+        source={require("@/assets/images/TP-logo300.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title">Sign In to TimberPath!</ThemedText>
+          <HelloWave />
+      </ThemedView>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -135,41 +134,45 @@ export default function SignIn() {
       />
       <Button title="Sign In" onPress={handleSignIn} />
       <Text style={styles.inputInstrcutions}>If you can't sign in, check your email for an account verification</Text>
+
       <View style={{ marginVertical: 8 }} />
       <Button title="Forgot Password" onPress={resetPassword} />
+      
       <View style={{ marginVertical: 8 }} />
       <Button title="Sign In with Google" onPress={() => googlePromptAsync()} />
-    </View>
-    
-    </ParallaxScrollView>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
+  safeContainer: {
+    // flex: 1,
+    backgroundColor: "#151619",
+    // padding: 16,
+    height: "100%",
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    color: "gray",
+  scrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+  },
+  logo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 32,
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    marginBottom: 24,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  input: {
+    height: 40,
+    borderColor: "#444",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    color: "#fff",
   },
   loadingContainer: {
     flex: 1,
