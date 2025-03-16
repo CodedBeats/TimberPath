@@ -21,6 +21,7 @@ export default function ProductLayout() {
           headerTitleAlign: "center",
           headerTintColor: "#aaa",
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
 
           // custom back btn
           headerLeft: () => <CustomBackButton />,
@@ -38,6 +39,7 @@ export default function ProductLayout() {
         headerTintColor: "#aaa",
         // remove border
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: "#121212" },
       }} />
       <Stack.Screen name="Checkout" options={{ 
         title: "Checkout",
@@ -51,6 +53,7 @@ export default function ProductLayout() {
         headerTintColor: "#aaa",
         // remove border
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: "#121212" },
       }} />
     </Stack>
   );

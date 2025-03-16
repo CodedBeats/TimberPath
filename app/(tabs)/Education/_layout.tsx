@@ -18,6 +18,7 @@ export default function EducationLayout() {
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
       <Stack.Screen 
@@ -28,6 +29,7 @@ export default function EducationLayout() {
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
       <Stack.Screen 
@@ -38,6 +40,7 @@ export default function EducationLayout() {
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
 
           // custom back btn
           headerLeft: () => <CustomBackButton />,
@@ -51,6 +54,7 @@ export default function EducationLayout() {
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
     </Stack>

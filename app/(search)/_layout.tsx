@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { Stack } from "expo-router"
 
 export default function SearchLayout() {
@@ -19,6 +20,7 @@ export default function SearchLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
+                    headerStyle: { backgroundColor: "#121212" },
                 }}
             />
         </Stack>

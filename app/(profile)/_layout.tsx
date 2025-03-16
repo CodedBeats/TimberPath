@@ -20,6 +20,7 @@ export default function ProfileLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
+                    headerStyle: { backgroundColor: "#121212" },
                 }}
             />
         </Stack>
