@@ -13,7 +13,6 @@ import {
 import { useLocalSearchParams } from "expo-router";
 
 // components
-import { SearchBar } from "@/components/search/SearchBar";
 import { ArticleCard } from "@/components/cards/ArticleCard";
 import ProductCard from "@/components/cards/ProductCard";
 
