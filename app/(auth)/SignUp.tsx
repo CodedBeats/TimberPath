@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView, Text, SafeAreaView } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, SafeAreaView, ScrollView, Platform } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
 import * as Crypto from "expo-crypto";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
@@ -240,6 +239,14 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 16,
     flexGrow: 1,
+    ...Platform.select({
+        ios: {
+          marginBottom: 80,
+        },
+        android: {
+            // maxHeight: 80,
+        },
+    }),
   },
   logo: {
     width: '100%',

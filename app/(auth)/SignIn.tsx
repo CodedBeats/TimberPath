@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, ScrollView } from "react-native";
 import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -11,7 +11,6 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as Crypto from "expo-crypto";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 
 WebBrowser.maybeCompleteAuthSession();
 
