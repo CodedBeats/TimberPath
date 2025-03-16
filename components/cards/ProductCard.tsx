@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
                 maxHeight: 200,
             },
             android: {
-                // maxHeight: 80,
+                maxHeight: 200,
             },
         }),
     },
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
                 maxHeight: 80,
             },
             android: {
-                // maxHeight: 80,
+                maxHeight: 80,
             },
         }),
     },
