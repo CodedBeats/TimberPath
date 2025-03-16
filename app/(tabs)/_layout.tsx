@@ -19,7 +19,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: "#fff",
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
@@ -30,6 +30,8 @@ export default function TabLayout() {
           },
           android: {
             height: 55,
+            backgroundColor: "#121212",
+            tintColor: "#fff",
           },
           default: {
             height: 55,
