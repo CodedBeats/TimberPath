@@ -82,14 +82,14 @@ export default function Profile() {
     }
 
 
-    // convert to just user data loaded section displaying loading
-    // if (loading) {
-    //     return (
-    //         <View style={styles.loadingContainer}>
-    //             <ActivityIndicator size="large" color="#000" />
-    //         </View>
-    //     );
-    // }
+    //! convert to just user data loaded section displaying loading
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#fff" />
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>

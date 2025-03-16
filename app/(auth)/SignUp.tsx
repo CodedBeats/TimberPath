@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView, Text } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -132,9 +132,10 @@ export default function SignUp() {
             <ThemedText type="title">Sign Up to TimberPath!</ThemedText>
             <HelloWave />
         </ThemedView>
+      <Text style={styles.inputInstrcutions2}>* indicates required field</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email *"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -143,12 +144,13 @@ export default function SignUp() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Password *"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         placeholderTextColor="gray"
       />
+      <Text style={styles.inputInstrcutions}>Password must be at least 8 characters long, have an uppercase and lowecase letter, a number and special character.</Text>
 
 
       {/* Additional profile fields to test */}
@@ -261,5 +263,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: "absolute",
+  },
+  inputInstrcutions: {
+    textAlign: "center",
+    color: "#d10000",
+    fontSize: 13,
+    marginBottom: 16,
+    lineHeight: 13,
+  },
+  inputInstrcutions2: {
+    textAlign: "left",
+    color: "#d10000",
+    fontSize: 13,
+    marginVertical: 10,
   },
 });
