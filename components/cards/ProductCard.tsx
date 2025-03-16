@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Dimensions,
+    Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
@@ -31,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const handleView = () => {
         router.push({
             pathname: "/(tabs)/product/Product",
-            params: { productId: product.id },
+            params: { productId: product.id, fromSearch: "true" },
         });
     };
 
@@ -85,15 +86,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 const styles = StyleSheet.create({
     cardContainer: {
         width: "45%",
-        marginBottom: 16,
+        marginBottom: 20,
+        ...Platform.select({
+            ios: {
+                maxHeight: 200,
+            },
+            android: {
+                maxHeight: 200,
+            },
+        }),
     },
     card: {
-        width: "90%",
+        flexGrow: 1,
         backgroundColor: "#000",
         borderWidth: 1,
         borderColor: "#000",
         borderRadius: 12,
-        // alignItems: "center",
     },
     textContentContainer: {
         padding: 4,
@@ -138,6 +146,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: "100%",
         alignItems: "center",
+        ...Platform.select({
+            ios: {
+                maxHeight: 80,
+            },
+            android: {
+                maxHeight: 80,
+            },
+        }),
     },
     price: {
         fontSize: 18,

@@ -3,7 +3,11 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function ScanLayout() {
     return (
-        <Stack screenOptions={{ headerShown: true }}>
+        <Stack screenOptions={{ 
+            headerShown: true,
+            // animation: 'fade', 
+            contentStyle: { backgroundColor: '#000' }, 
+        }}>
             <Stack.Screen name="Scan" options={{ headerShown: false }} />
             <Stack.Screen
                 name="ScansSuggestedWoods"
@@ -17,7 +21,6 @@ export default function ScanLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
-                    animation: "fade",
                     headerShadowVisible: false, // remove bottom border
                     headerBackground: () => (
                         <LinearGradient

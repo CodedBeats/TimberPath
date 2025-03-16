@@ -3,7 +3,11 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function TimberGuideLayout() {
     return (
-        <Stack screenOptions={{ headerShown: true }}>
+        <Stack screenOptions={{ 
+            headerShown: true,
+            // animation: 'fade', 
+            contentStyle: { backgroundColor: '#000' }, 
+        }}>
             <Stack.Screen name="TimberGuide" options={{ headerShown: false }} />
             <Stack.Screen
                 name="GuidesSuggestedWoods"
@@ -17,7 +21,6 @@ export default function TimberGuideLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
-                    animation: "fade",
                     headerShadowVisible: false, // remove bottom border
                     headerBackground: () => (
                         <LinearGradient

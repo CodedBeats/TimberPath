@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, ScrollView, TouchableOpacity  } from "react-native";
 import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -10,6 +10,7 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import * as Crypto from "expo-crypto";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -102,20 +103,17 @@ export default function SignIn() {
   
 
   return (
-    <ParallaxScrollView
-          headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-          headerImage={
-            <Image
-              source={require("@/assets/images/TP-logo300.png")}
-              style={styles.reactLogo}
-            />
-          }
-        >
-    <View style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Sign In to TimberPath!</ThemedText>
-            <HelloWave />
-        </ThemedView>
+    <SafeAreaView style={styles.safeContainer}>
+    <ScrollView style={styles.scrollContainer}>
+      <Image
+        source={require("@/assets/images/TP-logo300.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title" style={styles.title}>Sign In to TimberPath!</ThemedText>
+          <HelloWave />
+      </ThemedView>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -133,46 +131,80 @@ export default function SignIn() {
         secureTextEntry
         placeholderTextColor="gray"
       />
-      <Button title="Sign In" onPress={handleSignIn} />
+      <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+        <Text style={styles.buttonText}>Sign In</Text>
+      </TouchableOpacity>
+      <Text style={styles.inputInstrcutions}>If you can't sign in, check your email for an account verification</Text>
+
       <View style={{ marginVertical: 8 }} />
-      <Button title="Forgot Password" onPress={resetPassword} />
+      <TouchableOpacity style={styles.button} onPress={resetPassword}>
+        <Text style={styles.buttonText}>Forgot Password</Text>
+      </TouchableOpacity>
+      
       <View style={{ marginVertical: 8 }} />
-      <Button title="Sign In with Google" onPress={() => googlePromptAsync()} />
-    </View>
-    
-    </ParallaxScrollView>
+      <TouchableOpacity style={styles.button} onPress={() => googlePromptAsync()}>
+        <Text style={styles.buttonText}>Sign In with Google</Text>
+      </TouchableOpacity>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16,
+  safeContainer: {
+    backgroundColor: "#151619",
+    height: "100%",
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    color: "gray",
+  scrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+  },
+  logo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 32,
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    marginBottom: 16,
+    backgroundColor: "#151619",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  title: {
+    color: "#fff",
+  },
+  input: {
+    height: 40,
+    borderColor: "#444",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+    color: "#fff",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  inputInstrcutions: {
+    textAlign: "center",
+    color: "#d10000",
+    fontSize: 13,
+    marginVertical: 8,
+    lineHeight: 13,
+  },
+  button: {
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2197f2",
+  },
+  button2: {
+    marginBottom: 40
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

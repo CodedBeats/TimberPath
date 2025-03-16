@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import { useRouter } from "expo-router"
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -209,6 +209,14 @@ const styles = StyleSheet.create({
     middleBox: {
         flex: 1,
         marginHorizontal: 16,
+        ...Platform.select({
+            ios: {
+                maxHeight: "65%",
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
     gradientBox: {
       padding: 10,

@@ -88,6 +88,7 @@ let AuthWrapper = () => {
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="(admin)" />
             <Stack.Screen name="(profile)" />
+            <Stack.Screen name="(search)" />
             <Stack.Screen name="SignIn" />
             <Stack.Screen name="SignUp" />
         </Stack>

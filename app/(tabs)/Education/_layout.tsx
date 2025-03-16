@@ -1,8 +1,13 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useLocalSearchParams } from 'expo-router'
+import { TouchableOpacity, Text } from 'react-native';
 
 export default function EducationLayout() {
   return (
-    <Stack screenOptions={{ headerShown: true }}>
+    <Stack screenOptions={{ 
+      headerShown: true,
+      // animation: 'fade', 
+      contentStyle: { backgroundColor: '#000' }, 
+    }}>
       <Stack.Screen name="Education" options={{ headerShown: false }} />
       
       <Stack.Screen 
@@ -12,8 +17,8 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
       <Stack.Screen 
@@ -23,8 +28,8 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
       <Stack.Screen 
@@ -34,8 +39,11 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
+
+          // custom back btn
+          headerLeft: () => <CustomBackButton />,
         }} 
       />
       <Stack.Screen 
@@ -45,10 +53,34 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
         }} 
       />
     </Stack>
+  );
+}
+
+function CustomBackButton() {
+  const router = useRouter();
+  const { fromSearch } = useLocalSearchParams();
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        if (fromSearch === "true") {
+          router.replace("/(search)/Search");
+        } else {
+          router.back();
+        }
+      }}
+      style={{ marginLeft: 10 }}
+    >
+      <Text style={{ 
+        color: "#aaa", 
+        fontSize: 18,
+        marginLeft: 10,
+      }}>&#x276E;</Text>
+    </TouchableOpacity>
   );
 }

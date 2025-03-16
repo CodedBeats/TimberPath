@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View, Button, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/config/Config';
@@ -8,35 +8,35 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useCart } from "@/contexts/CartContext";
 
 export default function Product() {
-  const { productId } = useLocalSearchParams<{ productId: string }>();
-  const [product, setProduct] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const { addToCart } = useCart();
+    const { productId, fromSearch } = useLocalSearchParams<{ productId: string, fromSearch: string }>();
+    const [product, setProduct] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const { addToCart } = useCart();
 
-  const handleAddToCart = () => {
-    console.log("Add to Cart", product.id);
-    addToCart(product);
-  };
+    const handleAddToCart = () => {
+        console.log("Add to Cart", product.id);
+        addToCart(product);
+    };
 
-  useEffect(() => {
-    async function fetchProduct() {
-      if (!productId) return;
-      try {
-        const docRef = doc(db, "products", productId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setProduct({ id: docSnap.id, ...docSnap.data() });
-        } else {
-          console.error("No such product!");
+    useEffect(() => {
+        async function fetchProduct() {
+            if (!productId) return;
+            try {
+                const docRef = doc(db, "products", productId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                setProduct({ id: docSnap.id, ...docSnap.data() });
+                } else {
+                console.error("No such product!");
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            } finally {
+                setLoading(false);
+            }
         }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProduct();
-  }, [productId]);
+        fetchProduct();
+    }, [productId]);
 
   if (loading) {
     return (
@@ -112,6 +112,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
         paddingHorizontal: 16,
         paddingTop: 16,
+        ...Platform.select({
+            ios: {
+                marginTop: 30,
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
     imageContainer: {
         // width: "100%",

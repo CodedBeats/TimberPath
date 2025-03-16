@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router"
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native"
+import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Platform } from "react-native"
 import { LinearGradient } from 'expo-linear-gradient'
 
 // components
@@ -69,6 +69,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         elevation: 2,
         borderRadius: 10,
+        ...Platform.select({
+            ios: {
+                marginTop: 20,
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
     cartItems: {
 
@@ -81,6 +89,14 @@ const styles = StyleSheet.create({
         padding: 16,
         paddingTop: 0,
         marginBottom: 25,
+        ...Platform.select({
+            ios: {
+                marginBottom: 80,
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
     priceContainer: {
         flex: 1,

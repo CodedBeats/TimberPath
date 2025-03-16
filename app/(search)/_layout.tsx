@@ -1,18 +1,18 @@
+import { Colors } from "@/constants/Colors";
 import { Stack } from "expo-router"
 
-export default function ProfileLayout() {
+export default function SearchLayout() {
     return (
         <Stack screenOptions={{ 
-            headerShown: false,
+            headerShown: true,
             // animation: 'fade', 
             contentStyle: { backgroundColor: '#000' }, 
         }}>
-            <Stack.Screen name="Profile" />
             <Stack.Screen
-                name="EditProfile"
+                name="Search"
                 options={{
                     headerShown: true,
-                    headerTitle: "Edit Profile",
+                    headerTitle: "Search",
                     headerTitleAlign: "center",
                     headerTitleStyle: {
                         fontSize: 20,

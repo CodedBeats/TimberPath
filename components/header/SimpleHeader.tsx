@@ -1,11 +1,7 @@
-import React from "react";
-import {
-    useNavigation,
-    CompositeNavigationProp,
-} from "@react-navigation/native";
+import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { useRouter, usePathname } from "expo-router";
 import { RootStackParamList, TabParamList } from "@/types";
 import { SearchBar } from "../search/SearchBar";
@@ -13,13 +9,9 @@ import { SearchBar } from "../search/SearchBar";
 // icon
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-type HeaderProps = {
-    onSearch?: (query: string) => void;
-};
 
-const HeaderWithCart = ({ onSearch }: HeaderProps) => {
+const HeaderWithCart = () => {
     const router = useRouter();
-    const pathname = usePathname();
     const navigateToProfile = () => {
         router.push("/(profile)/Profile");
     };
@@ -28,21 +20,10 @@ const HeaderWithCart = ({ onSearch }: HeaderProps) => {
         router.push("/(tabs)/product/Cart");
     };
 
-    const handleSearch = (query: string) => {
-        router.push({ pathname: "/Search", params: { q: query } });
-        onSearch && onSearch(query);
-    };
-
     return (
         <View style={styles.container}>
             {/* search bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
-            <SearchBar placeholder="Search..." onSearch={handleSearch} />
+            <SearchBar />
 
             {/* cart icon */}
             <TouchableOpacity
@@ -68,28 +49,17 @@ const HeaderWithCart = ({ onSearch }: HeaderProps) => {
     );
 };
 
-const HeaderWithoutCart = ({ onSearch }: HeaderProps) => {
+const HeaderWithoutCart = () => {
     const router = useRouter();
 
     const navigateToProfile = () => {
         router.push("/(profile)/Profile");
     };
 
-    const handleSearch = (query: string) => {
-        router.push({ pathname: "/Search", params: { q: query } });
-        onSearch && onSearch(query);
-    };
-
     return (
         <View style={styles.container}>
             {/* search Bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
-            <SearchBar placeholder="Search..." onSearch={handleSearch} />
+            <SearchBar />
 
             {/* profile Icon */}
             <TouchableOpacity
@@ -111,6 +81,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 10,
         backgroundColor: "#222",
+        ...Platform.select({
+            ios: {
+                // xx
+            },
+            android: {
+                paddingTop: 20,
+            },
+        }),
     },
     searchBar: {
         flex: 1,

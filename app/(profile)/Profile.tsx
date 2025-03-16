@@ -10,7 +10,10 @@ import {
     ScrollView,
     SafeAreaView,
     TouchableOpacity,
+    Platform,
+    Dimensions,
 } from "react-native";
+const { width } = Dimensions.get("window");
 import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
@@ -82,14 +85,14 @@ export default function Profile() {
     }
 
 
-    // convert to just user data loaded section displaying loading
-    // if (loading) {
-    //     return (
-    //         <View style={styles.loadingContainer}>
-    //             <ActivityIndicator size="large" color="#000" />
-    //         </View>
-    //     );
-    // }
+    //! convert to just user data loaded section displaying loading
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#fff" />
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         left: 0,
-        width: "100%",
+        width: width,
         height: 100,
         backgroundColor: "#222",
     },
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 100,
         left: 0,
-        width: "100%",
+        width: width,
         height: 80,
         backgroundColor: "#222",
         borderBottomLeftRadius: 80,
