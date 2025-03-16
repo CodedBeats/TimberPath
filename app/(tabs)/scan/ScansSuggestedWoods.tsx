@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams  } from "expo-router";
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -62,5 +62,13 @@ const styles = StyleSheet.create({
         borderColor: "#fff",
         borderWidth: 1,
         borderRadius: 10,
+        ...Platform.select({
+            ios: {
+                maxHeight: "60%",
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
     },
 });
