@@ -1,7 +1,7 @@
 import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { useRouter, usePathname } from "expo-router";
 import { RootStackParamList, TabParamList } from "@/types";
 import { SearchBar } from "../search/SearchBar";
@@ -97,6 +97,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 10,
         backgroundColor: "#222",
+        ...Platform.select({
+            ios: {
+                // xx
+            },
+            android: {
+                paddingTop: 20,
+            },
+        }),
     },
     searchBar: {
         flex: 1,
