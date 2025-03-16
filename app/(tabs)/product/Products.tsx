@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",  
     flexWrap: "wrap",
-    gap: 10,
+    gap: 20,
     justifyContent: "center",
 
     // flexDirection: "row",

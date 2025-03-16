@@ -1,7 +1,16 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+    SafeAreaView,
+    ScrollView,
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    TouchableOpacity,
+    Platform,
+} from "react-native";
 import { useRouter } from "expo-router";
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -11,136 +20,169 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDB } from "@/contexts/DBContext";
 
 // components
-import { HeaderWithCart } from "../../components/header/SimpleHeader"
-
+import { HeaderWithCart } from "../../components/header/SimpleHeader";
 
 export default function Index() {
-  const router = useRouter();
+    const router = useRouter();
 
-  // contexts
-  const db = useDB()
+    // contexts
+    const db = useDB();
 
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                {/* header */}
+                <HeaderWithCart />
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
+                {/* home/dashboard content */}
+                <View style={styles.container}>
+                    {/* producrs */}
+                    <LinearGradient
+                        colors={["#180121", "#520073"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={[styles.largeBox, styles.largeBox1]}
+                    >
+                        <View style={styles.subBoxHeaderContainer}>
+                            <Text style={styles.subBoxHeaderText}>
+                                Featured Products
+                            </Text>
+                        </View>
+                        <View style={styles.subBoxContent}>
+                            <Text>dynamically rendered products here</Text>
+                        </View>
+                    </LinearGradient>
 
-        {/* header */}
-        <HeaderWithCart />
+                    {/* product categories */}
+                    <LinearGradient
+                        colors={["#5c1f03", "#e87809"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={[styles.largeBox, styles.largeBox2]}
+                    >
+                        <View style={styles.subBoxHeaderContainer}>
+                            <Text style={styles.subBoxHeaderText}>
+                                Shop by Category
+                            </Text>
+                        </View>
+                        <View style={styles.subBoxContent}>
+                            <Text>dynamically rendered categories here</Text>
+                        </View>
+                    </LinearGradient>
 
-        {/* home/dashboard content */}
-        <View style={styles.container}>
-          {/* producrs */}
-          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Featured Products</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered products here</Text>
-            </View>
-          </LinearGradient>
+                    {/* education */}
+                    <LinearGradient
+                        colors={["#180121", "#520073"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={[styles.largeBox, styles.largeBox1]}
+                    >
+                        <View style={styles.subBoxHeaderContainer}>
+                            <Text style={styles.subBoxHeaderText}>
+                                New Articles
+                            </Text>
+                        </View>
+                        <View style={styles.subBoxContent}>
+                            <Text>dynamically rendered articles here</Text>
+                        </View>
+                    </LinearGradient>
+                </View>
 
-          {/* product categories */}
-          <LinearGradient colors={["#5c1f03", "#e87809"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox2]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>Shop by Category</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered categories here</Text>
-            </View>
-          </LinearGradient>
-
-          {/* education */}
-          <LinearGradient colors={["#180121", "#520073"]} start={{x: 0, y: 0}} end={{x: 1, y: 1}} style={[styles.largeBox, styles.largeBox1]}>
-            <View style={styles.subBoxHeaderContainer}>
-              <Text style={styles.subBoxHeaderText}>New Articles</Text>
-            </View>
-            <View style={styles.subBoxContent}>
-              <Text>dynamically rendered articles here</Text>
-            </View>
-          </LinearGradient>
-        </View>
-
-        
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddProduct")}>
-          <Text style={styles.btnText}>Add Product</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddSupplier")}>
-          <Text style={styles.btnText}>Add Supplier</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => router.push("/(admin)/AddWood")}>
-          <Text style={styles.btnText}>Add Wood</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
-  )
+                <TouchableOpacity
+                    style={styles.buttonContainer}
+                    onPress={() => router.push("/(admin)/AddProduct")}
+                >
+                    <Text style={styles.btnText}>Add Product</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.buttonContainer}
+                    onPress={() => router.push("/(admin)/AddSupplier")}
+                >
+                    <Text style={styles.btnText}>Add Supplier</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.buttonContainer}
+                    onPress={() => router.push("/(admin)/AddWood")}
+                >
+                    <Text style={styles.btnText}>Add Wood</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
-
 
 // styles
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  scrollView: {
-    flexGrow: 1,
-    paddingBottom: 20,
-  },
-  headerPlaceholder: {
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#888',
-    marginBottom: 20,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  largeBox: {
-    borderRadius: 10,
-    padding: 8,
-    marginBottom: 20,
-  },
-  largeBox1: {
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3, // android shadow
-  },
-  largeBox2: {
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    elevation: 3, // android shadow
-  },
-  subBoxHeaderContainer: {
-    marginBottom: 8,
-  },
-  subBoxHeaderText: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#fff",
-    textDecorationLine: "underline",
-  },
-  subBoxContent: {
-    borderColor: "#222",
-    borderWidth: 1,
-    height: 100,
-  },
-  buttonContainer: {
-    marginHorizontal: "20%",
-    backgroundColor: '#5588cc',
-    // flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 10,
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    safeArea: {
+        flex: 1,
+        backgroundColor: "#000",
+    },
+    scrollView: {
+        flexGrow: 1,
+        paddingBottom: 20,
+        ...Platform.select({
+            ios: {
+                paddingBottom: 80,
+            },
+            android: {
+                // maxHeight: 80,
+            },
+        }),
+    },
+    headerPlaceholder: {
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#888",
+        marginBottom: 20,
+    },
+    container: {
+        flex: 1,
+        paddingHorizontal: 16,
+    },
+    largeBox: {
+        borderRadius: 10,
+        padding: 8,
+        marginBottom: 20,
+    },
+    largeBox1: {
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.9,
+        shadowRadius: 4,
+        elevation: 3, // android shadow
+    },
+    largeBox2: {
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.9,
+        shadowRadius: 4,
+        elevation: 3, // android shadow
+    },
+    subBoxHeaderContainer: {
+        marginBottom: 8,
+    },
+    subBoxHeaderText: {
+        fontWeight: "bold",
+        fontSize: 16,
+        color: "#fff",
+        textDecorationLine: "underline",
+    },
+    subBoxContent: {
+        borderColor: "#222",
+        borderWidth: 1,
+        height: 100,
+    },
+    buttonContainer: {
+        marginHorizontal: "20%",
+        backgroundColor: "#5588cc",
+        // flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 12,
+        borderRadius: 10,
+    },
+    btnText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
 });

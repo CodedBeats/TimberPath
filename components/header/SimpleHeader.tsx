@@ -1,7 +1,7 @@
 import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { useRouter, usePathname } from "expo-router";
 import { RootStackParamList, TabParamList } from "@/types";
 import { SearchBar } from "../search/SearchBar";
@@ -9,13 +9,9 @@ import { SearchBar } from "../search/SearchBar";
 // icon
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-type HeaderProps = {
-    onSearch?: (query: string) => void;
-};
 
 const HeaderWithCart = () => {
     const router = useRouter();
-    const pathname = usePathname();
     const navigateToProfile = () => {
         router.push("/(profile)/Profile");
     };
@@ -27,12 +23,6 @@ const HeaderWithCart = () => {
     return (
         <View style={styles.container}>
             {/* search bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
             <SearchBar />
 
             {/* cart icon */}
@@ -69,12 +59,6 @@ const HeaderWithoutCart = () => {
     return (
         <View style={styles.container}>
             {/* search Bar */}
-            {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Search"
-                placeholderTextColor="#7C7C7D"
-                onChangeText={handleSearch}
-            /> */}
             <SearchBar />
 
             {/* profile Icon */}
@@ -97,6 +81,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 10,
         backgroundColor: "#222",
+        ...Platform.select({
+            ios: {
+                // xx
+            },
+            android: {
+                paddingTop: 20,
+            },
+        }),
     },
     searchBar: {
         flex: 1,

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, StyleSheet, TextInputSubmitEditingEventData, NativeSyntheticEvent, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, TextInputSubmitEditingEventData, NativeSyntheticEvent, SafeAreaView, TouchableOpacity, Text } from 'react-native';
 import { ThemedView } from '../ThemedView';
 import { useRouter, usePathname } from "expo-router";
 
@@ -12,11 +12,7 @@ export const SearchBar = () => {
     <SafeAreaView style={styles.searchContainer}>
       <TouchableOpacity onPress={() => router.push("/(search)/Search")}>
         <ThemedView style={styles.container}>
-          <TextInput
-            style={styles.input}
-            placeholder="Search..."
-            placeholderTextColor="#7C7C7D"
-          />
+          <Text style={styles.input}>Search...</Text>
         </ThemedView>
       </TouchableOpacity>
     </SafeAreaView>
@@ -24,25 +20,23 @@ export const SearchBar = () => {
 };
 
 const styles = StyleSheet.create({
-  searchContainer: {
-    width: "70%", 
+  searchContainer: { 
     display: 'flex',
-    alignItems: 'center',
+    flexGrow: 1,
     justifyContent: 'center',
   },
   container: {
-    width: "100%", 
+    display: 'flex',
+    justifyContent: 'center',
     height: 35,
     borderRadius: 8,
     backgroundColor: "#ddd",
     marginVertical: 8,
     paddingHorizontal: 12,
     fontSize: 16,
-
   },
   input: {
-    height: 40,
     fontSize: 16,
-    color: '#000',
+    color: '#7C7C7D',
   },
 });

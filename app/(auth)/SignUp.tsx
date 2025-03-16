@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, ScrollView, Text } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, SafeAreaView, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
 import * as Crypto from "expo-crypto";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
@@ -118,20 +117,17 @@ export default function SignUp() {
   
 
   return (
-      <ParallaxScrollView
-            headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-            headerImage={
-              <Image
-                source={require("@/assets/images/TP-logo300.png")}
-                style={styles.reactLogo}
-              />
-            }
-          >
-    <View style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Sign Up to TimberPath!</ThemedText>
-            <HelloWave />
-        </ThemedView>
+    <SafeAreaView style={styles.safeContainer}>
+    <ScrollView style={styles.scrollContainer}>
+      <Image
+        source={require("@/assets/images/TP-logo300.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <ThemedView style={styles.titleContainer}>
+          <ThemedText type="title" style={styles.title}>Sign Up to TimberPath!</ThemedText>
+          <HelloWave />
+      </ThemedView>
       <Text style={styles.inputInstrcutions2}>* indicates required field</Text>
       <TextInput
         style={styles.input}
@@ -221,23 +217,39 @@ export default function SignUp() {
         />
 
 
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
       <View style={{ marginVertical: 8 }} />
-      <Button
-        title="Sign Up with Google"
-        onPress={() => {
-          promptAsync();
-        }} />
-    </View>
-    </ParallaxScrollView>
+      <TouchableOpacity onPress={() => promptAsync()} style={[styles.button, styles.button2]}>
+        <Text style={styles.buttonText}>Sign Up with Google</Text>
+      </TouchableOpacity>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
+  safeContainer: {
+    backgroundColor: "#151619",
+    height: "100%",
+  },
+  scrollContainer: {
     padding: 16,
+    flexGrow: 1,
+    ...Platform.select({
+        ios: {
+          marginBottom: 80,
+        },
+        android: {
+          // paddingBottom: 200,
+        },
+    }),
+  },
+  logo: {
+    width: '100%',
+    height: 150,
+    marginBottom: 32,
   },
   loadingContainer: {
     flex: 1,
@@ -256,6 +268,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    backgroundColor: "#151619",
+  },
+  title: {
+    color: "#fff",
   },
   reactLogo: {
     height: 178,
@@ -276,5 +292,19 @@ const styles = StyleSheet.create({
     color: "#d10000",
     fontSize: 13,
     marginVertical: 10,
+  },
+  button: {
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2197f2",
+  },
+  button2: {
+    marginBottom: 40
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

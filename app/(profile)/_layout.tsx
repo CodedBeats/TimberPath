@@ -2,7 +2,11 @@ import { Stack } from "expo-router"
 
 export default function ProfileLayout() {
     return (
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ 
+            headerShown: false,
+            // animation: 'fade', 
+            contentStyle: { backgroundColor: '#000' }, 
+        }}>
             <Stack.Screen name="Profile" />
             <Stack.Screen
                 name="EditProfile"
@@ -16,7 +20,7 @@ export default function ProfileLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
-                    animation: "fade",
+                    headerStyle: { backgroundColor: "#121212" },
                 }}
             />
         </Stack>

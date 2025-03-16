@@ -166,25 +166,24 @@ const styles = StyleSheet.create({
   },
   /* articles grid */
   articlesGrid: {
-    backgroundColor: "#111",
+    backgroundColor: "#444",
     borderRadius: 10,
     paddingVertical: 10,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
-    gap: 10,
+    gap: 15,
   },
   /* product grid */
   productsGrid: {
-    backgroundColor: "#111",
+    backgroundColor: "#444",
     borderRadius: 10,
     paddingVertical: 10,
-    paddingLeft: "4%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
-    gap: 10,
+    gap: 15,
   },
 });

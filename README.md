@@ -1,4 +1,9 @@
-## 📥 Download & Run Instructions
+## Admin Features
+The app has a few btns that take you to admin pages to mostly add data to the DB.
+These are the "Add..." btns on the home page and Education page.
+They can be used for their given functionality, but they aren't fully intergrated into the app yep. Additionally they won't be in the final app for the average user, only available to devs.
+
+## Download & Run Instructions
 
 ### Prerequisites
 

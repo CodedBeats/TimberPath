@@ -1,8 +1,13 @@
+import { Colors } from "@/constants/Colors";
 import { Stack } from "expo-router"
 
 export default function SearchLayout() {
     return (
-        <Stack screenOptions={{ headerShown: true }}>
+        <Stack screenOptions={{ 
+            headerShown: true,
+            // animation: 'fade', 
+            contentStyle: { backgroundColor: '#000' }, 
+        }}>
             <Stack.Screen
                 name="Search"
                 options={{
@@ -15,7 +20,7 @@ export default function SearchLayout() {
                         color: "#fff",
                     },
                     headerTintColor: "#aaa", // color for buttons/icons
-                    animation: "fade",
+                    headerStyle: { backgroundColor: "#121212" },
                 }}
             />
         </Stack>

@@ -3,7 +3,11 @@ import { TouchableOpacity, Text } from 'react-native';
 
 export default function ProductLayout() {
   return (
-    <Stack screenOptions={{ headerShown: true }}>
+    <Stack screenOptions={{ 
+      headerShown: true,
+      // animation: 'fade', 
+      contentStyle: { backgroundColor: '#000' }, 
+    }}>
       <Stack.Screen name="Products" options={{ headerShown: false }}/>
       <Stack.Screen 
         name="Product" 
@@ -16,8 +20,8 @@ export default function ProductLayout() {
           },
           headerTitleAlign: "center",
           headerTintColor: "#aaa",
-          animation: "fade",
           headerShadowVisible: false,
+          headerStyle: { backgroundColor: "#121212" },
 
           // custom back btn
           headerLeft: () => <CustomBackButton />,
@@ -33,10 +37,9 @@ export default function ProductLayout() {
         headerTitleAlign: "center",
         // colour for btn and icons
         headerTintColor: "#aaa",
-        // dumb fancy stuff for fun
-        animation: "fade",
         // remove border
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: "#121212" },
       }} />
       <Stack.Screen name="Checkout" options={{ 
         title: "Checkout",
@@ -48,10 +51,9 @@ export default function ProductLayout() {
         headerTitleAlign: "center",
         // colour for btn and icons
         headerTintColor: "#aaa",
-        // dumb fancy stuff for fun
-        animation: "fade",
         // remove border
         headerShadowVisible: false,
+        headerStyle: { backgroundColor: "#121212" },
       }} />
     </Stack>
   );
