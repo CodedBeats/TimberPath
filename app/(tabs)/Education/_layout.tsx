@@ -3,7 +3,11 @@ import { TouchableOpacity, Text } from 'react-native';
 
 export default function EducationLayout() {
   return (
-    <Stack screenOptions={{ headerShown: true }}>
+    <Stack screenOptions={{ 
+      headerShown: true,
+      // animation: 'fade', 
+      contentStyle: { backgroundColor: '#000' }, 
+    }}>
       <Stack.Screen name="Education" options={{ headerShown: false }} />
       
       <Stack.Screen 
@@ -13,7 +17,6 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
         }} 
       />
@@ -24,7 +27,6 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
         }} 
       />
@@ -35,7 +37,6 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
 
           // custom back btn
@@ -49,7 +50,6 @@ export default function EducationLayout() {
           headerTitleStyle: { fontSize: 20, fontWeight: 'bold', color: '#fff' },
           headerTitleAlign: 'center',
           headerTintColor: '#aaa',
-          animation: 'fade',
           headerShadowVisible: false,
         }} 
       />

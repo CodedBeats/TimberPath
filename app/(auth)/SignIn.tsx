@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, ScrollView } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, ScrollView, TouchableOpacity  } from "react-native";
 import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -131,14 +131,20 @@ export default function SignIn() {
         secureTextEntry
         placeholderTextColor="gray"
       />
-      <Button title="Sign In" onPress={handleSignIn} />
+      <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+        <Text style={styles.buttonText}>Sign In</Text>
+      </TouchableOpacity>
       <Text style={styles.inputInstrcutions}>If you can't sign in, check your email for an account verification</Text>
 
       <View style={{ marginVertical: 8 }} />
-      <Button title="Forgot Password" onPress={resetPassword} />
+      <TouchableOpacity style={styles.button} onPress={resetPassword}>
+        <Text style={styles.buttonText}>Forgot Password</Text>
+      </TouchableOpacity>
       
       <View style={{ marginVertical: 8 }} />
-      <Button title="Sign In with Google" onPress={() => googlePromptAsync()} />
+      <TouchableOpacity style={styles.button} onPress={() => googlePromptAsync()}>
+        <Text style={styles.buttonText}>Sign In with Google</Text>
+      </TouchableOpacity>
     </ScrollView>
     </SafeAreaView>
   );
@@ -186,5 +192,19 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginVertical: 8,
     lineHeight: 13,
+  },
+  button: {
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2197f2",
+  },
+  button2: {
+    marginBottom: 40
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
