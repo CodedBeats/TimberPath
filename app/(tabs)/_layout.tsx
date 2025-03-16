@@ -26,7 +26,7 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            height: 55,
+            height: 80,
           },
           android: {
             height: 55,
