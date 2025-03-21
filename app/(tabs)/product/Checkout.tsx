@@ -1,4 +1,3 @@
-// app/(tabs)/product/Checkout.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -17,7 +16,7 @@ import { useCart } from "@/contexts/CartContext";
 
 export default function Checkout() {
   const router = useRouter();
-  const { totalPrice, clearCart } = useCart();
+  const { cart, totalPrice, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
 
   // This function calls our backend endpoint.
@@ -43,12 +42,15 @@ export default function Checkout() {
       // Call our backend to "create" a PaymentIntent.
       const clientSecret = await fetchPaymentIntentClientSecret();
       console.log("Received client secret:", clientSecret);
-      // Simulate payment confirmation (e.g. with a 2-second delay).
       setTimeout(() => {
-        setLoading(false);
-        Alert.alert("Payment Successful", "Your order has been placed!");
+        const orderNumber = "ON-TBP" + Math.floor(Math.random() * 1000000);
+        const orderDetails = { orderNumber, items: cart, total: totalPrice };
+
         clearCart();
-        router.push("./Products");
+        router.push({
+          pathname: "./OrderSuccessful",
+          params: { order: JSON.stringify(orderDetails) },
+        });
       }, 2000);
     } catch (error) {
       setLoading(false);

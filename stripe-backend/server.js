@@ -4,11 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-// Enable CORS for all routes (you can configure this more strictly if needed)
 app.use(cors());
 app.use(express.json());
 
-// Endpoint to simulate PaymentIntent creation
 app.post("/create-payment-intent", (req, res) => {
   const { amount } = req.body; // amount in cents
   const clientSecret = "client_secret_" + amount + "_" + Date.now();
