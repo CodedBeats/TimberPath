@@ -20,8 +20,6 @@ const Cart = () => {
                         <Text style={styles.emptyText}>Your cart is empty.</Text>
                     ) : (
                         cart.map((item) => (
-                        // Here you can use your CartItemCard component
-                        // For example, if CartItemCard accepts an "item" prop:
                         <CartItemCard key={item.id} item={item} />
                         ))
                     )}
