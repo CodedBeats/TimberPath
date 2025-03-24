@@ -10,47 +10,25 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
+import { CartItem } from "@/contexts/CartContext";
+
+interface CartItemCardProps {
+    item: CartItem;
+  }
 
 
-interface CartItemCardProps {}
-
-
-export function CartItemCard() {
-    // hard coded for now
-    const [cartItem] = useState({
-        imageURL: "https://pacificdragons.com.au//app/uploads/apply_varnish.jpeg",
-        productName: "Exterior Timber Varnish",
-        amount: "500ml",
-        price: "$15.50",
-        stockQuantity: 5,
-        quantity: 1,
-    });
-
+  export function CartItemCard({ item }: CartItemCardProps) {
     return (
-        <View style={styles.card}>
-            {/* Left: Product Image */}
-            <Image source={{ uri: cartItem.imageURL }} style={styles.image} />
-
-            {/* Middle: Product Info */}
-            <View style={styles.infoContainer}>
-                <Text style={styles.productName}>{cartItem.productName}</Text>
-                <Text style={styles.amount}>{cartItem.amount}</Text>
-                <Text style={styles.price}>{cartItem.price}</Text>
-            </View>
-
-            {/* Right: Quantity Controls */}
-            <View style={styles.quantityContainer}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
-                <Text style={styles.quantity}>{cartItem.quantity}</Text>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>-</Text>
-                </TouchableOpacity>
-            </View>
+      <View style={styles.card}>
+        <Image source={{ uri: item.imageURL }} style={styles.image} />
+        <View style={styles.infoContainer}>
+          <ThemedText style={styles.productName}>{item.productName}</ThemedText>
+          <ThemedText style={styles.amount}>Qty: {item.quantity}</ThemedText>
+          <ThemedText style={styles.price}>$ {(item.price * item.quantity).toFixed(2)}</ThemedText>
         </View>
+      </View>
     );
-}
+  }
 
 const styles = StyleSheet.create({
     card: {
@@ -60,6 +38,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         // padding: 12,
         width: "100%",
+        marginBottom: 12, // added this line (ARP)
     },
     image: {
         width: "30%",

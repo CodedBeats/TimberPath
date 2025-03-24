@@ -4,15 +4,18 @@ import { useLocalSearchParams } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/config/Config';
 import { ThemedText } from '@/components/ThemedText';
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
+import { useCart } from "@/contexts/CartContext";
 
 export default function Product() {
     const { productId, fromSearch } = useLocalSearchParams<{ productId: string, fromSearch: string }>();
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const { addToCart } = useCart();
 
     const handleAddToCart = () => {
         console.log("Add to Cart", product.id);
+        addToCart(product);
     };
 
     useEffect(() => {
@@ -64,8 +67,7 @@ export default function Product() {
                 {/* Product Details */}
                 <LinearGradient colors={["#410051", "#000"]} style={styles.detailsContainer}>
                     <ThemedText style={styles.productName}>{product.productName}</ThemedText>
-                    <ThemedText style={styles.productAmount}>{product.amount}</ThemedText>
-                    
+                    <ThemedText style={styles.productAmount}>{product.amount}</ThemedText>                    
                     <ThemedText style={styles.productDescriptionName}>Description</ThemedText>
                     <ScrollView style={styles.descriptionScroll}>
                         <ThemedText style={styles.productDescription}>{product.description}</ThemedText>
@@ -86,14 +88,14 @@ export default function Product() {
 
                 {/* Price & Add to Cart */}
                 <View style={styles.priceBuyContainer}>
-                    <View style={styles.priceContainer}>
-                        <ThemedText style={styles.priceLabel}>Price</ThemedText>
-                        <ThemedText style={styles.price}>$ {product.price}</ThemedText>
-                    </View>
+                <View style={styles.priceContainer}>
+                    <ThemedText style={styles.priceLabel}>Price</ThemedText>
+                    <ThemedText style={styles.price}>$ {product.price}</ThemedText>
+                </View>
 
-                    <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
-                        <ThemedText style={styles.addToCartText}>Add to Cart +</ThemedText>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
+                    <ThemedText style={styles.addToCartText}>Add to Cart +</ThemedText>
+                </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>

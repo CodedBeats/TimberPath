@@ -7,10 +7,14 @@ import SignIn from "./app/(auth)/SignIn";
 import SignUp from "./app/(auth)/SignUp";
 import { RootStackParamList } from "@/types";
 
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { stripeConfig } from "./config/Config";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
     return (
+        <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_51R38SNKxSIkfhvjaTLX439TkXAYYvphgr8ApMsm8ZP4AyyF0oXTSMUAs6czzE5FFxF8lNRoVA1rQJauriHDBWFjm00PK19AbOZ'}>
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Index">
                 <Stack.Screen
@@ -30,5 +34,6 @@ export default function App() {
                 />
             </Stack.Navigator>
         </NavigationContainer>
+        </StripeProvider>
     );
 }

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
+import { useCart } from "@/contexts/CartContext";
 
 const cardSize = 250; // Each card is 100x100
 
@@ -20,11 +21,13 @@ type ProductCardProps = {
         imageURL?: string;
         price: number;
         amount: string;
+        description?: string; // Optional
     };
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const router = useRouter();
+    const { addToCart } = useCart();
 
     const handleView = () => {
         router.push({
@@ -35,6 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const handleAddToCart = () => {
         console.log("Add to Cart", product.id);
+        addToCart(product);
     };
 
     const truncateTitle = (title: string) =>
@@ -65,8 +69,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                     {/* Price & Add to Cart */}
                     <View style={styles.priceAndAddContainer}>
-                        <Text style={styles.price}>$ {product.price}</Text>
-                        <TouchableOpacity style={styles.buttonContainer} onPress={handleAddToCart}>
+                            <Text style={styles.price}>$ {product.price}</Text>
+                                <TouchableOpacity
+                                style={styles.buttonContainer}
+                                onPress={handleAddToCart}
+                                >
                             <Text style={styles.buttonText}>+</Text>
                         </TouchableOpacity>
                     </View>

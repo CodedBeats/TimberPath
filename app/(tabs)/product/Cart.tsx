@@ -3,18 +3,26 @@ import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollVi
 import { LinearGradient } from 'expo-linear-gradient'
 
 // components
-import { CartItemCard } from "@/components/cards/CartItemCard"
+import { useCart } from "@/contexts/CartContext";
+import { CartItemCard } from "@/components/cards/CartItemCard";
 
 
 const Cart = () => {
     const router = useRouter()
-  
+    const { cart, totalPrice } = useCart();
+
     return (
         <SafeAreaView style={styles.container}>
             {/* Product Details */}
             <LinearGradient colors={["#410051", "#000"]} style={styles.cartItemsContainer}>
                 <ScrollView style={styles.cartItems}>
-                    <CartItemCard />
+                            {cart.length === 0 ? (
+                        <Text style={styles.emptyText}>Your cart is empty.</Text>
+                    ) : (
+                        cart.map((item) => (
+                        <CartItemCard key={item.id} item={item} />
+                        ))
+                    )}
                 </ScrollView>
             </LinearGradient>
 
@@ -22,7 +30,7 @@ const Cart = () => {
             <View style={styles.priceBuyContainer}>
                 <View style={styles.priceContainer}>
                     <Text style={styles.priceLabel}>Total Price</Text>
-                    <Text style={styles.price}>$15.50</Text>
+                    <Text style={styles.price}>$ {totalPrice.toFixed(2)}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.buyBtn} onPress={() => router.push("/(tabs)/product/Checkout")}>
@@ -112,6 +120,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "bold",
         textAlign: "center",
+    },
+    emptyText: {
+        fontSize: 16,
+        color: "#FFF",
+        textAlign: "center",
+        marginVertical: 20,
     },
 });
 
