@@ -9,13 +9,11 @@ import {
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
-
-// firebase
-import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useMemo, useState } from "react";
 
 // services
 import { getWoods } from "@/services/woods";
+import WoodCard from "@/components/cards/WoodCard";
 
 
 export default function GuidesSuggestedWoods() {
@@ -34,7 +32,7 @@ export default function GuidesSuggestedWoods() {
             Object.entries(criteria)
                 // ignore "null" or empty values
                 .filter(([_, value]) => value !== "null" && value !== "") 
-                // check only remaining criteria
+                // check only remaining criteria match wood
                 .every(([key, value]) => wood[key]?.includes(value)) 
         )
     }
@@ -53,18 +51,26 @@ export default function GuidesSuggestedWoods() {
         fetchData()
     }, [])
 
-    // filter woods based on state updates (runds when woods or passedCriteria changes)
+
+    // useMemo to calculate filteredWoods only when woods or passedCriteria changes (stops trigering re-renders)
+    const filteredWoods = useMemo(() => {
+        if (woods.length > 0 && passedCriteria) {
+            // filter woods based on criteria
+            return filterWoods(woods, passedCriteria)
+        }
+        // get all woods if no criteria
+        return woods
+    }, [woods, passedCriteria])
+
+
+    // debug
     useEffect(() => {
         if (woods.length > 0 && passedCriteria) {
             //console.log("woods:", woods)
-            // parsed criteria
             console.log("selected criteria:", passedCriteria)
-            
-            // filter woods based on criteria
-            const filteredWoods = filterWoods(woods, passedCriteria)
             console.log("filtered woods:", filteredWoods)
         }
-    }, [woods, passedCriteria])
+    }, [filteredWoods])
 
 
 
@@ -82,8 +88,14 @@ export default function GuidesSuggestedWoods() {
                 </Text>
             </LinearGradient>
 
-            {/* scan */}
-            <View style={styles.scanContainer}></View>
+            {/* suggested woods */}
+            <ScrollView style={styles.scrollContainer}>
+                <View style={styles.woodsGrid}>
+                    {filteredWoods.map((wood) => (
+                        <WoodCard key={wood.id} wood={wood} />
+                    ))}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -93,6 +105,7 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: "#000",
+        marginBottom: 30,
     },
     connectingHeaderContainer: {
         marginBottom: 16,
@@ -105,21 +118,15 @@ const styles = StyleSheet.create({
         textAlign: "left",
         color: "#ccc",
     },
-    scanContainer: {
-        flex: 1,
+    scrollContainer: {
         padding: 10,
-        marginHorizontal: 16,
-        marginBottom: 25,
-        borderColor: "#fff",
-        borderWidth: 1,
-        borderRadius: 10,
-        ...Platform.select({
-            ios: {
-                maxHeight: "80%",
-            },
-            android: {
-                // maxHeight: 80,
-            },
-        }),
+        paddingHorizontal: 16
+    },
+    woodsGrid: {
+      display: "flex",
+      flexDirection: "row",  
+      flexWrap: "wrap",
+      gap: 30,
+      justifyContent: "center",
     },
 });

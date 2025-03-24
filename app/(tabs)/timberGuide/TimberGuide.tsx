@@ -88,7 +88,9 @@ export default function TimberGuide() {
                             selectedValue={selectedWoodCriteria.application}
                             onValueChange={(itemValue, itemIndex) =>
                                 setSelectedWoodCriteria({...selectedWoodCriteria, application: itemValue})
-                            }>
+                            }
+                            style={styles.picker}
+                            >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="Windows" value="A1" />
                             <Picker.Item label="Doors" value="A2" />
@@ -111,7 +113,9 @@ export default function TimberGuide() {
                             selectedValue={selectedWoodCriteria.exposure}
                             onValueChange={(itemValue, itemIndex) =>
                                 setSelectedWoodCriteria({...selectedWoodCriteria, exposure: itemValue})
-                            }>
+                            }
+                            style={styles.picker}
+                            >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="In-ground" value="E1" />
                             <Picker.Item label="Above ground exposed" value="E2" />
@@ -134,7 +138,9 @@ export default function TimberGuide() {
                             selectedValue={selectedWoodCriteria.bfr}
                             onValueChange={(itemValue, itemIndex) =>
                                 setSelectedWoodCriteria({...selectedWoodCriteria, bfr: itemValue})
-                            }>
+                            }
+                            style={styles.picker}
+                            >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="BAL-LOW" value="B1" />
                             <Picker.Item label="BAL-12.5" value="B2" />
@@ -233,7 +239,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        elevation: 3, // For Android shadow
+        elevation: 3, // for Android shadow
     },
     questionRow: {
         flexDirection: "row",
@@ -304,5 +310,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
+    },
+    // picker
+    picker: {
+        width: "100%",
+        backgroundColor: '#444',
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#000',
+        fontSize: 14,
+        color: "#fff",
+        padding: 4,
     },
 });
