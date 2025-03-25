@@ -16,24 +16,24 @@ export default function AddWood() {
   const router = useRouter();
   const [woodData, setWoodData] = useState({
     commonName: "",
-    scientificName: "",
+    description: "",
     imageURL: "",
-    hardness: "",
-    density: "",
-    texture: "",
-    porosity: "",
-    durability: "",
-    workability: "",
-    stability: "",
-    commonUses: "",
-    specificApplications: "",
     origin: "",
-    treeType: "",
+    scientificName: "",
     sustainability: "",
     sustainabilityRating: "",
-    description: "",
+    // timber guide criteria
+    application: "",
+    bfr: "",
+    exposure: "",
+    hardness: "",
   });
   const [loading, setLoading] = useState(false);
+
+  const handleCriteriaChange = (key: string, value: string) => {
+    const criteriaAsArray = value.split(",")
+    setWoodData(prev => ({ ...prev, [key]: criteriaAsArray }));
+  };
 
   const handleChange = (key: string, value: string) => {
     setWoodData(prev => ({ ...prev, [key]: value }));
@@ -41,8 +41,8 @@ export default function AddWood() {
 
   const handleSubmit = async () => {
     // since we are not going to have a lot of information maybe I added a basic validation: common name, scientific name, image and description are required.
-    if (!woodData.commonName || !woodData.scientificName || !woodData.imageURL || !woodData.description) {
-      Alert.alert("Validation Error", "Please fill in all required fields (Common Name, Scientific Name, Image URL, and Description).");
+    if (!woodData.commonName || !woodData.description || !woodData.imageURL || !woodData.application || !woodData.bfr || !woodData.exposure || !woodData.hardness) {
+      Alert.alert("Validation Error", "Please fill in all required fields (Common Name, Description, Image URL, application, bfr, exposure, and hardness).");
       return;
     }
     setLoading(true);
@@ -51,22 +51,17 @@ export default function AddWood() {
       Alert.alert("Success", "Wood added successfully!");
       setWoodData({
         commonName: "",
-        scientificName: "",
+        description: "",
         imageURL: "",
-        hardness: "",
-        density: "",
-        texture: "",
-        porosity: "",
-        durability: "",
-        workability: "",
-        stability: "",
-        commonUses: "",
-        specificApplications: "",
         origin: "",
-        treeType: "",
+        scientificName: "",
         sustainability: "",
         sustainabilityRating: "",
-        description: "",
+        // timber guide criteria
+        application: "",
+        bfr: "",
+        exposure: "",
+        hardness: "",
       });
       router.back();
     } catch (error) {
@@ -90,10 +85,10 @@ export default function AddWood() {
         />
         <TextInput
           style={styles.input}
-          placeholder="Scientific Name"
+          placeholder="Description"
           placeholderTextColor="#ccc"
-          value={woodData.scientificName}
-          onChangeText={(text) => handleChange("scientificName", text)}
+          value={woodData.description}
+          onChangeText={(text) => handleChange("description", text)}
         />
         <TextInput
           style={styles.input}
@@ -104,102 +99,64 @@ export default function AddWood() {
         />
         <TextInput
           style={styles.input}
-          placeholder="Hardness (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.hardness}
-          onChangeText={(text) => handleChange("hardness", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Density (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.density}
-          onChangeText={(text) => handleChange("density", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Texture (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.texture}
-          onChangeText={(text) => handleChange("texture", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Porosity (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.porosity}
-          onChangeText={(text) => handleChange("porosity", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Durability (Natural Decay Resistance) (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.durability}
-          onChangeText={(text) => handleChange("durability", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Workability (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.workability}
-          onChangeText={(text) => handleChange("workability", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Stability (Optional)"
-          placeholderTextColor="#ccc"
-          value={woodData.stability}
-          onChangeText={(text) => handleChange("stability", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Common Uses"
-          placeholderTextColor="#ccc"
-          value={woodData.commonUses}
-          onChangeText={(text) => handleChange("commonUses", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Specific Applications"
-          placeholderTextColor="#ccc"
-          value={woodData.specificApplications}
-          onChangeText={(text) => handleChange("specificApplications", text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Origin (Geographic Region)"
+          placeholder="Origin (optional)"
           placeholderTextColor="#ccc"
           value={woodData.origin}
           onChangeText={(text) => handleChange("origin", text)}
         />
         <TextInput
           style={styles.input}
-          placeholder="Tree Type"
+          placeholder="Scientific Name (optional)"
           placeholderTextColor="#ccc"
-          value={woodData.treeType}
-          onChangeText={(text) => handleChange("treeType", text)}
+          value={woodData.scientificName}
+          onChangeText={(text) => handleChange("scientificName", text)}
         />
         <TextInput
           style={styles.input}
-          placeholder="Sustainability"
+          placeholder="Sustainability (optional)"
           placeholderTextColor="#ccc"
           value={woodData.sustainability}
           onChangeText={(text) => handleChange("sustainability", text)}
         />
         <TextInput
           style={styles.input}
-          placeholder="Sustainability Rating"
+          placeholder="Sustainability Rating (optional)"
           placeholderTextColor="#ccc"
           value={woodData.sustainabilityRating}
           onChangeText={(text) => handleChange("sustainabilityRating", text)}
         />
+        {/* criteria */}
         <TextInput
-          style={[styles.input, { height: 100 }]}
-          placeholder="Description"
+          style={styles.input}
+          // a1 = windows, a2 = doors, a3 = cladding, a4 = decking
+          placeholder="Application (A1,A2,A3,A4)"
           placeholderTextColor="#ccc"
-          value={woodData.description}
-          onChangeText={(text) => handleChange("description", text)}
-          multiline
+          value={woodData.application}
+          onChangeText={(text) => handleCriteriaChange("application", text)}
+        />
+        <TextInput
+          style={styles.input}
+          // b1 = BAL-LOW, b2 = BAL-12.5, b3 = BAL-19, b4 = BAL-29, b5 = BAL-40, b6 = BAL-FZ
+          placeholder="Bush Fire Resistance (B1,B2,B3,B4,B5,B6)"
+          placeholderTextColor="#ccc"
+          value={woodData.bfr}
+          onChangeText={(text) => handleCriteriaChange("bfr", text)}
+        />
+        <TextInput
+          style={styles.input}
+          // e1 = in-ground, e2 = above ground exposed, e3 = above ground protected, e4 = internal
+          placeholder="Exposure (E1,E2,E3,E4)"
+          placeholderTextColor="#ccc"
+          value={woodData.exposure}
+          onChangeText={(text) => handleCriteriaChange("exposure", text)}
+        />
+        <TextInput
+          style={styles.input}
+          // h1 = important, h2 = not important
+          placeholder="Hardness (H1,H2)"
+          placeholderTextColor="#ccc"
+          value={woodData.hardness}
+          onChangeText={(text) => handleCriteriaChange("hardness", text)}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
