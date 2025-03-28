@@ -1,7 +1,8 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from "expo-router";
 import { LinearGradient } from 'expo-linear-gradient'
+import * as ImagePicker from 'expo-image-picker';
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -21,6 +22,53 @@ export default function Scan() {
   // contexts
   const db = useDB()
 
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [labels, setLabels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
+      quality: 1,
+    });
+  
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset.base64) {
+        setImageUri(asset.uri);
+        analyzeImage(asset.base64);
+      } else {
+        console.warn("Base64 encoding failed.");
+      }
+    }
+  };
+
+  const analyzeImage = async (base64Image: string | undefined) => {
+    if (!base64Image) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        Platform.OS === 'web'
+          ? "http://localhost:3000/analyze-image"
+          : "http://192.168.4.37:3000/analyze-image", // your local IP
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: base64Image }),
+        }
+      );
+
+      const data = await response.json();
+      setLabels(data.labels || []);
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -31,9 +79,23 @@ export default function Scan() {
       </LinearGradient>
 
       {/* scan */}
-      <View style={styles.scanContainer}>
-
-      </View>
+      <ScrollView contentContainerStyle={styles.scanContainer}>
+        <PrimaryBtn text="Pick Image to Analyze" onPress={pickImage} fontSize={18} />
+        {imageUri && (
+          <Image source={{ uri: imageUri }} style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} />
+        )}
+        {loading && <ActivityIndicator size="large" color="#9C3FE4" style={{ marginTop: 16 }} />}
+        {labels.length > 0 && (
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ color: '#ccc', marginBottom: 8 }}>Top Predictions:</Text>
+            {labels.map((label, index) => (
+              <Text key={index} style={{ color: '#fff' }}>
+                {label.description} ({(label.score * 100).toFixed(1)}%)
+              </Text>
+            ))}
+          </View>
+        )}
+      </ScrollView>
       
       <View style={styles.btnContainer}>
         <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />

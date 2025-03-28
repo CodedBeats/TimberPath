@@ -2,6 +2,9 @@ import { getAuth, OAuthCredential } from "@firebase/auth"
 import { getFirestore } from "@firebase/firestore"
 import { initializeApp } from "firebase/app";
 
+import * as Google from "expo-auth-session/providers/google";
+import Constants from "expo-constants";
+
 
 export const firebaseConfig = {
     apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -18,6 +21,7 @@ export const stripeConfig = {
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     secretKey: process.env.STRIPE_SECRET_KEY,
 };
+
 
 // init firebase
 const app = initializeApp(firebaseConfig)

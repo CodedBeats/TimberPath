@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
+import { auth } from "@/config/Config";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import * as Google from "expo-auth-session/providers/google";
@@ -16,11 +17,18 @@ WebBrowser.maybeCompleteAuthSession();
 
 
 export default function SignIn() {
-  const auth = getAuth();
+  //const auth = getAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nonce, setNonce] = useState("");
+
+  
+  const [request, response, promptAsync] = Google.useAuthRequest({
+      androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+      iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+      clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+    });
 
   useEffect(() => {
     (async () => {
