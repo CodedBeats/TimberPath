@@ -67,7 +67,7 @@ export default function Product() {
                 {/* Product Details */}
                 <LinearGradient colors={["#410051", "#000"]} style={styles.detailsContainer}>
                     <ThemedText style={styles.productName}>{product.productName}</ThemedText>
-                    <ThemedText style={styles.productAmount}>{product.amount}</ThemedText>                    
+                    <ThemedText style={styles.productAmount}>{product.unitOfMeasure}</ThemedText>                    
                     <ThemedText style={styles.productDescriptionName}>Description</ThemedText>
                     <ScrollView style={styles.descriptionScroll}>
                         <ThemedText style={styles.productDescription}>{product.description}</ThemedText>
