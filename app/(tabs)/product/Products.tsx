@@ -46,8 +46,6 @@ export default function Products() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-      
         {/* header */}
         <HeaderWithCart />
 
@@ -59,22 +57,23 @@ export default function Products() {
               <FilterBtn onPress={() => console.log("Filter")} />
             </View>
             <View style={styles.subBoxContent}>
-              {loading ? (
-                <ActivityIndicator size="large" color="#fff" />
-              ) : products.length === 0 ? (
-                <Text style={styles.noProducts}>No products found.</Text>
-              ) : (
-                // Render the products in a grid
-                <View style={styles.productsGrid}>
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </View>
-              )}
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                {loading ? (
+                  <ActivityIndicator size="large" color="#fff" />
+                ) : products.length === 0 ? (
+                  <Text style={styles.noProducts}>No products found.</Text>
+                ) : (
+                  // Render the products in a grid
+                  <View style={styles.productsGrid}>
+                    {products.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </View>
+                )}
+              </ScrollView>
             </View>
           </LinearGradient>
         </View>
-      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   subBoxContent: {
-    height: "80%",
+    height: "90%",
   },
   buttonContainer: {
     width: 30,

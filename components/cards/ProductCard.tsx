@@ -18,6 +18,7 @@ type ProductCardProps = {
     product: {
         id: string;
         productName: string;
+        unitOfMeasure?: string;
         imageURL?: string;
         price: number;
         amount: string;
@@ -65,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     </Text>
 
                     {/* Amount */}
-                    <Text style={styles.amount}>{product.amount ? product.amount : "no amount :("}</Text>
+                    <Text style={styles.unitOfMeasure}>{product.unitOfMeasure ? product.unitOfMeasure : " "}</Text>
 
                     {/* Price & Add to Cart */}
                     <View style={styles.priceAndAddContainer}>
@@ -136,8 +137,8 @@ const styles = StyleSheet.create({
         color: "#fff",
         marginTop: 8,
     },
-    amount: {
-        fontSize: 14,
+    unitOfMeasure: {
+        fontSize: 12,
         color: "#aaa",
         marginBottom: 8,
     },
