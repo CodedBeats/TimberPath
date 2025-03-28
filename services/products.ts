@@ -11,3 +11,11 @@ export async function getProducts() {
   });
   return products;
 }
+
+
+
+
+// dunno where to put this function haha. I know this should be backend funcs but I'll leave it here for now
+export function formatPrice(price: number) {
+  return price.toFixed(2);
+}

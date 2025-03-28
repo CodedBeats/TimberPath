@@ -1,4 +1,3 @@
-import React from "react";
 import {
     View,
     Text,
@@ -10,9 +9,14 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
+const cardSize = 250; // Each card is 100x100
+
+// context
 import { useCart } from "@/contexts/CartContext";
 
-const cardSize = 250; // Each card is 100x100
+// services
+import { formatPrice } from "@/services/products";
+
 
 type ProductCardProps = {
     product: {
@@ -44,6 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const truncateTitle = (title: string) =>
         title.length > 30 ? title.substring(0, 30) + "..." : title;
+    
 
     return (
         <TouchableOpacity style={styles.cardContainer} onPress={handleView}>
@@ -70,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                     {/* Price & Add to Cart */}
                     <View style={styles.priceAndAddContainer}>
-                            <Text style={styles.price}>$ {product.price}</Text>
+                            <Text style={styles.price}>$ {formatPrice(product.price)}</Text>
                                 <TouchableOpacity
                                 style={styles.buttonContainer}
                                 onPress={handleAddToCart}
