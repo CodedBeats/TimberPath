@@ -64,79 +64,81 @@ export default function Education() {
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <HeaderWithoutCart />
-
-                {/* New Articles Section */}
-                <ThemedText type="title" style={styles.sectionHeader}>
-                    New Articles
-                </ThemedText>
-                <LinearGradient
-                    colors={["#540093", "#b400f3"]}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.articleCardsContainer}
-                >
-                    <ScrollView
-                        horizontal={true}
-                        contentContainerStyle={styles.horizontalScroll}
+                
+                <View style={styles.container}>
+                    {/* New Articles Section */}
+                    <ThemedText type="title" style={styles.sectionHeader}>
+                        New Articles
+                    </ThemedText>
+                    <LinearGradient
+                        colors={["#540093", "#b400f3"]}
+                        start={{ x: 0, y: 1 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.articleCardsContainer}
                     >
-                        {newArticles.map((article) => (
-                            <ArticleCard key={article.id} article={article} />
-                        ))}
-                    </ScrollView>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {newArticles.map((article) => (
+                                <ArticleCard key={article.id} article={article} />
+                            ))}
+                        </ScrollView>
 
-                    <PrimaryBtn
-                        onPress={() => router.push("./AddArticle")}
-                        text="Add New Article"
-                    />
-                </LinearGradient>
+                        <PrimaryBtn
+                            onPress={() => router.push("./AddArticle")}
+                            text="Add New Article"
+                        />
+                    </LinearGradient>
 
-                {/* Categories Section */}
-                <ThemedText type="title" style={styles.sectionHeader}>
-                    Browse by Category
-                </ThemedText>
-                <LinearGradient
-                    colors={["#8c4b10", "#ffab00"]}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.articleCardsContainer}
-                >
-                    <ScrollView
-                        horizontal={true}
-                        contentContainerStyle={styles.horizontalScroll}
+                    {/* Categories Section */}
+                    <ThemedText type="title" style={styles.sectionHeader}>
+                        Browse by Category
+                    </ThemedText>
+                    <LinearGradient
+                        colors={["#8c4b10", "#ffab00"]}
+                        start={{ x: 0, y: 1 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.articleCardsContainer}
                     >
-                        {categories.map((category) => (
-                            <CategoryCard
-                                key={category.id}
-                                category={category}
-                            />
-                        ))}
-                    </ScrollView>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {categories.map((category) => (
+                                <CategoryCard
+                                    key={category.id}
+                                    category={category}
+                                />
+                            ))}
+                        </ScrollView>
 
-                    <PrimaryBtn
-                        onPress={() => router.push("./AddCategory")}
-                        text="Add New Category"
-                    />
-                </LinearGradient>
+                        <PrimaryBtn
+                            onPress={() => router.push("./AddCategory")}
+                            text="Add New Category"
+                        />
+                    </LinearGradient>
 
-                {/* Trending Articles Section */}
-                <ThemedText type="title" style={styles.sectionHeader}>
-                    Trending Articles
-                </ThemedText>
-                <LinearGradient
-                    colors={["#540093", "#b400f3"]}
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.articleCardsContainer}
-                >
-                    <ScrollView
-                        horizontal={true}
-                        contentContainerStyle={styles.horizontalScroll}
+                    {/* Trending Articles Section */}
+                    <ThemedText type="title" style={styles.sectionHeader}>
+                        Trending Articles
+                    </ThemedText>
+                    <LinearGradient
+                        colors={["#540093", "#b400f3"]}
+                        start={{ x: 0, y: 1 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.articleCardsContainer}
                     >
-                        {trendingArticles.map((article) => (
-                            <ArticleCard key={article.id} article={article} />
-                        ))}
-                    </ScrollView>
-                </LinearGradient>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {trendingArticles.map((article) => (
+                                <ArticleCard key={article.id} article={article} />
+                            ))}
+                        </ScrollView>
+                    </LinearGradient>
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -148,7 +150,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
     },
     scrollView: {
-        padding: 16,
+        flexGrow: 1,
+        paddingBottom: 20,
+    },
+    container: {
+      flex: 1,
+      paddingHorizontal: 16,
     },
     horizontalScroll: {
         flexDirection: "row",
@@ -172,10 +179,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: "center",
         marginBottom: 20,
-    },
-    container: {
-        flex: 1,
-        paddingHorizontal: 16,
     },
     subBoxHeaderContainer: {
         marginBottom: 8,
