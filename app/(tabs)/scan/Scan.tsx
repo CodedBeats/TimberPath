@@ -15,6 +15,38 @@ import { useDB } from "@/contexts/DBContext";
 // components
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn"
 
+type Label = {
+  description: string;
+  score: number;
+};
+
+const labelToWoodMapping: { [key: string]: string } = {
+  "Wood": "Blackbutt",
+  "Flooring": "Jarrah Flooring",
+  "Hardwood": "Spotted Gum",
+  "Plank": "Tasmanian Oak",
+  "Wood flooring": "Queensland Maple",
+  "Plywood": "Merbau Plywood",
+  "Wood stain": "Red Gum",
+  "Lumber": "Eucalyptus Lumber",
+  "Natural material": "Sydney Blue Gum",
+  "Laminate flooring": "Laminate Wood",
+};
+
+function getRecommendedWood(labels: Label[]): string {
+  const threshold = 0.8;
+  const filteredLabels = labels
+    .filter((label: Label) => label.score >= threshold)
+    .sort((a: Label, b: Label) => b.score - a.score);
+
+  for (const label of filteredLabels) {
+    if (labelToWoodMapping[label.description]) {
+      return labelToWoodMapping[label.description];
+    }
+  }
+  return "No recommendation available";
+}
+
 
 export default function Scan() {
   const router = useRouter();
@@ -26,6 +58,8 @@ export default function Scan() {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [labels, setLabels] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [recommendedWood, setRecommendedWood] = useState<string>("");
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -75,7 +109,11 @@ export default function Scan() {
       });
 
       const data = await response.json();
-      setLabels(data.labels || []);
+
+      const detectedLabels = data.labels || [];
+      setLabels(detectedLabels);
+      const recommendation = getRecommendedWood(detectedLabels);
+      setRecommendedWood(recommendation);
     } catch (error) {
       console.error("Error analyzing image:", error);
       alert("Error analyzing image. Please try again.");
@@ -94,7 +132,7 @@ export default function Scan() {
       </LinearGradient>
 
       {/* scan */}
-      <ScrollView contentContainerStyle={styles.scanContainer}>
+      <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
         {/* Button to pick an image from the gallery */}
         <PrimaryBtn 
           text="Pick Image to Analyze" 
@@ -130,6 +168,27 @@ export default function Scan() {
               </Text>
             ))}
           </View>
+
+        )}
+
+        {/* Display the recommended wood based on the analysis */}
+        {recommendedWood && recommendedWood !== "No recommendation available" && (
+          <View style={styles.recommendationContainer}>
+            <Text style={styles.recommendationTitle}>Recommended Wood:</Text>
+            <Text style={styles.recommendationText}>{recommendedWood}</Text>
+            {/* Optionally, add a button to view more details about the recommended wood */}
+            <PrimaryBtn 
+              text="View Recommendation" 
+              onPress={() =>
+                router.push({
+                  pathname: './recommended',
+                  params: { wood: recommendedWood }
+                })
+              }
+              fontSize={18} 
+            />
+          </View>
+
         )}
       </ScrollView>
       
@@ -167,23 +226,34 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#ccc',
     },
+    // scanContainer: {
+    //     flex: 1,
+    //     padding: 10,
+    //     marginHorizontal: 16,
+    //     marginVertical: 5,
+    //     borderColor: "#fff",
+    //     borderWidth: 1,
+    //     borderRadius: 10,
+    //     ...Platform.select({
+    //         ios: {
+    //             maxHeight: "60%",
+    //         },
+    //         android: {
+    //             // maxHeight: 80,
+    //         },
+    //     }),
+    // },
+
     scanContainer: {
-        flex: 1,
-        padding: 10,
-        marginHorizontal: 16,
-        marginVertical: 5,
-        borderColor: "#fff",
-        borderWidth: 1,
-        borderRadius: 10,
-        ...Platform.select({
-            ios: {
-                maxHeight: "60%",
-            },
-            android: {
-                // maxHeight: 80,
-            },
-        }),
+      padding: 10,
+      marginHorizontal: 16,
+      marginVertical: 5,
+      borderColor: "#fff",
+      borderWidth: 1,
+      borderRadius: 10,
     },
+
+
     btnContainer: {
       display: "flex",
       alignItems: 'center',
@@ -208,5 +278,23 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
+  },
+
+  recommendationContainer: {
+    marginTop: 20,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: "#222",
+    alignItems: "center",
+  },
+  recommendationTitle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  recommendationText: {
+    color: "#ccc",
+    fontSize: 16,
   },
 });
