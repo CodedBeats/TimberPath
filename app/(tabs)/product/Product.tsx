@@ -6,6 +6,7 @@ import { db } from '@/config/Config';
 import { ThemedText } from '@/components/ThemedText';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCart } from "@/contexts/CartContext";
+import { formatPrice } from "@/services/products";
 
 export default function Product() {
     const { productId, fromSearch } = useLocalSearchParams<{ productId: string, fromSearch: string }>();
@@ -67,7 +68,7 @@ export default function Product() {
                 {/* Product Details */}
                 <LinearGradient colors={["#410051", "#000"]} style={styles.detailsContainer}>
                     <ThemedText style={styles.productName}>{product.productName}</ThemedText>
-                    <ThemedText style={styles.productAmount}>{product.amount}</ThemedText>                    
+                    <ThemedText style={styles.productAmount}>{product.unitOfMeasure}</ThemedText>                    
                     <ThemedText style={styles.productDescriptionName}>Description</ThemedText>
                     <ScrollView style={styles.descriptionScroll}>
                         <ThemedText style={styles.productDescription}>{product.description}</ThemedText>
@@ -90,7 +91,7 @@ export default function Product() {
                 <View style={styles.priceBuyContainer}>
                 <View style={styles.priceContainer}>
                     <ThemedText style={styles.priceLabel}>Price</ThemedText>
-                    <ThemedText style={styles.price}>$ {product.price}</ThemedText>
+                    <ThemedText style={styles.price}>$ {formatPrice(product.price)}</ThemedText>
                 </View>
 
                 <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
