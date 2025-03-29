@@ -16,6 +16,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useDB } from "@/contexts/DBContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { collection, addDoc } from "firebase/firestore";
+import { BASE_URL } from "@/config/api";
 
 export default function Checkout() {
   const router = useRouter();
@@ -32,10 +33,9 @@ export default function Checkout() {
   // This function will calls our backend endpoint.
   const fetchPaymentIntentClientSecret = async () => {
     try {
-      const response = await fetch("http://localhost:3000/create-payment-intent", {
+      const response = await fetch(`${BASE_URL}/create-payment-intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Multiply by 100 because Stripe will expects in this case the amount in cents.
         body: JSON.stringify({ amount: Math.round(totalPrice * 100) }),
       });
       const data = await response.json();

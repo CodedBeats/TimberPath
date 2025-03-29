@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Pla
 import { useRouter } from "expo-router";
 import { LinearGradient } from 'expo-linear-gradient'
 import * as ImagePicker from 'expo-image-picker';
+import { BASE_URL } from "@/config/api";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -49,16 +50,11 @@ export default function Scan() {
 
     setLoading(true);
     try {
-      const response = await fetch(
-        Platform.OS === 'web'
-          ? "http://localhost:3000/analyze-image"
-          : "http://192.168.4.37:3000/analyze-image", // your local IP
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ image: base64Image }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/analyze-image`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Image }),
+      });
 
       const data = await response.json();
       setLabels(data.labels || []);
