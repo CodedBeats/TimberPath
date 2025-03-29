@@ -69,6 +69,7 @@ export default function GuidesSuggestedWoods() {
             //console.log("woods:", woods)
             console.log("selected criteria:", passedCriteria)
             console.log("filtered woods:", filteredWoods)
+            //console.log("filtered woods:", filteredWoods.map(wood => wood.commonName))
         }
     }, [filteredWoods])
 
