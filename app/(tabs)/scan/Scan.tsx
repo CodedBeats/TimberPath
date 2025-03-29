@@ -45,6 +45,24 @@ export default function Scan() {
     }
   };
 
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
+      quality: 1,
+    });
+  
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset.base64) {
+        setImageUri(asset.uri);
+        analyzeImage(asset.base64);
+      } else {
+        console.warn("Base64 encoding failed.");
+      }
+    }
+  };
+
   const analyzeImage = async (base64Image: string | undefined) => {
     if (!base64Image) return;
 
@@ -60,6 +78,7 @@ export default function Scan() {
       setLabels(data.labels || []);
     } catch (error) {
       console.error("Error analyzing image:", error);
+      alert("Error analyzing image. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -76,11 +95,32 @@ export default function Scan() {
 
       {/* scan */}
       <ScrollView contentContainerStyle={styles.scanContainer}>
-        <PrimaryBtn text="Pick Image to Analyze" onPress={pickImage} fontSize={18} />
+        {/* Button to pick an image from the gallery */}
+        <PrimaryBtn 
+          text="Pick Image to Analyze" 
+          onPress={pickImage} 
+          fontSize={18} 
+        />
+        {/* Button to take a photo using the camera */}
+        <PrimaryBtn 
+          text="Take Photo to Analyze" 
+          onPress={takePhoto} 
+          fontSize={18} 
+          // You can add extra styling (e.g., marginTop) if desired
+        />
         {imageUri && (
-          <Image source={{ uri: imageUri }} style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} />
+          <Image 
+            source={{ uri: imageUri }} 
+            style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} 
+          />
         )}
-        {loading && <ActivityIndicator size="large" color="#9C3FE4" style={{ marginTop: 16 }} />}
+        {loading && (
+          <ActivityIndicator 
+            size="large" 
+            color="#9C3FE4" 
+            style={{ marginTop: 16 }} 
+          />
+        )}
         {labels.length > 0 && (
           <View style={{ marginTop: 20 }}>
             <Text style={{ color: '#ccc', marginBottom: 8 }}>Top Predictions:</Text>
