@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
     View,
     Text,
@@ -10,8 +10,11 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
-
 const cardSize = 250; // Each card is 100x100
+
+// services
+import { getProductByWoodID } from "@/services/products";
+
 
 type WoodCardProps = {
     wood: {
@@ -24,12 +27,22 @@ type WoodCardProps = {
 const WoodCard = ({ wood }: WoodCardProps) => {
     const router = useRouter()
 
-    const handleView = () => {
-        // router.push({
-        //     pathname: "/(tabs)/product/Product",
-        //     params: { productId: wood.id, fromSearch: "true" },
-        // });
-        console.log("Wood Card", wood)
+    async function handleView() {
+        // get productID by woodID
+        try {
+            const product = await getProductByWoodID(wood.id)
+            
+            if (product) {
+                router.push({
+                    pathname: "/(tabs)/product/Product",
+                    params: { productId: product.id, fromSearch: "true" },
+                });
+            } else {
+                console.warn("no product found for this woodID")
+            }
+        } catch (error) {
+            console.error("error fetching:", error)
+        }
     }
 
 

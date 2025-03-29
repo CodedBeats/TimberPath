@@ -15,12 +15,12 @@ const AddProduct = () => {
     // state
     const [formData, setFormData] = useState({
         productName: "",
+        unitOfMeasure: "", // added for woods (optional for other stuff)
         price: "",
         stockQuantity: "",
         supplierID: "",
         supplierName: "", // added and it is optional to type a custom name.
         woodID: "",  // can be null
-        woodCommonName: "", // added and it is optional to type a custom name.
         description: "",
         imageURL: "",
     });
@@ -50,7 +50,7 @@ const AddProduct = () => {
     // validate and format before submit
     const validateAndSubmit = async () => {
         // destructure form data
-        const { description, imageURL, price, productName, stockQuantity, supplierID, woodID } = formData;
+        const { description, imageURL, price, productName, unitOfMeasure, stockQuantity, supplierID, woodID } = formData;
     
         // check required fields
         if (!description || !imageURL || !price || !productName || !stockQuantity || !supplierID) {
@@ -75,10 +75,11 @@ const AddProduct = () => {
         try {
             // upload to firestore products coll
             await addDoc(collection(db, "products"), {
+                productName,
+                unitOfMeasure,
                 description,
                 imageURL,
                 price: parsedPrice,
-                productName,
                 stockQuantity: parsedStockQuantity,
                 supplierID,
                 supplierName: formData.supplierName, // added and it is optional to type a custom name.
@@ -87,7 +88,7 @@ const AddProduct = () => {
     
             console.log("success", "product added successfully")
             // reset form data
-            setFormData({ productName: "", price: "", stockQuantity: "", supplierID: "", supplierName: "", woodID: "", woodCommonName: "", description: "", imageURL: "" });
+            setFormData({ productName: "", unitOfMeasure: "", price: "", stockQuantity: "", supplierID: "", supplierName: "", woodID: "", description: "", imageURL: "" });
 
         } catch (error) {
             console.error("Error adding product:", error);
@@ -101,8 +102,10 @@ const AddProduct = () => {
                 <Text style={styles.header}>Add Product</Text>
 
                 <InputField label="Product Name" value={formData.productName} onChangeText={(val: any) => handleChange("productName", val)} />
+                <InputField label="Unit of Measurement" value={formData.unitOfMeasure} onChangeText={(val: any) => handleChange("unitOfMeasure", val)} />
                 <InputField label="Price ($)" value={formData.price} onChangeText={(val: any) => handleChange("price", val)} keyboardType="numeric" />
                 <InputField label="Stock Quantity" value={formData.stockQuantity} onChangeText={(val: any) => handleChange("stockQuantity", val)} keyboardType="numeric" />
+
                 {/* Supplier Dropdown */}
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Supplier</Text>
@@ -122,24 +125,28 @@ const AddProduct = () => {
                         ))}
                     </Picker>
                 </View>
+
                 {/* Wood Dropdown */}
                 <View style={styles.inputContainer}>
-                <Text style={styles.label}>Select Wood (Optional)</Text>
-                <Picker
-                    selectedValue={formData.woodID}
-                    style={styles.picker}
-                    onValueChange={(itemValue) => {
-                    const selected = woods.find(w => w.id === itemValue);
-                    handleChange("woodID", itemValue);
-                    handleChange("woodCommonName", selected ? selected.commonName : "");
-                    }}
-                >
-                    <Picker.Item label="Select Wood" value="" />
-                    {woods.map((wood) => (
-                    <Picker.Item key={wood.id} label={wood.commonName} value={wood.id} />
-                    ))}
-                </Picker>
+                    <Text style={styles.label}>Select Wood (Optional)</Text>
+                    <Picker
+                        selectedValue={formData.woodID}
+                        style={styles.picker}
+                        onValueChange={(itemValue) => {
+                            const selected = woods.find(w => w.id === itemValue);
+                            handleChange("woodID", itemValue);
+                            handleChange("productName", selected.commonName);
+                            handleChange("description", selected.description);
+                            handleChange("imageURL", selected.imageURL);
+                        }}
+                    >
+                        <Picker.Item label="Select Wood" value="" />
+                        {woods.map((wood) => (
+                            <Picker.Item key={wood.id} label={wood.commonName} value={wood.id} />
+                        ))}
+                    </Picker>
                 </View>
+
                 <InputField label="Description" value={formData.description} onChangeText={(val: any) => handleChange("description", val)} multiline />
                 <InputField label="Image URL" value={formData.imageURL} onChangeText={(val: any) => handleChange("imageURL", val)} />
 

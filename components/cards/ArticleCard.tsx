@@ -2,6 +2,7 @@ import { TouchableOpacity, View, Text, Image, StyleSheet, ImageBackground, Dimen
 const { width } = Dimensions.get("window")
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
+import { useEffect, useState } from "react";
 
 interface ArticleCardProps {
     article: {
@@ -14,8 +15,10 @@ interface ArticleCardProps {
     marginBottom?: number;
 }
 
+
 export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
     const router = useRouter();
+    const [formatedTitle, setFormatedTitle] = useState("");
 
     const handlePress = () => {
         router.push({
@@ -24,15 +27,23 @@ export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
         });
     };
 
+    const truncateTitle = (title: string) => {
+        title.length > 20 ? setFormatedTitle(title.substring(0, 20) + "...") : setFormatedTitle(title);
+    }
+    useEffect(() => {
+        truncateTitle(article.title)
+    }, [])
+
+
     return (
         <TouchableOpacity style={[styles.card, { marginBottom }]} onPress={handlePress}>
             {/* show background img ig it exists */}
             {article.imageURL ? (
-                <ImageBackground source={{ uri: article.imageURL }} imageStyle={{opacity: 0.5, borderRadius: 12}} style={styles.image}>
+                <ImageBackground source={{ uri: article.imageURL }} imageStyle={{borderRadius: 12}} style={styles.image}>
                     <View style={styles.textContainer}>
                         {/* title */}
                         <ThemedText type="defaultSemiBold" style={styles.title}>
-                            {article.title}
+                            {formatedTitle}
                         </ThemedText>
                     </View>
                 </ImageBackground>
@@ -41,7 +52,7 @@ export function ArticleCard({ article, marginBottom = 10 }: ArticleCardProps) {
                 <View style={[styles.image, styles.placeholder]}>
                     <View style={styles.textContainer}>
                         <ThemedText type="defaultSemiBold" style={styles.title}>
-                            {article.title}
+                            {formatedTitle}
                         </ThemedText>
                     </View>
                 </View>
@@ -77,14 +88,17 @@ const styles = StyleSheet.create({
     textContainer: {
         display: "flex",
         width: "100%",
-        paddingHorizontal: 10,
+        height: "100%",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-end",
     },
     title: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "500",
+        width: "100%",
+        paddingHorizontal: 10,
         color: "white",
         textAlign: "center",
+        backgroundColor: "rgba(0,0,0,0.8)",
     },
 });

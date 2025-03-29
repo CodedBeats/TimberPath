@@ -27,7 +27,7 @@ export function CategoryCard({ category, marginBottom = 10 }: CategoryCardProps)
         <TouchableOpacity style={[styles.card, { marginBottom }]} onPress={handlePress}>
             {/* show background img ig it exists */}
             {category.iconURL ? (
-                <ImageBackground source={{ uri: category.iconURL }} imageStyle={{opacity: 0.5, borderRadius: 12}} style={styles.image}>
+                <ImageBackground source={{ uri: category.iconURL }} imageStyle={{opacity: 0.3, borderRadius: 12}} style={styles.image}>
                     <View style={styles.textContainer}>
                         {/* title */}
                         <ThemedText type="defaultSemiBold" style={styles.title}>
