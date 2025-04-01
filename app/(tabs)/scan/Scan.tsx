@@ -35,17 +35,16 @@ const labelToWoodMapping: { [key: string]: string } = {
 
 function getRecommendedWood(labels: Label[]): string {
   const threshold = 0.8;
-  const filteredLabels = labels
-    .filter((label: Label) => label.score >= threshold)
-    .sort((a: Label, b: Label) => b.score - a.score);
+  const matchingRecommendations = labels
+  .filter(label => label.score >= threshold && labelToWoodMapping[label.description])
+  .map(label => labelToWoodMapping[label.description]);
 
-  for (const label of filteredLabels) {
-    if (labelToWoodMapping[label.description]) {
-      return labelToWoodMapping[label.description];
-    }
+  if (matchingRecommendations.length === 0) {
+    return "No recommendation available";
   }
-  return "No recommendation available";
-}
+  const randomIndex = Math.floor(Math.random() * matchingRecommendations.length);
+  return matchingRecommendations[randomIndex];
+  }
 
 
 export default function Scan() {
@@ -75,6 +74,7 @@ export default function Scan() {
         analyzeImage(asset.base64);
       } else {
         console.warn("Base64 encoding failed.");
+        alert("Base64 encoding failed. Please try again.");
       }
     }
   };
@@ -93,6 +93,7 @@ export default function Scan() {
         analyzeImage(asset.base64);
       } else {
         console.warn("Base64 encoding failed.");
+        alert("Base64 encoding failed. Please try again.");
       }
     }
   };
@@ -110,7 +111,7 @@ export default function Scan() {
 
       const data = await response.json();
 
-      const detectedLabels = data.labels || [];
+      const detectedLabels: Label[] = data.labels || [];
       setLabels(detectedLabels);
       const recommendation = getRecommendedWood(detectedLabels);
       setRecommendedWood(recommendation);
@@ -159,7 +160,7 @@ export default function Scan() {
             style={{ marginTop: 16 }} 
           />
         )}
-        {labels.length > 0 && (
+        {/* {labels.length > 0 && (
           <View style={{ marginTop: 20 }}>
             <Text style={{ color: '#ccc', marginBottom: 8 }}>Top Predictions:</Text>
             {labels.map((label, index) => (
@@ -169,14 +170,13 @@ export default function Scan() {
             ))}
           </View>
 
-        )}
+        )} */}
 
         {/* Display the recommended wood based on the analysis */}
         {recommendedWood && recommendedWood !== "No recommendation available" && (
           <View style={styles.recommendationContainer}>
             <Text style={styles.recommendationTitle}>Recommended Wood:</Text>
             <Text style={styles.recommendationText}>{recommendedWood}</Text>
-            {/* Optionally, add a button to view more details about the recommended wood */}
             <PrimaryBtn 
               text="View Recommendation" 
               onPress={() =>

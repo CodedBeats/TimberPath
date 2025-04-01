@@ -16,7 +16,10 @@ type WoodDetails = {
   commonName: string;
   description?: string;
   imageURL?: string;
-  // add other fields as needed (e.g., application, bfr, exposure, hardness, etc.)
+  application?: string[];
+  bfr?: string[];
+  exposure?: string[];
+  hardness?: string[];
 };
 
 export default function Recommended() {
@@ -37,7 +40,6 @@ export default function Recommended() {
         const q = query(woodsCollection, where("commonName", "==", wood));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
-          // Assuming one document per commonName
           const docSnap = querySnapshot.docs[0];
           setWoodDetails({ id: docSnap.id, ...docSnap.data() } as WoodDetails);
         } else {
@@ -81,7 +83,22 @@ export default function Recommended() {
             <ThemedText style={styles.description}>
               {woodDetails.description || "No description available."}
             </ThemedText>
-            {/* Add more fields as needed */}
+            <ThemedText style={styles.fieldTitle}>Application:</ThemedText>
+            <ThemedText style={styles.fieldText}>
+              {woodDetails.application ? woodDetails.application.join(", ") : "N/A"}
+            </ThemedText>
+            <ThemedText style={styles.fieldTitle}>Bush Fire Resistance (BFR):</ThemedText>
+            <ThemedText style={styles.fieldText}>
+              {woodDetails.bfr ? woodDetails.bfr.join(", ") : "N/A"}
+            </ThemedText>
+            <ThemedText style={styles.fieldTitle}>Exposure:</ThemedText>
+            <ThemedText style={styles.fieldText}>
+              {woodDetails.exposure ? woodDetails.exposure.join(", ") : "N/A"}
+            </ThemedText>
+            <ThemedText style={styles.fieldTitle}>Hardness:</ThemedText>
+            <ThemedText style={styles.fieldText}>
+              {woodDetails.hardness ? woodDetails.hardness.join(", ") : "N/A"}
+            </ThemedText>
           </View>
         ) : (
           <ThemedText style={styles.errorText}>
@@ -108,4 +125,6 @@ const styles = StyleSheet.create({
   description: { color: "#fff", fontSize: 16, textAlign: "center" },
   errorText: { color: "#fff", fontSize: 18, textAlign: "center" },
   woodImage: { width: 200, height: 200, borderRadius: 8, marginBottom: 20 },
+  fieldTitle: { color: "#fff", fontSize: 18, fontWeight: "bold", marginTop: 10 },
+  fieldText: { color: "#ccc", fontSize: 16, textAlign: "center" },
 });
