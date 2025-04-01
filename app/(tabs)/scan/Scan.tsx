@@ -1,7 +1,9 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from "expo-router";
 import { LinearGradient } from 'expo-linear-gradient'
+import * as ImagePicker from 'expo-image-picker';
+import { BASE_URL } from "@/config/api";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -13,6 +15,37 @@ import { useDB } from "@/contexts/DBContext";
 // components
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn"
 
+type Label = {
+  description: string;
+  score: number;
+};
+
+const labelToWoodMapping: { [key: string]: string } = {
+  "Wood": "Blackbutt",
+  "Flooring": "Jarrah Flooring",
+  "Hardwood": "Spotted Gum",
+  "Plank": "Tasmanian Oak",
+  "Wood flooring": "Queensland Maple",
+  "Plywood": "Merbau Plywood",
+  "Wood stain": "Red Gum",
+  "Lumber": "Eucalyptus Lumber",
+  "Natural material": "Sydney Blue Gum",
+  "Laminate flooring": "Laminate Wood",
+};
+
+function getRecommendedWood(labels: Label[]): string {
+  const threshold = 0.8;
+  const matchingRecommendations = labels
+  .filter(label => label.score >= threshold && labelToWoodMapping[label.description])
+  .map(label => labelToWoodMapping[label.description]);
+
+  if (matchingRecommendations.length === 0) {
+    return "No recommendation available";
+  }
+  const randomIndex = Math.floor(Math.random() * matchingRecommendations.length);
+  return matchingRecommendations[randomIndex];
+  }
+
 
 export default function Scan() {
   const router = useRouter();
@@ -20,6 +53,75 @@ export default function Scan() {
 
   // contexts
   const db = useDB()
+
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [labels, setLabels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const [recommendedWood, setRecommendedWood] = useState<string>("");
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
+      quality: 1,
+    });
+  
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset.base64) {
+        setImageUri(asset.uri);
+        analyzeImage(asset.base64);
+      } else {
+        console.warn("Base64 encoding failed.");
+        alert("Base64 encoding failed. Please try again.");
+      }
+    }
+  };
+
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
+      quality: 1,
+    });
+  
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const asset = result.assets[0];
+      if (asset.base64) {
+        setImageUri(asset.uri);
+        analyzeImage(asset.base64);
+      } else {
+        console.warn("Base64 encoding failed.");
+        alert("Base64 encoding failed. Please try again.");
+      }
+    }
+  };
+
+  const analyzeImage = async (base64Image: string | undefined) => {
+    if (!base64Image) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${BASE_URL}/analyze-image`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Image }),
+      });
+
+      const data = await response.json();
+
+      const detectedLabels: Label[] = data.labels || [];
+      setLabels(detectedLabels);
+      const recommendation = getRecommendedWood(detectedLabels);
+      setRecommendedWood(recommendation);
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+      alert("Error analyzing image. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -31,9 +133,64 @@ export default function Scan() {
       </LinearGradient>
 
       {/* scan */}
-      <View style={styles.scanContainer}>
+      <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
+        {/* Button to pick an image from the gallery */}
+        <PrimaryBtn 
+          text="Pick Image to Analyze" 
+          onPress={pickImage} 
+          fontSize={18} 
+        />
+        {/* Button to take a photo using the camera */}
+        <PrimaryBtn 
+          text="Take Photo to Analyze" 
+          onPress={takePhoto} 
+          fontSize={18} 
+          // You can add extra styling (e.g., marginTop) if desired
+        />
+        {imageUri && (
+          <Image 
+            source={{ uri: imageUri }} 
+            style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} 
+          />
+        )}
+        {loading && (
+          <ActivityIndicator 
+            size="large" 
+            color="#9C3FE4" 
+            style={{ marginTop: 16 }} 
+          />
+        )}
+        {/* {labels.length > 0 && (
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ color: '#ccc', marginBottom: 8 }}>Top Predictions:</Text>
+            {labels.map((label, index) => (
+              <Text key={index} style={{ color: '#fff' }}>
+                {label.description} ({(label.score * 100).toFixed(1)}%)
+              </Text>
+            ))}
+          </View>
 
-      </View>
+        )} */}
+
+        {/* Display the recommended wood based on the analysis */}
+        {recommendedWood && recommendedWood !== "No recommendation available" && (
+          <View style={styles.recommendationContainer}>
+            <Text style={styles.recommendationTitle}>Recommended Wood:</Text>
+            <Text style={styles.recommendationText}>{recommendedWood}</Text>
+            <PrimaryBtn 
+              text="View Recommendation" 
+              onPress={() =>
+                router.push({
+                  pathname: './recommended',
+                  params: { wood: recommendedWood }
+                })
+              }
+              fontSize={18} 
+            />
+          </View>
+
+        )}
+      </ScrollView>
       
       <View style={styles.btnContainer}>
         <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
@@ -69,23 +226,34 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#ccc',
     },
+    // scanContainer: {
+    //     flex: 1,
+    //     padding: 10,
+    //     marginHorizontal: 16,
+    //     marginVertical: 5,
+    //     borderColor: "#fff",
+    //     borderWidth: 1,
+    //     borderRadius: 10,
+    //     ...Platform.select({
+    //         ios: {
+    //             maxHeight: "60%",
+    //         },
+    //         android: {
+    //             // maxHeight: 80,
+    //         },
+    //     }),
+    // },
+
     scanContainer: {
-        flex: 1,
-        padding: 10,
-        marginHorizontal: 16,
-        marginVertical: 5,
-        borderColor: "#fff",
-        borderWidth: 1,
-        borderRadius: 10,
-        ...Platform.select({
-            ios: {
-                maxHeight: "60%",
-            },
-            android: {
-                // maxHeight: 80,
-            },
-        }),
+      padding: 10,
+      marginHorizontal: 16,
+      marginVertical: 5,
+      borderColor: "#fff",
+      borderWidth: 1,
+      borderRadius: 10,
     },
+
+
     btnContainer: {
       display: "flex",
       alignItems: 'center',
@@ -110,5 +278,23 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
+  },
+
+  recommendationContainer: {
+    marginTop: 20,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: "#222",
+    alignItems: "center",
+  },
+  recommendationTitle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  recommendationText: {
+    color: "#ccc",
+    fontSize: 16,
   },
 });
