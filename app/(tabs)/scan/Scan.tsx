@@ -136,6 +136,7 @@ export default function Scan() {
 
       {/* scan */}
       <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
+      <View style={styles.buttonRow}>
         {/* Button to pick an image from the gallery */}
         <PrimaryBtn 
           text="Pick Image to Analyze" 
@@ -147,8 +148,8 @@ export default function Scan() {
           text="Take Photo to Analyze" 
           onPress={takePhoto} 
           fontSize={18} 
-          // You can add extra styling (e.g., marginTop) if desired
         />
+        </View>
         {imageUri && (
           <Image 
             source={{ uri: imageUri }} 
@@ -162,17 +163,6 @@ export default function Scan() {
             style={{ marginTop: 16 }} 
           />
         )}
-        {/* {labels.length > 0 && (
-          <View style={{ marginTop: 20 }}>
-            <Text style={{ color: '#ccc', marginBottom: 8 }}>Top Predictions:</Text>
-            {labels.map((label, index) => (
-              <Text key={index} style={{ color: '#fff' }}>
-                {label.description} ({(label.score * 100).toFixed(1)}%)
-              </Text>
-            ))}
-          </View>
-
-        )} */}
 
         {/* Display the recommended wood based on the analysis */}
         {recommendedWood && recommendedWood !== "No recommendation available" && (
@@ -194,9 +184,9 @@ export default function Scan() {
         )}
       </ScrollView>
       
-      <View style={styles.btnContainer}>
+      {/* <View style={styles.btnContainer}>
         <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
-      </View>
+      </View> */}
       
     </SafeAreaView>
   )
@@ -228,23 +218,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#ccc',
     },
-    // scanContainer: {
-    //     flex: 1,
-    //     padding: 10,
-    //     marginHorizontal: 16,
-    //     marginVertical: 5,
-    //     borderColor: "#fff",
-    //     borderWidth: 1,
-    //     borderRadius: 10,
-    //     ...Platform.select({
-    //         ios: {
-    //             maxHeight: "60%",
-    //         },
-    //         android: {
-    //             // maxHeight: 80,
-    //         },
-    //     }),
-    // },
+    
 
     scanContainer: {
       padding: 10,
@@ -253,6 +227,7 @@ const styles = StyleSheet.create({
       borderColor: "#fff",
       borderWidth: 1,
       borderRadius: 10,
+      alignItems: "center",
     },
 
 
@@ -288,6 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#222",
     alignItems: "center",
+    width: "80%",
   },
   recommendationTitle: {
     color: "#fff",
@@ -298,5 +274,13 @@ const styles = StyleSheet.create({
   recommendationText: {
     color: "#ccc",
     fontSize: 16,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "40%",
+    marginTop: 20,
+    alignItems: "center",
+    gap: 10,
   },
 });

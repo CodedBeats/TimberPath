@@ -101,7 +101,7 @@ export default function Recommended() {
         };
         addToCart(product);
         Alert.alert("Added to Cart", "The recommended product has been added to your cart.");
-        console.log("Added to Cart", product.productName, product.price, product.amount);
+        console.log("Added to Cart.", "Product Name:", product.productName, "Price: $", product.price, "Product ID: ", product.id);
       } else {
         Alert.alert("Product Not Found", "No product was found for the recommended wood.");
       }
@@ -185,17 +185,61 @@ export default function Recommended() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#000" },
-  container: { padding: 16 },
-  header: { padding: 16, borderRadius: 12, marginBottom: 20, alignItems: "center", justifyContent: "center" },
-  headerText: { color: "#fff", fontSize: 28, fontWeight: "bold" },
-  content: { marginBottom: 20, alignItems: "center" },
-  woodName: { color: "#fab700", fontSize: 24, fontWeight: "bold", marginBottom: 10 },
-  description: { color: "#fff", fontSize: 16, textAlign: "center" },
-  errorText: { color: "#fff", fontSize: 18, textAlign: "center" },
-  woodImage: { width: 200, height: 200, borderRadius: 8, marginBottom: 20 },
-  fieldTitle: { color: "#fff", fontSize: 18, fontWeight: "bold", marginTop: 10 },
-  fieldText: { color: "#ccc", fontSize: 16, textAlign: "center" },
+  safeArea: { 
+    flex: 1, 
+    backgroundColor: "#000"
+  },
+  container: { 
+    padding: 16
+  },
+  header: { padding: 16, 
+    borderRadius: 12,
+    marginBottom: 20, 
+    alignItems: "center", 
+    justifyContent: "center" 
+  },
+  headerText: { 
+    color: "#fff", 
+    fontSize: 28, 
+    fontWeight: "bold" 
+  },
+  content: { 
+    marginBottom: 20, 
+    alignItems: "center" 
+  },
+  woodName: { 
+    color: "#fab700", 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    marginBottom: 10 
+  },
+  description: { 
+    color: "#fff", 
+    fontSize: 16, 
+    textAlign: "center" 
+  },
+  errorText: { 
+    color: "#fff", 
+    fontSize: 18, 
+    textAlign: "center" 
+  },
+  woodImage: { 
+    width: 200, 
+    height: 200, 
+    borderRadius: 8, 
+    marginBottom: 20 
+  },
+  fieldTitle: { 
+    color: "#fff", 
+    fontSize: 18, 
+    fontWeight: "bold", 
+    marginTop: 10 
+  },
+  fieldText: { 
+    color: "#ccc", 
+    fontSize: 16, 
+    textAlign: "center" 
+  },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "center",
