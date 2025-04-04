@@ -136,20 +136,7 @@ export default function Scan() {
 
       {/* scan */}
       <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
-      <View style={styles.buttonRow}>
-        {/* Button to pick an image from the gallery */}
-        <PrimaryBtn 
-          text="Pick Image to Analyze" 
-          onPress={pickImage} 
-          fontSize={18} 
-        />
-        {/* Button to take a photo using the camera */}
-        <PrimaryBtn 
-          text="Take Photo to Analyze" 
-          onPress={takePhoto} 
-          fontSize={18} 
-        />
-        </View>
+      
         {imageUri && (
           <Image 
             source={{ uri: imageUri }} 
@@ -187,6 +174,23 @@ export default function Scan() {
       {/* <View style={styles.btnContainer}>
         <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
       </View> */}
+
+      <View style={styles.btnContainer}>
+        <View style={styles.buttonRow}>
+          {/* Button to pick an image from the gallery */}
+          <PrimaryBtn 
+            text="Pick Image to Analyze" 
+            onPress={pickImage} 
+            fontSize={18} 
+          />
+          {/* Button to take a photo using the camera */}
+          <PrimaryBtn 
+            text="Take Photo to Analyze" 
+            onPress={takePhoto} 
+            fontSize={18} 
+          />
+          </View>
+        </View>
       
     </SafeAreaView>
   )
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
     },
     subText: {
         fontSize: 14,
-        textAlign: 'left',
+        textAlign: 'center',
         color: '#ccc',
     },
     
