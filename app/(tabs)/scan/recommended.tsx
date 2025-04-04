@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Image, ActivityIndicator } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, ActivityIndicator, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemedText } from '@/components/ThemedText';
 import { PrimaryBtn } from '@/components/btns/PrimaryBtn';
 import { useDB } from '@/contexts/DBContext';
+import { useCart, CartItem } from '@/contexts/CartContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 type RecommendedParams = {
@@ -26,6 +27,7 @@ export default function Recommended() {
   const router = useRouter();
   const { wood } = useLocalSearchParams<RecommendedParams>();
   const db = useDB();
+  const { addToCart } = useCart();
   const [woodDetails, setWoodDetails] = useState<WoodDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,6 +55,61 @@ export default function Recommended() {
     }
     fetchWoodDetails();
   }, [wood, db]);
+
+  async function handleOpenProduct() {
+    if (!woodDetails) return;
+    try {
+      const productsCollection = collection(db, "products");
+      const q = query(productsCollection, where("productName", "==", woodDetails.commonName));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const docSnap = querySnapshot.docs[0];
+        const productId = docSnap.id;
+        router.push({
+          pathname: "/(tabs)/product/Product",
+          params: { productId: productId, fromRecommendation: "true" },
+        });
+      } else {
+        Alert.alert("Product Not Found", "No product was found for the recommended wood.");
+      }
+    } catch (error) {
+      console.error("Error opening product:", error);
+      Alert.alert("Error", "Failed to open product page.");
+    }
+  }
+
+  async function handleAddToCart() {
+    if (!woodDetails) return;
+    try {
+      const productsCollection = collection(db, "products");
+      const q = query(productsCollection, where("productName", "==", woodDetails.commonName));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const docSnap = querySnapshot.docs[0];
+        const data = docSnap.data() as {
+          productName: string;
+          price: number;
+          amount: string;
+          imageURL?: string;
+        };
+        const product: Omit<CartItem, "quantity"> = {
+          id: docSnap.id,
+          productName: data.productName,
+          price: data.price,
+          amount: data.amount,
+          imageURL: data.imageURL,
+        };
+        addToCart(product);
+        Alert.alert("Added to Cart", "The recommended product has been added to your cart.");
+        console.log("Added to Cart", product.productName, product.price, product.amount);
+      } else {
+        Alert.alert("Product Not Found", "No product was found for the recommended wood.");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      Alert.alert("Error", "Failed to add product to cart.");
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -99,6 +156,18 @@ export default function Recommended() {
             <ThemedText style={styles.fieldText}>
               {woodDetails.hardness ? woodDetails.hardness.join(", ") : "N/A"}
             </ThemedText>
+            <View style={styles.buttonRow}>
+              <PrimaryBtn
+                text="Open Product"
+                onPress={handleOpenProduct}
+                fontSize={18}
+              />
+              <PrimaryBtn
+                text="Add to Cart"
+                onPress={handleAddToCart}
+                fontSize={18}
+              />
+            </View>
           </View>
         ) : (
           <ThemedText style={styles.errorText}>
@@ -127,4 +196,12 @@ const styles = StyleSheet.create({
   woodImage: { width: 200, height: 200, borderRadius: 8, marginBottom: 20 },
   fieldTitle: { color: "#fff", fontSize: 18, fontWeight: "bold", marginTop: 10 },
   fieldText: { color: "#ccc", fontSize: 16, textAlign: "center" },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "40%",
+    marginTop: 20,
+    alignItems: "center",
+    gap: 10,
+  },
 });

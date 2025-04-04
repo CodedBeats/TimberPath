@@ -22,15 +22,15 @@ type Label = {
 
 const labelToWoodMapping: { [key: string]: string } = {
   "Wood": "Blackbutt",
-  "Flooring": "Jarrah Flooring",
-  "Hardwood": "Spotted Gum",
-  "Plank": "Tasmanian Oak",
-  "Wood flooring": "Queensland Maple",
-  "Plywood": "Merbau Plywood",
-  "Wood stain": "Red Gum",
-  "Lumber": "Eucalyptus Lumber",
-  "Natural material": "Sydney Blue Gum",
-  "Laminate flooring": "Laminate Wood",
+  "Flooring": "Mountain Ash",
+  "Hardwood": "Merbau",
+  "Plank": "Ironbark",
+  "Wood flooring": "Spotted Gum",
+  "Plywood": "Jarrah",
+  "Wood stain": "Tallowwood",
+  "Lumber": "Cypress Pine",
+  "Natural material": "Hoop Pine",
+  "Laminate flooring": "Tasmanian Oak",
 };
 
 function getRecommendedWood(labels: Label[]): string {
