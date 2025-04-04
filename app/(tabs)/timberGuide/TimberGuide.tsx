@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 
 // components
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
+import { HeaderWithCart } from "../../../components/header/SimpleHeader"
 
 
 export default function TimberGuide() {
@@ -53,6 +54,7 @@ export default function TimberGuide() {
     return (
         <SafeAreaView style={styles.safeArea}>
             {/* header */}
+            <HeaderWithCart />
             <LinearGradient
                 colors={["#32003F", "#4C007A"]}
                 start={{ x: 0, y: 0 }}
