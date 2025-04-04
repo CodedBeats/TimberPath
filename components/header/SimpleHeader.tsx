@@ -1,7 +1,7 @@
 import { useNavigation, CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { View, TextInput, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Platform, Text } from "react-native";
 import { useRouter, usePathname } from "expo-router";
 import { RootStackParamList, TabParamList } from "@/types";
 import { SearchBar } from "../search/SearchBar";
@@ -9,9 +9,17 @@ import { SearchBar } from "../search/SearchBar";
 // icon
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
+// context
+import { useCart } from "@/contexts/CartContext";
+
 
 const HeaderWithCart = () => {
+    const { cart } = useCart();
     const router = useRouter();
+
+    // get total items in cart instead of just the number of items which doesn't account for quantity
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
     const navigateToProfile = () => {
         router.push("/(profile)/Profile");
     };
@@ -30,12 +38,17 @@ const HeaderWithCart = () => {
                 style={styles.iconButton}
                 onPress={navigateToCart}
             >
-                <FontAwesome5
-                    name="shopping-cart"
-                    size={22}
-                    color="#333"
-                    style={styles.cartIcon}
-                />
+                <View style={styles.cartIconContainer}>
+                    <FontAwesome5
+                        name="shopping-cart"
+                        size={22}
+                        color="#333"
+                        style={styles.cartIcon}
+                    />
+                    {cart.length > 0 && (
+                        <Text style={styles.cartText}>{totalItems}</Text>
+                    )}
+                </View>
             </TouchableOpacity>
 
             {/* profile icon */}
@@ -107,9 +120,27 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    cartIconContainer: {
+        position: "relative",
+    },
     // small detail otherwise handle makes it look too far right
     cartIcon: {
         transform: [{ translateX: -1 }],
+    },
+    cartText: {
+        position: "absolute",
+        top: -6,
+        right: -10,
+        fontSize: 12,
+        color: "#fff",
+        backgroundColor: "#a00",
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        borderRadius: 10,
+        minWidth: 18,
+        textAlign: "center",
+        overflow: "hidden",
+        fontWeight: "bold",
     },
 });
 
