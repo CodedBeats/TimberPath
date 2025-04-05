@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -88,24 +89,23 @@ export default function Index() {
                     </LinearGradient>
                 </View>
 
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                <View style={styles.bottomBox}>
+                <PrimaryBtn
+                    text="Add Product"
                     onPress={() => router.push("/(admin)/AddProduct")}
-                >
-                    <Text style={styles.btnText}>Add Product</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                    fontSize={16}
+                />
+                <PrimaryBtn
+                    text="Add Supplier"
                     onPress={() => router.push("/(admin)/AddSupplier")}
-                >
-                    <Text style={styles.btnText}>Add Supplier</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                    fontSize={16}
+                />
+                <PrimaryBtn
+                    text="Add Wood"
                     onPress={() => router.push("/(admin)/AddWood")}
-                >
-                    <Text style={styles.btnText}>Add Wood</Text>
-                </TouchableOpacity>
+                    fontSize={16}
+                />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -184,5 +184,32 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
+    },
+    button: {
+        backgroundColor: "#f17700",
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: "center",
+        marginBottom: 10,
+        width: "60%",
+        alignSelf: "center",
+      },
+      buttonText: { 
+        color: "#fff", 
+        fontSize: 18, 
+        fontWeight: "bold" 
+    },
+    bottomBox: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#32003F",
+        marginHorizontal: 16,
+        marginBottom: 16,
+        padding: 16,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderColor: "#000",
+        borderTopWidth: 3,
     },
 });
