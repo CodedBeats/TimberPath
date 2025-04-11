@@ -54,7 +54,6 @@ export default function Products() {
           <LinearGradient colors={["#520073", "#000"]} style={styles.largeBox}>
             <View style={styles.subBoxHeaderContainer}>
               <Text style={styles.subBoxHeaderText}>All Products</Text>
-              <FilterBtn onPress={() => console.log("Filter")} />
             </View>
             <View style={styles.subBoxContent}>
               <ScrollView contentContainerStyle={styles.scrollView}>
