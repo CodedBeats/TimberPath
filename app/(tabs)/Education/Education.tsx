@@ -57,14 +57,15 @@ export default function Education() {
         // education data
         async function fetchData() {
             try {
-                const [newData, trendingData, categoriesData] =
+                const [newData, categoriesData] =
                     await Promise.all([
                         getNewArticles(5),
-                        getTrendingArticles(5),
                         getCategories(),
                     ]);
+                const allTrending = await getTrendingArticles(100);
+                const shuffledTrending = allTrending.sort(() => 0.5 - Math.random()).slice(0, 5);
+                setTrendingArticles(shuffledTrending);
                 setNewArticles(newData);
-                setTrendingArticles(trendingData);
                 setCategories(categoriesData);
             } catch (error) {
                 console.error(error);
