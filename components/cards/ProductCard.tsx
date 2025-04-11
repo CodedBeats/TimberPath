@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ThemedText } from "../ThemedText";
-const cardSize = 250; // Each card is 100x100
+const { width } = Dimensions.get("window");
 
 // context
 import { useCart } from "@/contexts/CartContext";
@@ -91,7 +91,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width: "45%",
+        // width: "45%",
+        width: width * 0.4,
         marginBottom: 20,
         ...Platform.select({
             ios: {
