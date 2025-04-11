@@ -241,7 +241,7 @@ export default function Profile() {
 }
 
 
-// component for fancy styled avatar and logout btn
+// component for fancy styled avatar and logout btn.
 const ProfileAvatar = ({ imageUrl, onLogout }: { imageUrl: string; onLogout: () => void }) => {
     return (
         <View style={styles.userImgLogoutContainer}>

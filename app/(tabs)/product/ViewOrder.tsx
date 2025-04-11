@@ -29,7 +29,6 @@ export default function ViewOrder() {
   const router = useRouter();
   const params = useLocalSearchParams<{ order: string }>();
 
-  // Parse the order details from the URL parameters
   let order: OrderDetails;
   try {
     order = JSON.parse(params.order);
