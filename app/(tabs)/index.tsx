@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     SafeAreaView,
     ScrollView,
@@ -8,6 +8,7 @@ import {
     Button,
     TouchableOpacity,
     Platform,
+    ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,12 +23,71 @@ import { useDB } from "@/contexts/DBContext";
 
 // components
 import { HeaderWithCart } from "../../components/header/SimpleHeader";
+import ProductCard from "@/components/cards/ProductCard";
+import { CategoryCard } from "@/components/cards/CategoryCard";
+import { ArticleCard } from "@/components/cards/ArticleCard";
+import { getProducts } from "@/services/products";
+import { getCategories } from "@/services/categories";
+import { getNewArticles } from "@/services/articles";
 
 export default function Index() {
     const router = useRouter();
 
     // contexts
     const db = useDB();
+    const { user } = useAuth();
+
+    const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [newArticles, setNewArticles] = useState<any[]>([]);
+    const [loadingProducts, setLoadingProducts] = useState(true);
+    const [loadingCategories, setLoadingCategories] = useState(true);
+    const [loadingNewArticles, setLoadingNewArticles] = useState(true);
+
+    useEffect(() => {
+        async function fetchProducts() {
+          try {
+            const productsData = await getProducts();
+            // in here I think is better to shuffle the products array and take 10 random products
+            const shuffled = productsData.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 10);
+            setFeaturedProducts(selected);
+          } catch (error) {
+            console.error("Error fetching products:", error);
+          } finally {
+            setLoadingProducts(false);
+          }
+        }
+        fetchProducts();
+      }, [db]);
+    
+      useEffect(() => {
+        async function fetchCategories() {
+          try {
+            const categoriesData = await getCategories();
+            setCategories(categoriesData);
+          } catch (error) {
+            console.error("Error fetching categories:", error);
+          } finally {
+            setLoadingCategories(false);
+          }
+        }
+        fetchCategories();
+      }, [db])
+
+      useEffect(() => {
+        async function fetchNewArticles() {
+          try {
+            const articlesData = await getNewArticles(5);
+            setNewArticles(articlesData);
+          } catch (error) {
+            console.error("Error fetching new articles:", error);
+          } finally {
+            setLoadingNewArticles(false);
+          }
+        }
+        fetchNewArticles();
+      }, [db]);
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -50,11 +110,26 @@ export default function Index() {
                             </Text>
                         </View>
                         <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered products here</Text>
+                            {loadingProducts ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={Platform.OS === "web"}
+                                contentContainerStyle={styles.featuredScrollContainer}
+                                style={styles.featuredScroll}
+                                >
+                                {featuredProducts.map((product) => (
+                                    <View key={product.id} style={styles.productWrapper}>
+                                    <ProductCard product={product} />
+                                    </View>
+                                ))}
+                                </ScrollView>
+                            )}
                         </View>
                     </LinearGradient>
 
-                    {/* product categories */}
+                    {/* Articles categories */}
                     <LinearGradient
                         colors={["#5c1f03", "#e87809"]}
                         start={{ x: 0, y: 0 }}
@@ -63,15 +138,30 @@ export default function Index() {
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
-                                Shop by Category
+                                Browse Articles by Category
                             </Text>
                         </View>
                         <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered categories here</Text>
+                            {loadingCategories ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={Platform.OS === "web"}
+                                contentContainerStyle={styles.categoryScrollContainer}
+                                style={styles.categoryScroll}
+                                >
+                                {categories.map((category) => (
+                                    <View key={category.id} style={styles.categoryWrapper}>
+                                    <CategoryCard category={category} />
+                                    </View>
+                                ))}
+                                </ScrollView>
+                            )}
                         </View>
                     </LinearGradient>
 
-                    {/* education */}
+                    {/* New Articles education */}
                     <LinearGradient
                         colors={["#180121", "#520073"]}
                         start={{ x: 0, y: 0 }}
@@ -84,7 +174,22 @@ export default function Index() {
                             </Text>
                         </View>
                         <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered articles here</Text>
+                            {loadingNewArticles ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={Platform.OS === "web"}
+                                contentContainerStyle={styles.featuredScrollContainer}
+                                style={styles.featuredScroll}
+                                >
+                                {newArticles.map((article) => (
+                                    <View key={article.id} style={styles.productWrapper2}>
+                                    <ArticleCard article={article} />
+                                    </View>
+                                ))}
+                                </ScrollView>
+                            )}
                         </View>
                     </LinearGradient>
                 </View>
@@ -169,7 +274,7 @@ const styles = StyleSheet.create({
     subBoxContent: {
         borderColor: "#222",
         borderWidth: 1,
-        height: 100,
+        height: 230,
     },
     buttonContainer: {
         marginHorizontal: "20%",
@@ -179,37 +284,43 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 12,
         borderRadius: 10,
+        marginBottom: 10,
     },
     btnText: {
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
     },
-    button: {
-        backgroundColor: "#f17700",
-        paddingVertical: 12,
-        borderRadius: 10,
-        alignItems: "center",
-        marginBottom: 10,
-        width: "60%",
-        alignSelf: "center",
+    featuredScroll: {
+        overflowX: "auto",
       },
-      buttonText: { 
-        color: "#fff", 
-        fontSize: 18, 
-        fontWeight: "bold" 
-    },
-    bottomBox: {
-        display: "flex",
+      featuredScrollContainer: {
+        flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#32003F",
-        marginHorizontal: 16,
-        marginBottom: 16,
-        padding: 16,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        borderColor: "#000",
-        borderTopWidth: 3,
-    },
+      },
+      productWrapper: {
+        width: 450,
+        marginRight: 12,
+      },
+      productWrapper2: {
+        //width: 250,
+        height: 230,
+        marginRight: 12,
+      },
+      categoryScroll: {
+        overflowX: "auto",
+      },
+      categoryScrollContainer: {
+        paddingRight: 20,
+        flexDirection: "row",
+        alignItems: "center",
+      },
+      categoryWrapper: {
+        marginRight: 20,
+      },
+      bottomBox: {
+        marginTop: 10,
+        padding: 8,
+        alignItems: "center",
+      },
 });
