@@ -16,10 +16,7 @@ import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
 // services
 import { getCategories } from "../../services/categories";
-import {
-    getNewArticles,
-    getTrendingArticles,
-} from "../../services/articles";
+import { getNewArticles, getTrendingArticles } from "../../services/articles";
 import { getUserByUID } from "../../services/users";
 
 // firebase
@@ -31,11 +28,10 @@ import { useDB } from "@/contexts/DBContext";
 
 // components
 import { HeaderWithCart } from "../../components/header/SimpleHeader";
+import ProductCard from "@/components/cards/ProductCard";
 import { CategoryCard } from "@/components/cards/CategoryCard";
 import { ArticleCard } from "@/components/cards/ArticleCard";
-import ProductCard from "@/components/cards/ProductCard";
-
-
+import { getProducts } from "@/services/products";
 
 export default function Index() {
     const router = useRouter();
@@ -52,71 +48,55 @@ export default function Index() {
     // contexts
     const db = useDB();
 
+    const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+    const [loadingProducts, setLoadingProducts] = useState(true);
+    const [loadingCategories, setLoadingCategories] = useState(true);
+    const [loadingNewArticles, setLoadingNewArticles] = useState(true);
 
-    // fetch all user, education and products data
     useEffect(() => {
-        // user data
-        async function fetchUserData() {
-            try {
-                const userData = await getUserByUID(user?.uid);
-                console.log("user data:", userData);
-                setUserData(userData);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        // education data
-        async function fetchEducation() {
-            try {
-
-                const [newData, categoriesData] =
-                    await Promise.all([
-                        getNewArticles(5),
-                        getCategories(),
-                    ]);
-                setNewArticles(newData);
-                setCategories(categoriesData);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        // products data
         async function fetchProducts() {
-                try {
-                const querySnapshot = await getDocs(collection(db, "products"));
-                const productsData: any[] = [];
-                querySnapshot.forEach((doc) => {
-                    productsData.push({ id: doc.id, ...doc.data() });
-                });
-                setProducts(productsData);
+            try {
+                const productsData = await getProducts();
+                // in here I think is better to shuffle the products array and take 10 random products
+                const shuffled = productsData.sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, 10);
+                setFeaturedProducts(selected);
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
-                setLoading(false);
+                setLoadingProducts(false);
             }
         }
-
-        // fetch all data
-        fetchUserData();
-        fetchEducation();
         fetchProducts();
     }, [db]);
 
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const categoriesData = await getCategories();
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            } finally {
+                setLoadingCategories(false);
+            }
+        }
+        fetchCategories();
+    }, [db]);
 
-    if (loading) {
-        return (
-            <SafeAreaView style={styles.safeArea}>
-                <ActivityIndicator size="large" color="#fff" />
-            </SafeAreaView>
-        );
-    }
-
+    useEffect(() => {
+        async function fetchNewArticles() {
+            try {
+                const articlesData = await getNewArticles(5);
+                setNewArticles(articlesData);
+            } catch (error) {
+                console.error("Error fetching new articles:", error);
+            } finally {
+                setLoadingNewArticles(false);
+            }
+        }
+        fetchNewArticles();
+    }, [db]);
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -138,17 +118,34 @@ export default function Index() {
                                 Featured Products
                             </Text>
                         </View>
-                        <ScrollView
-                            horizontal={true}
-                            contentContainerStyle={styles.horizontalScroll}
-                        >
-                            {products.map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </ScrollView>
+                        <View style={styles.subBoxContent}>
+                            {loadingProducts ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={
+                                        Platform.OS === "web"
+                                    }
+                                    contentContainerStyle={
+                                        styles.featuredScrollContainer
+                                    }
+                                    style={styles.featuredScroll}
+                                >
+                                    {featuredProducts.map((product) => (
+                                        <View
+                                            key={product.id}
+                                            style={styles.productWrapper}
+                                        >
+                                            <ProductCard product={product} />
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            )}
+                        </View>
                     </LinearGradient>
 
-                    {/* product categories */}
+                    {/* Articles categories */}
                     <LinearGradient
                         colors={["#5c1f03", "#e87809"]}
                         start={{ x: 0, y: 0 }}
@@ -157,23 +154,37 @@ export default function Index() {
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
-                                Brows Article by Category
+                                Browse Articles by Category
                             </Text>
                         </View>
-                        <ScrollView
-                            horizontal={true}
-                            contentContainerStyle={styles.horizontalScroll}
-                        >
-                            {categories.map((category) => (
-                                <CategoryCard
-                                    key={category.id}
-                                    category={category}
-                                />
-                            ))}
-                        </ScrollView>
+                        <View style={styles.subBoxContent}>
+                            {loadingCategories ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={
+                                        Platform.OS === "web"
+                                    }
+                                    contentContainerStyle={
+                                        styles.categoryScrollContainer
+                                    }
+                                    style={styles.categoryScroll}
+                                >
+                                    {categories.map((category) => (
+                                        <View
+                                            key={category.id}
+                                            style={styles.categoryWrapper}
+                                        >
+                                            <CategoryCard category={category} />
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            )}
+                        </View>
                     </LinearGradient>
 
-                    {/* education */}
+                    {/* New Articles education */}
                     <LinearGradient
                         colors={["#180121", "#520073"]}
                         start={{ x: 0, y: 0 }}
@@ -185,35 +196,52 @@ export default function Index() {
                                 New Articles
                             </Text>
                         </View>
-                        <ScrollView
-                            horizontal={true}
-                            contentContainerStyle={styles.horizontalScroll}
-                        >
-                            {newArticles.map((article) => (
-                                <ArticleCard key={article.id} article={article} />
-                            ))}
-                        </ScrollView>
+                        <View style={styles.subBoxContent}>
+                            {loadingNewArticles ? (
+                                <ActivityIndicator size="large" color="#fff" />
+                            ) : (
+                                <ScrollView
+                                    horizontal
+                                    showsHorizontalScrollIndicator={
+                                        Platform.OS === "web"
+                                    }
+                                    contentContainerStyle={
+                                        styles.featuredScrollContainer
+                                    }
+                                    style={styles.featuredScroll}
+                                >
+                                    {newArticles.map((article) => (
+                                        <View
+                                            key={article.id}
+                                            style={styles.productWrapper2}
+                                        >
+                                            <ArticleCard article={article} />
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            )}
+                        </View>
                     </LinearGradient>
                 </View>
-                
+
                 {/* only display for admins */}
-                { userData.admin && (
+                {userData.admin && (
                     <View style={styles.bottomBox}>
-                    <PrimaryBtn
-                        text="Add Product"
-                        onPress={() => router.push("/(admin)/AddProduct")}
-                        fontSize={16}
-                    />
-                    <PrimaryBtn
-                        text="Add Supplier"
-                        onPress={() => router.push("/(admin)/AddSupplier")}
-                        fontSize={16}
-                    />
-                    <PrimaryBtn
-                        text="Add Wood"
-                        onPress={() => router.push("/(admin)/AddWood")}
-                        fontSize={16}
-                    />
+                        <PrimaryBtn
+                            text="Add Product"
+                            onPress={() => router.push("/(admin)/AddProduct")}
+                            fontSize={16}
+                        />
+                        <PrimaryBtn
+                            text="Add Supplier"
+                            onPress={() => router.push("/(admin)/AddSupplier")}
+                            fontSize={16}
+                        />
+                        <PrimaryBtn
+                            text="Add Wood"
+                            onPress={() => router.push("/(admin)/AddWood")}
+                            fontSize={16}
+                        />
                     </View>
                 )}
             </ScrollView>
@@ -279,7 +307,7 @@ const styles = StyleSheet.create({
     subBoxContent: {
         borderColor: "#222",
         borderWidth: 1,
-        height: 100,
+        height: 230,
     },
     buttonContainer: {
         marginHorizontal: "20%",
@@ -289,44 +317,43 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 12,
         borderRadius: 10,
+        marginBottom: 10,
     },
     btnText: {
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
     },
-    button: {
-        backgroundColor: "#f17700",
-        paddingVertical: 12,
-        borderRadius: 10,
-        alignItems: "center",
-        marginBottom: 10,
-        width: "60%",
-        alignSelf: "center",
+    featuredScroll: {
+        overflowX: "auto",
     },
-    buttonText: { 
-        color: "#fff", 
-        fontSize: 18, 
-        fontWeight: "bold" 
-    },
-    bottomBox: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#32003F",
-        marginHorizontal: 16,
-        marginBottom: 16,
-        padding: 16,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
-        borderColor: "#000",
-        borderTopWidth: 3,
-    },
-    horizontalScroll: {
+    featuredScrollContainer: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-start",
-        gap: 15,
-        // marginBottom: 20,
+    },
+    productWrapper: {
+        width: 450,
+        marginRight: 12,
+    },
+    productWrapper2: {
+        //width: 250,
+        height: 230,
+        marginRight: 12,
+    },
+    categoryScroll: {
+        overflowX: "auto",
+    },
+    categoryScrollContainer: {
+        paddingRight: 20,
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    categoryWrapper: {
+        marginRight: 20,
+    },
+    bottomBox: {
+        marginTop: 10,
+        padding: 8,
+        alignItems: "center",
     },
 });
