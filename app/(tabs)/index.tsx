@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
     SafeAreaView,
     ScrollView,
@@ -8,10 +8,19 @@ import {
     Button,
     TouchableOpacity,
     Platform,
+    ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
+
+// services
+import { getCategories } from "../../services/categories";
+import {
+    getNewArticles,
+    getTrendingArticles,
+} from "../../services/articles";
+import { getUserByUID } from "../../services/users";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -22,12 +31,92 @@ import { useDB } from "@/contexts/DBContext";
 
 // components
 import { HeaderWithCart } from "../../components/header/SimpleHeader";
+import { CategoryCard } from "@/components/cards/CategoryCard";
+import { ArticleCard } from "@/components/cards/ArticleCard";
+import ProductCard from "@/components/cards/ProductCard";
+
+
 
 export default function Index() {
     const router = useRouter();
+    // get user from auth
+    const { user } = useAuth();
+    const [userData, setUserData] = useState<any>(null);
+    // products
+    const [products, setProducts] = useState<any[]>([]);
+    // education data
+    const [newArticles, setNewArticles] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     // contexts
     const db = useDB();
+
+
+    // fetch all user, education and products data
+    useEffect(() => {
+        // user data
+        async function fetchUserData() {
+            try {
+                const userData = await getUserByUID(user?.uid);
+                console.log("user data:", userData);
+                setUserData(userData);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // education data
+        async function fetchEducation() {
+            try {
+
+                const [newData, categoriesData] =
+                    await Promise.all([
+                        getNewArticles(5),
+                        getCategories(),
+                    ]);
+                setNewArticles(newData);
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // products data
+        async function fetchProducts() {
+                try {
+                const querySnapshot = await getDocs(collection(db, "products"));
+                const productsData: any[] = [];
+                querySnapshot.forEach((doc) => {
+                    productsData.push({ id: doc.id, ...doc.data() });
+                });
+                setProducts(productsData);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // fetch all data
+        fetchUserData();
+        fetchEducation();
+        fetchProducts();
+    }, [db]);
+
+
+    if (loading) {
+        return (
+            <SafeAreaView style={styles.safeArea}>
+                <ActivityIndicator size="large" color="#fff" />
+            </SafeAreaView>
+        );
+    }
+
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -49,9 +138,14 @@ export default function Index() {
                                 Featured Products
                             </Text>
                         </View>
-                        <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered products here</Text>
-                        </View>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {products.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </ScrollView>
                     </LinearGradient>
 
                     {/* product categories */}
@@ -63,12 +157,20 @@ export default function Index() {
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
-                                Shop by Category
+                                Brows Article by Category
                             </Text>
                         </View>
-                        <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered categories here</Text>
-                        </View>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {categories.map((category) => (
+                                <CategoryCard
+                                    key={category.id}
+                                    category={category}
+                                />
+                            ))}
+                        </ScrollView>
                     </LinearGradient>
 
                     {/* education */}
@@ -83,29 +185,37 @@ export default function Index() {
                                 New Articles
                             </Text>
                         </View>
-                        <View style={styles.subBoxContent}>
-                            <Text>dynamically rendered articles here</Text>
-                        </View>
+                        <ScrollView
+                            horizontal={true}
+                            contentContainerStyle={styles.horizontalScroll}
+                        >
+                            {newArticles.map((article) => (
+                                <ArticleCard key={article.id} article={article} />
+                            ))}
+                        </ScrollView>
                     </LinearGradient>
                 </View>
-
-                <View style={styles.bottomBox}>
-                <PrimaryBtn
-                    text="Add Product"
-                    onPress={() => router.push("/(admin)/AddProduct")}
-                    fontSize={16}
-                />
-                <PrimaryBtn
-                    text="Add Supplier"
-                    onPress={() => router.push("/(admin)/AddSupplier")}
-                    fontSize={16}
-                />
-                <PrimaryBtn
-                    text="Add Wood"
-                    onPress={() => router.push("/(admin)/AddWood")}
-                    fontSize={16}
-                />
-                </View>
+                
+                {/* only display for admins */}
+                { userData.admin && (
+                    <View style={styles.bottomBox}>
+                    <PrimaryBtn
+                        text="Add Product"
+                        onPress={() => router.push("/(admin)/AddProduct")}
+                        fontSize={16}
+                    />
+                    <PrimaryBtn
+                        text="Add Supplier"
+                        onPress={() => router.push("/(admin)/AddSupplier")}
+                        fontSize={16}
+                    />
+                    <PrimaryBtn
+                        text="Add Wood"
+                        onPress={() => router.push("/(admin)/AddWood")}
+                        fontSize={16}
+                    />
+                    </View>
+                )}
             </ScrollView>
         </SafeAreaView>
     );
@@ -193,8 +303,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: "60%",
         alignSelf: "center",
-      },
-      buttonText: { 
+    },
+    buttonText: { 
         color: "#fff", 
         fontSize: 18, 
         fontWeight: "bold" 
@@ -211,5 +321,12 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
         borderColor: "#000",
         borderTopWidth: 3,
+    },
+    horizontalScroll: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 15,
+        // marginBottom: 20,
     },
 });
