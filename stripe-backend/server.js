@@ -16,7 +16,7 @@ app.post("/create-payment-intent", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Stripe backend server is running on port ${PORT}`);
+  console.log(`Stripe and Google Vision backend server is running on port ${PORT}`);
 });
 
 
