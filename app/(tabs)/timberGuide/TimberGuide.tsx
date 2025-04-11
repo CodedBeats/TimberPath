@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     topBox: {
         marginHorizontal: 16,
-        marginTop: 16,
+        // marginTop: 16,
         padding: 16,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#32003F",
         marginHorizontal: 16,
         marginBottom: 16,
-        padding: 16,
+        // padding: 16,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         borderColor: "#000",
