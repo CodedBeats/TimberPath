@@ -17,6 +17,10 @@ import {
     getNewArticles,
     getTrendingArticles,
 } from "../../../services/articles";
+import { getUserByUID } from "../../../services/users";
+
+// context
+import { useAuth } from "@/contexts/AuthContext";
 
 // components
 import { ArticleCard } from "@/components/cards/ArticleCard";
@@ -24,14 +28,33 @@ import { CategoryCard } from "@/components/cards/CategoryCard";
 import { HeaderWithoutCart } from "../../../components/header/SimpleHeader";
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
+
 export default function Education() {
     const router = useRouter();
+    // get user from auth
+    const { user } = useAuth();
+    const [userData, setUserData] = useState<any>(null);
+    // education data
     const [newArticles, setNewArticles] = useState<any[]>([]);
     const [trendingArticles, setTrendingArticles] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
+        // user data
+        async function fetchUserData() {
+            try {
+                const userData = await getUserByUID(user?.uid);
+                console.log("user data:", userData);
+                setUserData(userData);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        // education data
         async function fetchData() {
             try {
                 const [newData, trendingData, categoriesData] =
@@ -49,6 +72,9 @@ export default function Education() {
                 setLoading(false);
             }
         }
+
+        // fetch all data
+        fetchUserData();
         fetchData();
     }, []);
 
@@ -84,11 +110,14 @@ export default function Education() {
                                 <ArticleCard key={article.id} article={article} />
                             ))}
                         </ScrollView>
-
-                        <PrimaryBtn
-                            onPress={() => router.push("./AddArticle")}
-                            text="Add New Article"
-                        />
+                        
+                        {/* only display for admins */}
+                        { userData.admin && (
+                            <PrimaryBtn
+                                onPress={() => router.push("./AddArticle")}
+                                text="Add New Article"
+                            />
+                        )}
                     </LinearGradient>
 
                     {/* Categories Section */}
@@ -112,11 +141,14 @@ export default function Education() {
                                 />
                             ))}
                         </ScrollView>
-
-                        <PrimaryBtn
-                            onPress={() => router.push("./AddCategory")}
-                            text="Add New Category"
-                        />
+                        
+                        {/* only display for admins */}
+                        { userData.admin && (
+                            <PrimaryBtn
+                                onPress={() => router.push("./AddCategory")}
+                                text="Add New Category"
+                            />
+                        )}
                     </LinearGradient>
 
                     {/* Trending Articles Section */}
@@ -162,7 +194,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-start",
         gap: 15,
-        marginBottom: 20,
+        // marginBottom: 20,
     },
     articleCardsContainer: {
         padding: 10,
