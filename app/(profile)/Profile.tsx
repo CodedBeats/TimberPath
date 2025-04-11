@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
+    TextInput,
     Button,
     StyleSheet,
     Alert,
@@ -18,7 +19,7 @@ import { useRouter } from "expo-router";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { LinearGradient } from 'expo-linear-gradient'
 
 // icons
@@ -32,7 +33,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { useAuth } from "@/contexts/AuthContext"
 import { useDB } from "@/contexts/DBContext"
 
-
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
 export default function Profile() {
     const router = useRouter();
@@ -50,6 +51,9 @@ export default function Profile() {
         phoneNumber: "",
         isTradie: "",
     })
+
+    const [orders, setOrders] = useState<any[]>([]);
+    const [ordersLoading, setOrdersLoading] = useState(true);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -76,6 +80,29 @@ export default function Profile() {
     
         fetchProfile()
     }, [user, db])
+
+    useEffect(() => {
+        async function fetchOrders() {
+          if (!user) return;
+          try {
+            const ordersQuery = query(
+              collection(db, "orders"),
+              where("userId", "==", user.uid)
+            );
+            const ordersSnapshot = await getDocs(ordersQuery);
+            const ordersData = ordersSnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setOrders(ordersData);
+          } catch (error) {
+            console.error("Error fetching orders:", error);
+          } finally {
+            setOrdersLoading(false);
+          }
+        }
+        fetchOrders();
+      }, [user, db]);
 
 
     // function to format phone number
@@ -161,13 +188,60 @@ export default function Profile() {
                 </View>
             </View>
             </LinearGradient>
+
+            {/* Orders Section */}
+        <View style={styles.ordersContainer}>
+          <ThemedText style={styles.ordersHeader}>Your Orders</ThemedText>
+          {ordersLoading ? (
+            <ActivityIndicator size="large" color="#fff" />
+          ) : orders.length === 0 ? (
+            <ThemedText style={styles.noOrdersText}>No orders found.</ThemedText>
+          ) : (
+            <View style={styles.ordersTable}>
+              <View style={styles.ordersRowHeader}>
+                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 2 }]}>
+                  Order Number
+                </ThemedText>
+                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
+                  Total Amount
+                </ThemedText>
+                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
+                  Action
+                </ThemedText>
+              </View>
+              {orders.map((order) => (
+                <View key={order.id} style={styles.ordersRow}>
+                  <ThemedText style={[styles.ordersCell, { flex: 2 }]}>
+                    {order.orderNumber}
+                  </ThemedText>
+                  <ThemedText style={[styles.ordersCell, { flex: 1 }]}>
+                    ${order.total.toFixed(2)}
+                  </ThemedText>
+                  <TouchableOpacity
+                    style={styles.viewButton}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/(tabs)/product/ViewOrder",
+                        params: { order: JSON.stringify(order) },
+                      })
+                    }
+                  >
+                    <ThemedText style={styles.viewButtonText}>View</ThemedText>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+
+
         </ScrollView>
         </SafeAreaView>
     );
 }
 
 
-// component for fancy styled avatar and logout btn
+// component for fancy styled avatar and logout btn.
 const ProfileAvatar = ({ imageUrl, onLogout }: { imageUrl: string; onLogout: () => void }) => {
     return (
         <View style={styles.userImgLogoutContainer}>
@@ -340,4 +414,63 @@ const styles = StyleSheet.create({
     buttonContainer: {
         marginVertical: 8,
     },
+
+    ordersContainer: {
+        marginTop: 20,
+        backgroundColor: "#111",
+        padding: 12,
+        borderRadius: 8,
+      },
+      ordersHeader: {
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
+        textAlign: "center",
+      },
+      noOrdersText: {
+        color: "#ccc",
+        fontSize: 16,
+        textAlign: "center",
+      },
+      ordersTable: {
+        borderWidth: 1,
+        borderColor: "#444",
+        borderRadius: 8,
+      },
+      ordersRowHeader: {
+        flexDirection: "row",
+        padding: 8,
+        borderBottomWidth: 1,
+        borderColor: "#444",
+        backgroundColor: "#333",
+      },
+      ordersRow: {
+        flexDirection: "row",
+        padding: 8,
+        borderBottomWidth: 1,
+        borderColor: "#444",
+        alignItems: "center",
+      },
+      ordersCell: {
+        color: "#fff",
+        fontSize: 14,
+        textAlign: "center",
+      },
+      ordersHeaderCell: {
+        fontWeight: "bold",
+        fontSize: 16,
+      },
+      viewButton: {
+        backgroundColor: "#f17700",
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderRadius: 6,
+        marginLeft: 10,
+      },
+      viewButtonText: {
+        color: "#fff",
+        fontSize: 14,
+        fontWeight: "bold",
+      },
 });
