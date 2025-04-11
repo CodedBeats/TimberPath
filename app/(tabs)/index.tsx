@@ -39,19 +39,19 @@ export default function Index() {
     const { user } = useAuth();
     const [userData, setUserData] = useState<any>(null);
     // products
-    const [products, setProducts] = useState<any[]>([]);
+    const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+    const [loadingProducts, setLoadingProducts] = useState(true);
     // education data
     const [newArticles, setNewArticles] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
+    const [loadingCategories, setLoadingCategories] = useState(true);
+    const [loadingNewArticles, setLoadingNewArticles] = useState(true);
+
     const [loading, setLoading] = useState(true);
 
     // contexts
     const db = useDB();
 
-    const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-    const [loadingProducts, setLoadingProducts] = useState(true);
-    const [loadingCategories, setLoadingCategories] = useState(true);
-    const [loadingNewArticles, setLoadingNewArticles] = useState(true);
 
     useEffect(() => {
         async function fetchProducts() {
@@ -98,6 +98,8 @@ export default function Index() {
         fetchNewArticles();
     }, [db]);
 
+
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.scrollView}>
@@ -111,7 +113,7 @@ export default function Index() {
                         colors={["#180121", "#520073"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={[styles.largeBox, styles.largeBox1]}
+                        style={styles.largeBox}
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
@@ -124,21 +126,10 @@ export default function Index() {
                             ) : (
                                 <ScrollView
                                     horizontal={true}
-                                    showsHorizontalScrollIndicator={
-                                        Platform.OS === "web"
-                                    }
-                                    contentContainerStyle={
-                                        styles.featuredScrollContainer
-                                    }
-                                    style={styles.featuredScroll}
+                                    contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {featuredProducts.map((product) => (
-                                        <View
-                                            key={product.id}
-                                            style={styles.productWrapper}
-                                        >
-                                            <ProductCard product={product} />
-                                        </View>
+                                        <ProductCard product={product} />
                                     ))}
                                 </ScrollView>
                             )}
@@ -150,7 +141,7 @@ export default function Index() {
                         colors={["#5c1f03", "#e87809"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={[styles.largeBox, styles.largeBox2]}
+                        style={styles.largeBox}
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
@@ -163,21 +154,10 @@ export default function Index() {
                             ) : (
                                 <ScrollView
                                     horizontal={true}
-                                    showsHorizontalScrollIndicator={
-                                        Platform.OS === "web"
-                                    }
-                                    contentContainerStyle={
-                                        styles.categoryScrollContainer
-                                    }
-                                    style={styles.categoryScroll}
+                                    contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {categories.map((category) => (
-                                        <View
-                                            key={category.id}
-                                            style={styles.categoryWrapper}
-                                        >
-                                            <CategoryCard category={category} />
-                                        </View>
+                                        <CategoryCard category={category} />
                                     ))}
                                 </ScrollView>
                             )}
@@ -189,7 +169,7 @@ export default function Index() {
                         colors={["#180121", "#520073"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={[styles.largeBox, styles.largeBox1]}
+                        style={styles.largeBox}
                     >
                         <View style={styles.subBoxHeaderContainer}>
                             <Text style={styles.subBoxHeaderText}>
@@ -201,22 +181,11 @@ export default function Index() {
                                 <ActivityIndicator size="large" color="#fff" />
                             ) : (
                                 <ScrollView
-                                    horizontal
-                                    showsHorizontalScrollIndicator={
-                                        Platform.OS === "web"
-                                    }
-                                    contentContainerStyle={
-                                        styles.featuredScrollContainer
-                                    }
-                                    style={styles.featuredScroll}
+                                    horizontal={true}
+                                    contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {newArticles.map((article) => (
-                                        <View
-                                            key={article.id}
-                                            style={styles.productWrapper2}
-                                        >
-                                            <ArticleCard article={article} />
-                                        </View>
+                                        <ArticleCard article={article} />
                                     ))}
                                 </ScrollView>
                             )}
@@ -225,7 +194,7 @@ export default function Index() {
                 </View>
 
                 {/* only display for admins */}
-                {userData.admin && (
+                {/* {userData.admin && ( */}
                     <View style={styles.bottomBox}>
                         <PrimaryBtn
                             text="Add Product"
@@ -243,7 +212,7 @@ export default function Index() {
                             fontSize={16}
                         />
                     </View>
-                )}
+                {/* )} */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -282,14 +251,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 8,
         marginBottom: 20,
-    },
-    largeBox1: {
-        shadowOffset: { width: 2, height: 2 },
-        shadowOpacity: 0.9,
-        shadowRadius: 4,
-        elevation: 3, // android shadow
-    },
-    largeBox2: {
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.9,
         shadowRadius: 4,
@@ -305,9 +266,7 @@ const styles = StyleSheet.create({
         textDecorationLine: "underline",
     },
     subBoxContent: {
-        borderColor: "#222",
-        borderWidth: 1,
-        height: 230,
+        // paddingBottom: 20,
     },
     buttonContainer: {
         marginHorizontal: "20%",
@@ -324,32 +283,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
     },
-    featuredScroll: {
-        overflowX: "auto",
-    },
-    featuredScrollContainer: {
+    horizontalScroll: {
         flexDirection: "row",
         alignItems: "center",
-    },
-    productWrapper: {
-        width: 450,
-        marginRight: 12,
-    },
-    productWrapper2: {
-        //width: 250,
-        height: 230,
-        marginRight: 12,
-    },
-    categoryScroll: {
-        overflowX: "auto",
-    },
-    categoryScrollContainer: {
-        paddingRight: 20,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    categoryWrapper: {
-        marginRight: 20,
+        justifyContent: "flex-start",
+        gap: 15,
+        marginBottom: 5,
     },
     bottomBox: {
         marginTop: 10,

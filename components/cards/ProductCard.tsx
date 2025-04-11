@@ -8,7 +8,6 @@ import {
     Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { ThemedText } from "../ThemedText";
 const { width } = Dimensions.get("window");
 
 // context
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         // width: "45%",
         width: width * 0.4,
-        marginBottom: 20,
+        // marginBottom: 20,
         ...Platform.select({
             ios: {
                 maxHeight: 200,
