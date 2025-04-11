@@ -92,9 +92,15 @@ export default function GuidesSuggestedWoods() {
             {/* suggested woods */}
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.woodsGrid}>
-                    {filteredWoods.map((wood) => (
-                        <WoodCard key={wood.id} wood={wood} />
-                    ))}
+                {filteredWoods.length > 0 ? (
+                    filteredWoods.map((wood) => (
+                    <WoodCard key={wood.id} wood={wood} />
+                    ))
+                ) : (
+                    <Text style={styles.noResultsText}>
+                        No matching woods found. You can try adjusting your search criteria.
+                    </Text>
+                )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -130,4 +136,10 @@ const styles = StyleSheet.create({
       gap: 30,
       justifyContent: "center",
     },
+    noResultsText: {
+        textAlign: 'center',
+        color: '#666',
+        fontSize: 16,
+        marginTop: 20,
+    }
 });

@@ -27,10 +27,13 @@ const PrimaryBtn = ({text, onPress, fontSize = 15, fontWeight = "500"}: PrimaryB
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: "100%",
+        width: "60%",
+        marginVertical: 10,
+        alignSelf: "center",
     },
     button: {
         borderRadius: 12,
+        justifyContent: "center",
     },
     gradient: {
         paddingVertical: 12,

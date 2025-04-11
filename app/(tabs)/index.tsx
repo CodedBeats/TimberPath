@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
 
 // firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -193,24 +194,23 @@ export default function Index() {
                     </LinearGradient>
                 </View>
 
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                <View style={styles.bottomBox}>
+                <PrimaryBtn
+                    text="Add Product"
                     onPress={() => router.push("/(admin)/AddProduct")}
-                >
-                    <Text style={styles.btnText}>Add Product</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                    fontSize={16}
+                />
+                <PrimaryBtn
+                    text="Add Supplier"
                     onPress={() => router.push("/(admin)/AddSupplier")}
-                >
-                    <Text style={styles.btnText}>Add Supplier</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttonContainer}
+                    fontSize={16}
+                />
+                <PrimaryBtn
+                    text="Add Wood"
                     onPress={() => router.push("/(admin)/AddWood")}
-                >
-                    <Text style={styles.btnText}>Add Wood</Text>
-                </TouchableOpacity>
+                    fontSize={16}
+                />
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -317,5 +317,10 @@ const styles = StyleSheet.create({
       },
       categoryWrapper: {
         marginRight: 20,
+      },
+      bottomBox: {
+        marginTop: 10,
+        padding: 8,
+        alignItems: "center",
       },
 });
