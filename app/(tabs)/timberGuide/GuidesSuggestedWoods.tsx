@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     Platform,
+    ActivityIndicator,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,6 +20,8 @@ import WoodCard from "@/components/cards/WoodCard";
 export default function GuidesSuggestedWoods() {
     const router = useRouter()
     const [woods, setWoods] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+    const [filteredWoods, setFilteredWoods] = useState<any>([]);
     // get selected criteria
     const { criteria } = useLocalSearchParams()
     const passedCriteria = typeof criteria === "string" ? JSON.parse(criteria) : null
@@ -52,15 +55,21 @@ export default function GuidesSuggestedWoods() {
     }, [])
 
 
-    // useMemo to calculate filteredWoods only when woods or passedCriteria changes (stops trigering re-renders)
-    const filteredWoods = useMemo(() => {
-        if (woods.length > 0 && passedCriteria) {
-            // filter woods based on criteria
-            return filterWoods(woods, passedCriteria)
+    // useEffect to calculate filteredWoods only when woods or passedCriteria changes (stops trigering re-renders)
+    useEffect(() => {
+        try {
+            if (woods.length > 0 && passedCriteria) {
+                const result = filterWoods(woods, passedCriteria);
+                setFilteredWoods(result);
+            } else {
+                setFilteredWoods(woods);
+            }
+        } catch (error) {
+            console.error("error filtering woods:", error);
+        } finally {
+            setLoading(false);
         }
-        // get all woods if no criteria
-        return woods
-    }, [woods, passedCriteria])
+    }, [woods]);
 
 
     // debug
@@ -71,7 +80,7 @@ export default function GuidesSuggestedWoods() {
             console.log("filtered woods:", filteredWoods)
             //console.log("filtered woods:", filteredWoods.map(wood => wood.commonName))
         }
-    }, [filteredWoods])
+    }, [])
 
 
 
@@ -92,9 +101,11 @@ export default function GuidesSuggestedWoods() {
             {/* suggested woods */}
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.woodsGrid}>
-                {filteredWoods.length > 0 ? (
-                    filteredWoods.map((wood) => (
-                    <WoodCard key={wood.id} wood={wood} />
+                {loading ? (
+                    <ActivityIndicator size="large" color="#fff" />
+                ) : filteredWoods.length > 0 ? (
+                    filteredWoods.map((wood: any) => (
+                        <WoodCard key={wood.id} wood={wood} />
                     ))
                 ) : (
                     <Text style={styles.noResultsText}>
