@@ -35,9 +35,6 @@ import { getProducts } from "@/services/products";
 
 export default function Index() {
     const router = useRouter();
-    // get user from auth
-    const { user } = useAuth();
-    const [userData, setUserData] = useState<any>(null);
     // products
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
     const [loadingProducts, setLoadingProducts] = useState(true);
@@ -110,7 +107,7 @@ export default function Index() {
                 <View style={styles.container}>
                     {/* producrs */}
                     <LinearGradient
-                        colors={["#180121", "#520073"]}
+                        colors={["#540093", "#b400f3"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
@@ -138,7 +135,7 @@ export default function Index() {
 
                     {/* Articles categories */}
                     <LinearGradient
-                        colors={["#5c1f03", "#e87809"]}
+                        colors={["#8c4b10", "#ffab00"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
@@ -166,7 +163,7 @@ export default function Index() {
 
                     {/* New Articles education */}
                     <LinearGradient
-                        colors={["#180121", "#520073"]}
+                        colors={["#540093", "#b400f3"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
@@ -192,27 +189,6 @@ export default function Index() {
                         </View>
                     </LinearGradient>
                 </View>
-
-                {/* only display for admins */}
-                {/* {userData.admin && ( */}
-                    <View style={styles.bottomBox}>
-                        <PrimaryBtn
-                            text="Add Product"
-                            onPress={() => router.push("/(admin)/AddProduct")}
-                            fontSize={16}
-                        />
-                        <PrimaryBtn
-                            text="Add Supplier"
-                            onPress={() => router.push("/(admin)/AddSupplier")}
-                            fontSize={16}
-                        />
-                        <PrimaryBtn
-                            text="Add Wood"
-                            onPress={() => router.push("/(admin)/AddWood")}
-                            fontSize={16}
-                        />
-                    </View>
-                {/* )} */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -289,10 +265,5 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         gap: 15,
         marginBottom: 5,
-    },
-    bottomBox: {
-        marginTop: 10,
-        padding: 8,
-        alignItems: "center",
     },
 });
