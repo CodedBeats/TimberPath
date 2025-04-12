@@ -127,7 +127,7 @@ export default function Checkout() {
     } catch (error) {
       setLoading(false);
       Alert.alert("Payment Error", "There was an error processing your payment.");
-      triggerError(`There was an error processing your payment`, { color: "red", fontSize: 16 });
+      triggerError(`There was an error processing your payment`, { color: "orange", fontSize: 16 });
     }
   };
 

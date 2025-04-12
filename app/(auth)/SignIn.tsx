@@ -1,19 +1,25 @@
-import React, { useState, useEffect, useMemo } from "react";
+// dependencies
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, ScrollView, TouchableOpacity  } from "react-native";
 import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
-import { auth } from "@/config/Config";
-
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import * as Google from "expo-auth-session/providers/google";
-import * as WebBrowser from "expo-web-browser";
-import * as Crypto from "expo-crypto";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// config
+import { auth } from "@/config/Config";
+
+// api
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
 WebBrowser.maybeCompleteAuthSession();
+import * as Crypto from "expo-crypto";
+
+// components
+import ErrorMessage, { ErrorMessageRef } from "@/components/errors/ErrorMessage";
+
 
 
 export default function SignIn() {
@@ -22,13 +28,20 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nonce, setNonce] = useState("");
+  // error ref
+  const errorRef = useRef<ErrorMessageRef>(null);
+
+  // handle error
+  const triggerError = (msg: string, options?: { color?: string; fontSize?: number }) => {
+      errorRef.current?.show(msg, options);
+  };
 
   
   const [request, response, promptAsync] = Google.useAuthRequest({
       androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
       iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
       clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
-    });
+  });
 
   useEffect(() => {
     (async () => {
@@ -50,6 +63,8 @@ export default function SignIn() {
           "Email Not Verified",
           "Please verify your email before signing in. You have to check your inbox for the verification link."
         );
+        // responsive
+        triggerError(`Please verify your email before signing in. You have to check your inbox for the verification link.`, { color: "orange", fontSize: 16 });
         await signOut(auth);
         return;
       }
@@ -58,8 +73,10 @@ export default function SignIn() {
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert("Error", error.message);
+        triggerError(`Error", ${error.message}`, { color: "orange", fontSize: 16 });
       } else {
         Alert.alert("Error", "An unknown error occurred");
+        triggerError(`An unknown error occurred`, { color: "orange", fontSize: 16 });
       }
     }
   };
@@ -68,8 +85,10 @@ export default function SignIn() {
     try {
       await sendPasswordResetEmail(auth, email);
       Alert.alert("Password Reset Email Sent", "A password reset email has been sent to your email.");
+      triggerError(`A password reset email has been sent to your email`, { color: "orange", fontSize: 16 });
     } catch (error) {
       Alert.alert("Error", (error as any).message);
+      triggerError(`Error", ${(error as any).message}`, { color: "red", fontSize: 16 });
     }
   }
 
@@ -142,7 +161,9 @@ export default function SignIn() {
       <TouchableOpacity onPress={handleSignIn} style={styles.button}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
-      <Text style={styles.inputInstrcutions}>If you can't sign in, check your email for an account verification</Text>
+          
+      {/* error message */}
+      <ErrorMessage ref={errorRef} />
 
       <View style={{ marginVertical: 8 }} />
       <TouchableOpacity style={styles.button} onPress={resetPassword}>
