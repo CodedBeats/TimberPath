@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TextInput, Button, ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../../../components/ThemedText';
-import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
-import { addCategory } from '../../../services/categories';
+import { ThemedText } from '../../components/ThemedText';
+import { addCategory } from '../../services/categories';
 
 export default function AddCategory() {
   const router = useRouter();
@@ -39,9 +38,7 @@ export default function AddCategory() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <HeaderWithoutCart />
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type="title">Add New Category</ThemedText>
         <TextInput
           style={styles.input}
           placeholder="Category Name"
