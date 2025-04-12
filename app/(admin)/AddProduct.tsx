@@ -99,7 +99,6 @@ const AddProduct = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.formContainer}>
-                <Text style={styles.header}>Add Product</Text>
 
                 <InputField label="Product Name" value={formData.productName} onChangeText={(val: any) => handleChange("productName", val)} />
                 <InputField label="Unit of Measurement" value={formData.unitOfMeasure} onChangeText={(val: any) => handleChange("unitOfMeasure", val)} />
