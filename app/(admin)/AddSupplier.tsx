@@ -50,7 +50,6 @@ export default function AddSupplier() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type="title" style={styles.header}>Add Supplier</ThemedText>
         <TextInput
           style={styles.input}
           placeholder="Supplier Name"

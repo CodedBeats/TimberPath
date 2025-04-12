@@ -50,6 +50,7 @@ export default function Profile() {
         address: "",
         phoneNumber: "",
         isTradie: "",
+        admin: false,
     })
 
     const [orders, setOrders] = useState<any[]>([]);
@@ -130,14 +131,6 @@ export default function Profile() {
             <View style={styles.topShape2}></View>
 
 
-            {/* fake header to go back */}
-            <View>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Ionicons style={styles.backBtn} name="arrow-back" size={24} color="#ccc" />
-                </TouchableOpacity>
-            </View>
-
-
             {/* user img and logout btn */}
             <ProfileAvatar 
                 imageUrl="https://static.vecteezy.com/system/resources/thumbnails/019/896/012/small_2x/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
@@ -189,7 +182,7 @@ export default function Profile() {
             </View>
             </LinearGradient>
 
-            {/* Orders Section */}
+        {/* Orders Section */}
         <View style={styles.ordersContainer}>
           <ThemedText style={styles.ordersHeader}>Your Orders</ThemedText>
           {ordersLoading ? (
@@ -234,6 +227,17 @@ export default function Profile() {
           )}
         </View>
 
+        {/* only display for admins */}
+        {userData.admin && (
+        <View style={styles.bottomBox}>
+            <PrimaryBtn
+                text="Add Data"
+                onPress={() => router.push("/(admin)/AddWood")}
+                fontSize={16}
+            />
+        </View>
+        )}
+
 
         </ScrollView>
         </SafeAreaView>
@@ -272,12 +276,12 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: width,
-        height: 100,
+        height: 40,
         backgroundColor: "#222",
     },
     topShape2: {
         position: "absolute",
-        top: 100,
+        top: 40,
         left: 0,
         width: width,
         height: 80,
@@ -285,17 +289,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 80,
         borderBottomRightRadius: 80,
     },
-    // fake header
-    backBtn: {
-        position: "absolute",
-        top: 10,
-        left: 10,
-    },
     // user img and logout btn
     userImgLogoutContainer: {
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 90,
+        marginTop: 40,
     },
     avatarContainer: {
         // relative for absolute positioning of the logout button
@@ -473,4 +471,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "bold",
       },
+      bottomBox: {
+          marginTop: 10,
+          padding: 8,
+          alignItems: "center",
+      },
+      
 });

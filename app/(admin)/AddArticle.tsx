@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TextInput, Button, ActivityIndicator, Alert, Image, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ThemedText } from '../../../components/ThemedText';
-import { HeaderWithoutCart } from '../../../components/header/SimpleHeader';
-import { addArticle } from '../../../services/articles';
-import { uploadArticleImage } from '../../../services/storage';
+import { ThemedText } from '../../components/ThemedText';
+import { addArticle } from '../../services/articles';
+import { uploadArticleImage } from '../../services/storage';
 import * as ImagePicker from 'expo-image-picker';
 import { Picker } from '@react-native-picker/picker';
-import { getCategories } from '../../../services/categories';
+import { getCategories } from '../../services/categories';
 
 export default function AddArticle() {
   const router = useRouter();
@@ -74,9 +73,7 @@ export default function AddArticle() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <HeaderWithoutCart />
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type="title">Add New Article</ThemedText>
         <TextInput
           style={styles.input}
           placeholder="Title"

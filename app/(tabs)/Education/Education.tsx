@@ -111,14 +111,6 @@ export default function Education() {
                                 <ArticleCard key={article.id} article={article} />
                             ))}
                         </ScrollView>
-                        
-                        {/* only display for admins */}
-                        { userData.admin && (
-                            <PrimaryBtn
-                                onPress={() => router.push("./AddArticle")}
-                                text="Add New Article"
-                            />
-                        )}
                     </LinearGradient>
 
                     {/* Categories Section */}
@@ -142,14 +134,6 @@ export default function Education() {
                                 />
                             ))}
                         </ScrollView>
-                        
-                        {/* only display for admins */}
-                        { userData.admin && (
-                            <PrimaryBtn
-                                onPress={() => router.push("./AddCategory")}
-                                text="Add New Category"
-                            />
-                        )}
                     </LinearGradient>
 
                     {/* Trending Articles Section */}

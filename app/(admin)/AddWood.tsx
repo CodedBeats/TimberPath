@@ -74,7 +74,6 @@ export default function AddWood() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText type="title" style={styles.header}>Add Wood</ThemedText>
 
         <TextInput
           style={styles.input}
