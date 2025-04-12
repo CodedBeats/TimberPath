@@ -231,27 +231,8 @@ export default function Profile() {
         {userData.admin && (
         <View style={styles.bottomBox}>
             <PrimaryBtn
-                text="Add Wood"
+                text="Add Data"
                 onPress={() => router.push("/(admin)/AddWood")}
-                fontSize={16}
-            />
-            <PrimaryBtn
-                text="Add Supplier"
-                onPress={() => router.push("/(admin)/AddSupplier")}
-                fontSize={16}
-            />
-            <PrimaryBtn
-                text="Add New Article"
-                onPress={() => router.push("/(admin)/AddArticle")}
-            />
-            <PrimaryBtn
-                text="Add New Category"
-                onPress={() => router.push("/(admin)/AddCategory")}
-                fontSize={16}
-            />
-            <PrimaryBtn
-                text="Add Product"
-                onPress={() => router.push("/(admin)/AddProduct")}
                 fontSize={16}
             />
         </View>
