@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// dependencies
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -12,11 +13,20 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { collection, addDoc } from "firebase/firestore";
+
+// contexts
 import { useCart } from "@/contexts/CartContext";
 import { useDB } from "@/contexts/DBContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { collection, addDoc } from "firebase/firestore";
+
+// config
 import { BASE_URL } from "@/config/api";
+
+// components
+import ErrorMessage, { ErrorMessageRef } from "@/components/errors/ErrorMessage";
+
+
 
 export default function Checkout() {
   const router = useRouter();
@@ -29,6 +39,13 @@ export default function Checkout() {
   const [billingAddress, setBillingAddress] = useState("");
   const [billingCity, setBillingCity] = useState("");
   const [billingZip, setBillingZip] = useState("");
+  // error ref
+  const errorRef = useRef<ErrorMessageRef>(null);
+
+  // handle error
+  const triggerError = (msg: string, options?: { color?: string; fontSize?: number }) => {
+      errorRef.current?.show(msg, options);
+  };
 
   // This function will calls our backend endpoint.
   const fetchPaymentIntentClientSecret = async () => {
@@ -41,7 +58,10 @@ export default function Checkout() {
       const data = await response.json();
       return data.clientSecret;
     } catch (error) {
-      console.error("Error fetching client secret:", error);
+      //console.error("Error fetching client secret:", error);
+      
+      // responsive
+      triggerError(`Error fetching client secret: ${error}`, { color: "orange", fontSize: 16 });
       throw error;
     }
   };
@@ -50,14 +70,17 @@ export default function Checkout() {
 
     if (!billingName || !billingAddress || !billingCity || !billingZip) {
       Alert.alert("Billing Info Missing", "Please fill in all billing information fields.");
+      triggerError(`Please fill in all billing information fields`, { color: "orange", fontSize: 16 });
       return;
     }
     if (cart.length === 0) {
       Alert.alert("Cart Empty", "Please add items to your cart before checking out.");
+      triggerError(`Please add items to your cart before checking out`, { color: "orange", fontSize: 16 });
       return;
     }
     if (!user) {
       Alert.alert("User Not Logged In", "You must be logged in to place an order.");
+      triggerError(`You must be logged in to place an order`, { color: "orange", fontSize: 16 });
       return;
     }
     setLoading(true);
@@ -84,9 +107,14 @@ export default function Checkout() {
 
           try {
             await addDoc(collection(db, "orders"), orderDetails);
-            console.log("Order document created successfully.");
+            //console.log("Order document created successfully.");
+            // responsive
+            triggerError(`Your order has been created`, { color: "green", fontSize: 16 });
+            
           } catch (err) {
-            console.error("Error creating order document:", err);
+            //console.error("Error creating order document:", err);
+            // responsive
+            triggerError(`Error creating order document: ${err}`, { color: "red", fontSize: 16 });
           }
 
           clearCart();
@@ -99,6 +127,7 @@ export default function Checkout() {
     } catch (error) {
       setLoading(false);
       Alert.alert("Payment Error", "There was an error processing your payment.");
+      triggerError(`There was an error processing your payment`, { color: "red", fontSize: 16 });
     }
   };
 
@@ -200,6 +229,9 @@ export default function Checkout() {
               <Text style={styles.payNowButton}>Pay Now</Text>
             </TouchableOpacity>
           )}
+          
+          {/* error message */}
+          <ErrorMessage ref={errorRef} />
         </ScrollView>
       </ScrollView>
     </SafeAreaView>
