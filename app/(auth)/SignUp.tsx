@@ -219,7 +219,7 @@ export default function SignUp() {
             <View style={styles.frostedGlassContainer}>
                 <ScrollView style={styles.scrollContainer}>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputHeader}>Email</Text>
+                        <Text style={styles.inputHeader}>Email *</Text>
                         <TextInput
                             style={styles.input}
                             placeholder="john.doe@gmail.com"
@@ -239,7 +239,7 @@ export default function SignUp() {
                             autoCapitalize="none"
                             placeholderTextColor="#ccc"
                         />
-                        <Text style={styles.inputHeader}>Password</Text>
+                        <Text style={styles.inputHeader}>Password *</Text>
                         <TextInput
                             style={styles.input}
                             placeholder="••••••••"
