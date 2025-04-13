@@ -187,7 +187,9 @@ const styles = StyleSheet.create({
         borderRadius: 12,
     },
     sectionHeader: {
-        marginBottom: 12,
+        fontWeight: "bold",
+        marginBottom: 8,
+        fontSize: 24,
         color: "#fff",
     },
     button: {

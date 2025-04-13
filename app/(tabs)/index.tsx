@@ -106,17 +106,15 @@ export default function Index() {
                 {/* home/dashboard content */}
                 <View style={styles.container}>
                     {/* producrs */}
+                    <Text style={styles.largeBoxHeader}>
+                        Featured Products
+                    </Text>
                     <LinearGradient
                         colors={["#540093", "#b400f3"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
                     >
-                        <View style={styles.subBoxHeaderContainer}>
-                            <Text style={styles.subBoxHeaderText}>
-                                Featured Products
-                            </Text>
-                        </View>
                         <View style={styles.subBoxContent}>
                             {loadingProducts ? (
                                 <ActivityIndicator size="large" color="#fff" />
@@ -134,17 +132,15 @@ export default function Index() {
                     </LinearGradient>
 
                     {/* Articles categories */}
+                    <Text style={styles.largeBoxHeader}>
+                    Browse Articles by Category
+                    </Text>
                     <LinearGradient
                         colors={["#8c4b10", "#ffab00"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
                     >
-                        <View style={styles.subBoxHeaderContainer}>
-                            <Text style={styles.subBoxHeaderText}>
-                                Browse Articles by Category
-                            </Text>
-                        </View>
                         <View style={styles.subBoxContent}>
                             {loadingCategories ? (
                                 <ActivityIndicator size="large" color="#fff" />
@@ -162,17 +158,15 @@ export default function Index() {
                     </LinearGradient>
 
                     {/* New Articles education */}
+                    <Text style={styles.largeBoxHeader}>
+                        New Articles
+                    </Text>
                     <LinearGradient
                         colors={["#540093", "#b400f3"]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.largeBox}
                     >
-                        <View style={styles.subBoxHeaderContainer}>
-                            <Text style={styles.subBoxHeaderText}>
-                                New Articles
-                            </Text>
-                        </View>
                         <View style={styles.subBoxContent}>
                             {loadingNewArticles ? (
                                 <ActivityIndicator size="large" color="#fff" />
@@ -226,7 +220,7 @@ const styles = StyleSheet.create({
     largeBox: {
         borderRadius: 10,
         padding: 8,
-        marginBottom: 20,
+        marginBottom: 30,
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.9,
         shadowRadius: 4,
@@ -235,11 +229,11 @@ const styles = StyleSheet.create({
     subBoxHeaderContainer: {
         marginBottom: 8,
     },
-    subBoxHeaderText: {
+    largeBoxHeader: {
         fontWeight: "bold",
-        fontSize: 16,
+        marginBottom: 8,
+        fontSize: 24,
         color: "#fff",
-        textDecorationLine: "underline",
     },
     subBoxContent: {
         // paddingBottom: 20,
