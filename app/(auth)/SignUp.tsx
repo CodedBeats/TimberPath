@@ -1,14 +1,19 @@
-import React, { useState, useEffect, useMemo } from "react";
+// dependencies
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { View, TextInput, Button, StyleSheet, Alert, Image, ActivityIndicator, Text, SafeAreaView, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { HelloWave } from "@/components/HelloWave";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
+// api
 import * as Google from "expo-auth-session/providers/google";
 import * as Crypto from "expo-crypto";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+
+// components
+import ErrorMessage, { ErrorMessageRef } from "@/components/errors/ErrorMessage";
 
 
 export default function SignUp() {
@@ -29,6 +34,15 @@ export default function SignUp() {
   const [jobPosition, setJobPosition] = useState("");
 
   const [nonce, setNonce] = useState("");
+  
+  // error ref
+  const errorRef = useRef<ErrorMessageRef>(null);
+
+  // handle error
+  const triggerError = (msg: string, options?: { color?: string; fontSize?: number }) => {
+      errorRef.current?.show(msg, options);
+  };
+
 
   // Generate a random nonce asynchronously -  this is an extra layer of security to prevent replay attacks
   useEffect(() => {
@@ -76,8 +90,11 @@ export default function SignUp() {
         ],
         { cancelable: false }
       );
+      // responsive
+      triggerError(`A verification link has been sent to your email. Please verify your email before signing in.`, { color: "orange", fontSize: 16 });
     } catch (error) {
       Alert.alert("Error", (error as any).message);
+      triggerError(`Error, ${(error as any).message}`, { color: "orange", fontSize: 16 });
     }
   };
 
@@ -220,6 +237,10 @@ export default function SignUp() {
       <TouchableOpacity onPress={handleSignUp} style={styles.button}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
+          
+      {/* error message */}
+      <ErrorMessage ref={errorRef} />
+
       <View style={{ marginVertical: 8 }} />
       <TouchableOpacity onPress={() => promptAsync()} style={[styles.button, styles.button2]}>
         <Text style={styles.buttonText}>Sign Up with Google</Text>

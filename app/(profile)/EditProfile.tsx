@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     View,
     Text,
@@ -22,11 +22,13 @@ import { useDB } from "@/contexts/DBContext"
 
 // components
 import { PrimaryBtn } from "@/components/btns/PrimaryBtn";
-
+import ErrorMessage, { ErrorMessageRef } from "@/components/errors/ErrorMessage";
 
 
 export default function Profile() {
     const router = useRouter()
+    // error ref
+    const errorRef = useRef<ErrorMessageRef>(null);
 
     // context
     const { user } = useAuth()
@@ -43,6 +45,12 @@ export default function Profile() {
         phoneNumber: "",
         isTradie: "",
     })
+
+    // handle error
+    const triggerError = (msg: string, options?: { color?: string; fontSize?: number }) => {
+        errorRef.current?.show(msg, options);
+    };
+
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -61,7 +69,8 @@ export default function Profile() {
                     setUserData(userDocSnap.data() as typeof userData)
                 }
             } catch (error) {
-                console.log("err", "couldn't fetch profile data")
+                // responsive
+                triggerError("Couldn't fetch profile", { color: "orange", fontSize: 16 });
             } finally {
                 setLoading(false)
             }
@@ -86,21 +95,18 @@ export default function Profile() {
             const updatedUserData = { ...userData, firstName, lastName };
 
             await setDoc(doc(db, "users", user.uid), updatedUserData, { merge: true });
-            console.log("success", "profile updated");
+            //console.log("success", "profile updated");
+            
+            // responsive
+            triggerError("Profile Updated", { color: "green", fontSize: 16 });
         } catch (error) {
-            console.log("err", (error as any).message);
+            //console.log("err", (error as any).message);
+
+            // responsive
+            triggerError("Couldn't fetch profile", { color: "orange", fontSize: 16 });
         }
     }
 
-
-    // convert to just user data loaded section displaying loading
-    // if (loading) {
-    //     return (
-    //         <View style={styles.loadingContainer}>
-    //             <ActivityIndicator size="large" color="#000" />
-    //         </View>
-    //     )
-    // }
 
 
     return (
@@ -179,6 +185,9 @@ export default function Profile() {
 
             
                 <PrimaryBtn onPress={handleUpdateProfile} text="Update Profile" />
+
+                {/* error message */}
+                <ErrorMessage ref={errorRef} />
             </LinearGradient>
         </ScrollView>
         </SafeAreaView>
