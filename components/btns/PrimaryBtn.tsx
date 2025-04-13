@@ -6,11 +6,13 @@ type PrimaryBtnProps = {
     onPress: () => void;
     fontSize?: number; // optional
     fontWeight?: "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900" | "bold" | "normal"; // optional
+    marginVertical?: number; // optional
+    width?: any; // optional
 }
 
-const PrimaryBtn = ({text, onPress, fontSize = 15, fontWeight = "500"}: PrimaryBtnProps) => {
+const PrimaryBtn = ({text, onPress, fontSize = 15, fontWeight = "500", marginVertical = 10, width = "60%"}: PrimaryBtnProps) => {
     return (
-        <View style={styles.buttonContainer}>
+        <View style={[styles.buttonContainer, { marginVertical }, { width } ]}>
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <LinearGradient
                 colors={["#9C3FE4", "#C65647"]}
@@ -18,7 +20,7 @@ const PrimaryBtn = ({text, onPress, fontSize = 15, fontWeight = "500"}: PrimaryB
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
             >
-                <Text style={[styles.text, { fontSize }, { fontWeight }]}>{text}</Text>
+                <Text style={[styles.text, { fontSize }, { fontWeight } ]}>{text}</Text>
             </LinearGradient>
         </TouchableOpacity>
         </View>
@@ -27,8 +29,6 @@ const PrimaryBtn = ({text, onPress, fontSize = 15, fontWeight = "500"}: PrimaryB
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: "60%",
-        marginVertical: 10,
         alignSelf: "center",
     },
     button: {

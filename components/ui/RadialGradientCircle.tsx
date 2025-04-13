@@ -1,4 +1,5 @@
-import React from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 import Svg, { Defs, RadialGradient, Stop, Circle } from "react-native-svg";
@@ -20,6 +21,7 @@ const RadialGradientCircle = ({
     stopOpacity?: number;
     id: string;
 }) => {
+
     return (
         <Svg height="100%" width="100%" style={{ position: "absolute" }}>
             <Defs>
