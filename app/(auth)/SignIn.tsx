@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "#fff",
-        fontSize: 40,
+        fontSize: 32,
         fontWeight: 400,
     },
     // radial gradients
