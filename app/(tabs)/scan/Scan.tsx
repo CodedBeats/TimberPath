@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: "row",
     justifyContent: "center",
-    width: "40%",
+    width: "70%",
     marginTop: 20,
     alignItems: "center",
     gap: 10,
