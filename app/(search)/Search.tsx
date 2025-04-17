@@ -99,7 +99,7 @@ export default function Search() {
                 <SectionHeader title="Products" />
                 <View style={styles.productsGrid}>
                   {filteredProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={product} isFromSearch={true} />
                   ))}
                 </View>
               </View>

@@ -124,7 +124,7 @@ export default function Index() {
                                     contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {featuredProducts.map((product) => (
-                                        <ProductCard product={product} />
+                                        <ProductCard product={product} isFromSearch={false} />
                                     ))}
                                 </ScrollView>
                             )}

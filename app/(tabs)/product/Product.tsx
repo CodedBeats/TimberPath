@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, ActivityIndicator, Image, TouchableOpacity, View, Button, Platform } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/config/Config';
 import { ThemedText } from '@/components/ThemedText';
