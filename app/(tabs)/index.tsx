@@ -124,7 +124,7 @@ export default function Index() {
                                     contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {featuredProducts.map((product) => (
-                                        <ProductCard product={product} />
+                                        <ProductCard key={product.id} product={product} isFromSearch={false} />
                                     ))}
                                 </ScrollView>
                             )}
@@ -150,7 +150,7 @@ export default function Index() {
                                     contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {categories.map((category) => (
-                                        <CategoryCard category={category} />
+                                        <CategoryCard key={category.id} category={category} />
                                     ))}
                                 </ScrollView>
                             )}
@@ -176,7 +176,7 @@ export default function Index() {
                                     contentContainerStyle={styles.horizontalScroll}
                                 >
                                     {newArticles.map((article) => (
-                                        <ArticleCard article={article} />
+                                        <ArticleCard key={article.id} article={article} />
                                     ))}
                                 </ScrollView>
                             )}

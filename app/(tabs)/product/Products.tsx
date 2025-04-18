@@ -65,7 +65,7 @@ export default function Products() {
                   // Render the products in a grid
                   <View style={styles.productsGrid}>
                     {products.map((product) => (
-                      <ProductCard key={product.id} product={product} />
+                      <ProductCard key={product.id} product={product} isFromSearch={false}  />
                     ))}
                   </View>
                 )}

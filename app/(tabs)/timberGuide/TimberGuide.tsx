@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         ...Platform.select({
             ios: {
-                maxHeight: "65%",
+                maxHeight: "60%",
             },
             android: {
                 // maxHeight: 80,

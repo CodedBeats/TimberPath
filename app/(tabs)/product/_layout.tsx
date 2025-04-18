@@ -60,18 +60,20 @@ export default function ProductLayout() {
 }
 
 function CustomBackButton() {
-  const router = useRouter();
   const { fromSearch } = useLocalSearchParams();
+  const router = useRouter();
+
+    const handleBack = () => {
+      if (fromSearch === "true") {
+        router.replace("/(search)/Search");
+      } else {
+        router.replace("/(tabs)/product/Products");
+      }
+  };
 
   return (
     <TouchableOpacity
-      onPress={() => {
-        if (fromSearch === "true") {
-          router.replace("/(search)/Search");
-        } else {
-          router.back();
-        }
-      }}
+      onPress={handleBack}
       style={{ marginLeft: 10 }}
     >
       <Text style={{ 

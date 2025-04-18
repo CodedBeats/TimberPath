@@ -129,69 +129,70 @@ export default function Scan() {
     <SafeAreaView style={styles.safeArea}>
       {/* header */}
       <HeaderWithCart />
-      <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.topBox}>
-        <Text style={styles.header}>Scan Wood</Text>
-        <Text style={styles.subText}>Point your camera at the wood surface and hold steady for the AI to analyze and identify it.</Text>
-      </LinearGradient>
+      <ScrollView style={styles.safeArea}>
+        <LinearGradient colors={["#32003F", "#4C007A"]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.topBox}>
+          <Text style={styles.header}>Scan Wood</Text>
+          <Text style={styles.subText}>Take or choose a photo for the AI to analyze and identify it.</Text>
+        </LinearGradient>
 
-      {/* scan */}
-      <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
-      
-        {imageUri && (
-          <Image 
-            source={{ uri: imageUri }} 
-            style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} 
-          />
-        )}
-        {loading && (
-          <ActivityIndicator 
-            size="large" 
-            color="#9C3FE4" 
-            style={{ marginTop: 16 }} 
-          />
-        )}
+        {/* scan */}
+        <ScrollView contentContainerStyle={[styles.scanContainer, { flexGrow: 1 }]}>
+        
+          {imageUri && (
+            <Image 
+              source={{ uri: imageUri }} 
+              style={{ width: '100%', height: 200, marginTop: 16, borderRadius: 8 }} 
+            />
+          )}
+          {loading && (
+            <ActivityIndicator 
+              size="large" 
+              color="#9C3FE4" 
+              style={{ marginTop: 16 }} 
+            />
+          )}
 
-        {/* Display the recommended wood based on the analysis */}
-        {recommendedWood && recommendedWood !== "No recommendation available" && (
-          <View style={styles.recommendationContainer}>
-            <Text style={styles.recommendationTitle}>Recommended Wood:</Text>
-            <Text style={styles.recommendationText}>{recommendedWood}</Text>
+          {/* Display the recommended wood based on the analysis */}
+          {recommendedWood && recommendedWood !== "No recommendation available" && (
+            <View style={styles.recommendationContainer}>
+              <Text style={styles.recommendationTitle}>Recommended Wood:</Text>
+              <Text style={styles.recommendationText}>{recommendedWood}</Text>
+              <PrimaryBtn 
+                text="View Recommendation" 
+                onPress={() =>
+                  router.push({
+                    pathname: './recommended',
+                    params: { wood: recommendedWood }
+                  })
+                }
+                fontSize={18} 
+              />
+            </View>
+
+          )}
+        </ScrollView>
+        
+        {/* <View style={styles.btnContainer}>
+          <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
+        </View> */}
+
+        <View style={styles.btnContainer}>
+          <View style={styles.buttonRow}>
+            {/* Button to pick an image from the gallery */}
             <PrimaryBtn 
-              text="View Recommendation" 
-              onPress={() =>
-                router.push({
-                  pathname: './recommended',
-                  params: { wood: recommendedWood }
-                })
-              }
+              text="Pick Image to Analyze" 
+              onPress={pickImage} 
+              fontSize={18} 
+            />
+            {/* Button to take a photo using the camera */}
+            <PrimaryBtn 
+              text="Take Photo to Analyze" 
+              onPress={takePhoto} 
               fontSize={18} 
             />
           </View>
-
-        )}
-      </ScrollView>
-      
-      {/* <View style={styles.btnContainer}>
-        <PrimaryBtn text="Analyze" onPress={() => router.push("/(tabs)/scan/ScansSuggestedWoods")} fontSize={18} />
-      </View> */}
-
-      <View style={styles.btnContainer}>
-        <View style={styles.buttonRow}>
-          {/* Button to pick an image from the gallery */}
-          <PrimaryBtn 
-            text="Pick Image to Analyze" 
-            onPress={pickImage} 
-            fontSize={18} 
-          />
-          {/* Button to take a photo using the camera */}
-          <PrimaryBtn 
-            text="Take Photo to Analyze" 
-            onPress={takePhoto} 
-            fontSize={18} 
-          />
-          </View>
         </View>
-      
+      </ScrollView>
     </SafeAreaView>
   )
 };
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
       padding: 10,
       marginHorizontal: 16,
       marginVertical: 5,
+      minHeight: 200,
       borderColor: "#fff",
       borderWidth: 1,
       borderRadius: 10,

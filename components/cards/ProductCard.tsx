@@ -26,17 +26,18 @@ type ProductCardProps = {
         price: number;
         amount: string;
         description?: string; // Optional
-    };
+    },
+    isFromSearch?: boolean;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, isFromSearch = false }) => {
     const router = useRouter();
     const { addToCart } = useCart();
 
     const handleView = () => {
         router.push({
             pathname: "/(tabs)/product/Product",
-            params: { productId: product.id, fromSearch: "true" },
+            params: { productId: product.id, fromSearch: isFromSearch ? "true" : "false" },
         });
     };
 
