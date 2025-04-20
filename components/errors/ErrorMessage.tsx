@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
         padding: 10,
         borderRadius: 6,
+        marginBottom: 10,
     },
     message: {
         flex: 1,
