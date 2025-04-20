@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     View,
     Text,
-    TextInput,
-    Button,
     StyleSheet,
-    Alert,
     Image,
     ActivityIndicator,
     ScrollView,
     SafeAreaView,
     TouchableOpacity,
-    Platform,
     Dimensions,
 } from "react-native";
 const { width } = Dimensions.get("window");
 import { useRouter } from "expo-router";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { LinearGradient } from 'expo-linear-gradient'
+import { useFocusEffect } from "@react-navigation/native";
 
 // icons
 import FontAwesome from '@expo/vector-icons/FontAwesome'
@@ -56,31 +51,32 @@ export default function Profile() {
     const [orders, setOrders] = useState<any[]>([]);
     const [ordersLoading, setOrdersLoading] = useState(true);
 
-    useEffect(() => {
+    useFocusEffect(
+      useCallback(() => {
         const fetchProfile = async () => {
-            // no user
-            if (!user) {
-                console.log("err: no user logged in")
-                router.push("/SignIn")
-                return
+          if (!user) {
+            console.log("err: no user logged in");
+            router.push("/SignIn");
+            return;
+          }
+    
+          try {
+            const userDocRef = doc(db, "users", user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+    
+            if (userDocSnap.exists()) {
+              setUserData(userDocSnap.data() as typeof userData);
             }
+          } catch (error) {
+            console.log("err", "couldn't fetch profile data");
+          } finally {
+            setLoading(false);
+          }
+        };
     
-            try {
-                const userDocRef = doc(db, "users", user.uid)
-                const userDocSnap = await getDoc(userDocRef)
-    
-                if (userDocSnap.exists()) {
-                    setUserData(userDocSnap.data() as typeof userData)
-                }
-            } catch (error) {
-                console.log("err", "couldn't fetch profile data")
-            } finally {
-                setLoading(false)
-            }
-        }
-    
-        fetchProfile()
-    }, [user, db])
+        fetchProfile();
+      }, [user, db])
+    );
 
     useEffect(() => {
         async function fetchOrders() {
