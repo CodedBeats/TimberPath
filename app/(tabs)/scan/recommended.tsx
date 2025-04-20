@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Image, ActivityIndicator, Alert } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, ActivityIndicator, Alert, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemedText } from '@/components/ThemedText';
@@ -187,10 +187,15 @@ export default function Recommended() {
 const styles = StyleSheet.create({
   safeArea: { 
     flex: 1, 
-    backgroundColor: "#000"
+    backgroundColor: "#000",
   },
   container: { 
-    padding: 16
+    padding: 16,
+    ...Platform.select({
+        ios: {
+            paddingBottom: 100,
+        },
+    }),
   },
   header: { padding: 16, 
     borderRadius: 12,

@@ -10,6 +10,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -251,6 +252,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#111",
     padding: 12,
     borderRadius: 12,
+    ...Platform.select({
+        ios: {
+            marginBottom: 100,
+        },
+    }),
   },
   checkoutCellContainer: {
     marginBottom: 12,
