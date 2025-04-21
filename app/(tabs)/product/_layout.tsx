@@ -67,7 +67,7 @@ function CustomBackButton() {
       if (fromSearch === "true") {
         router.replace("/(search)/Search");
       } else {
-        router.replace("/(tabs)/product/Products");
+        router.back();
       }
   };
 
