@@ -438,6 +438,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: "#444",
         backgroundColor: "#333",
+        borderRadius: 8,
       },
       ordersRow: {
         flexDirection: "row",
