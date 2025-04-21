@@ -82,16 +82,13 @@ export default function TimberGuide() {
                             <Text style={styles.questionText}>
                                 What is your application?
                             </Text>
-                            <TouchableOpacity style={styles.infoIcon}>
-                                <Text style={styles.infoText}>(i)</Text>
-                            </TouchableOpacity>
                         </View>
                         <Picker
-                            selectedValue={selectedWoodCriteria.application}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedWoodCriteria({...selectedWoodCriteria, application: itemValue})
-                            }
-                            style={styles.picker}
+                                selectedValue={selectedWoodCriteria.application}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedWoodCriteria({...selectedWoodCriteria, application: itemValue})
+                                }
+                                style={styles.picker}
                             >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="Windows" value="A1" />
@@ -107,16 +104,13 @@ export default function TimberGuide() {
                             <Text style={styles.questionText}>
                                 What is the exposure?
                             </Text>
-                            <TouchableOpacity style={styles.infoIcon}>
-                                <Text style={styles.infoText}>(i)</Text>
-                            </TouchableOpacity>
                         </View>
                         <Picker
-                            selectedValue={selectedWoodCriteria.exposure}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedWoodCriteria({...selectedWoodCriteria, exposure: itemValue})
-                            }
-                            style={styles.picker}
+                                selectedValue={selectedWoodCriteria.exposure}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedWoodCriteria({...selectedWoodCriteria, exposure: itemValue})
+                                }
+                                style={styles.picker}
                             >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="In-ground" value="E1" />
@@ -132,16 +126,13 @@ export default function TimberGuide() {
                             <Text style={styles.questionText}>
                                 Does it need a certain level of Bush Fire resistance?
                             </Text>
-                            <TouchableOpacity style={styles.infoIcon}>
-                                <Text style={styles.infoText}>(i)</Text>
-                            </TouchableOpacity>
                         </View>
                         <Picker
-                            selectedValue={selectedWoodCriteria.bfr}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedWoodCriteria({...selectedWoodCriteria, bfr: itemValue})
-                            }
-                            style={styles.picker}
+                                selectedValue={selectedWoodCriteria.bfr}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedWoodCriteria({...selectedWoodCriteria, bfr: itemValue})
+                                }
+                                style={styles.picker}
                             >
                             <Picker.Item label="Not applicable" value="null" />
                             <Picker.Item label="BAL-LOW" value="B1" />
@@ -157,11 +148,8 @@ export default function TimberGuide() {
                     <View style={styles.subBox}>
                         <View style={styles.questionRow}>
                             <Text style={styles.questionText}>
-                            Is Hardness important?
+                                Is Hardness important?
                             </Text>
-                            <TouchableOpacity style={styles.infoIcon}>
-                                <Text style={styles.infoText}>(i)</Text>
-                            </TouchableOpacity>
                         </View>
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity style={styles.multiButton} onPress={() => handleHardnessCriteriaBtn("H1")}>
@@ -245,7 +233,7 @@ const styles = StyleSheet.create({
     },
     questionRow: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
         alignItems: "center",
         marginBottom: 12,
     },
@@ -253,13 +241,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "500",
         color: "#fff",
-    },
-    infoIcon: {
-        padding: 4,
-    },
-    infoText: {
-        fontSize: 14,
-        color: "#007BFF",
     },
     buttonContainer: {
         flexDirection: "row",
