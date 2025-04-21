@@ -1,5 +1,6 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { TouchableOpacity, Text } from "react-native";
 
 export default function TimberGuideLayout() {
     return (
@@ -30,8 +31,31 @@ export default function TimberGuideLayout() {
                             style={{ flex: 1 }}
                         />
                     ),
+                    headerLeft: () => <CustomBackButton />,
                 }}
             />
         </Stack>
     );
+}
+
+
+function CustomBackButton() {
+  const router = useRouter();
+
+    const handleBack = () => {
+        router.replace("/(tabs)");
+    };
+
+  return (
+    <TouchableOpacity
+      onPress={handleBack}
+      style={{ marginLeft: 10 }}
+    >
+      <Text style={{ 
+        color: "#aaa", 
+        fontSize: 18,
+        marginLeft: 10,
+      }}>&#x276E;</Text>
+    </TouchableOpacity>
+  );
 }

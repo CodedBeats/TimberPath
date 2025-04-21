@@ -21,10 +21,11 @@ type WoodCardProps = {
         id: string
         commonName: string
         imageURL?: string
-    }
+    },
+    isFromSearch?: boolean;
 }
 
-const WoodCard = ({ wood }: WoodCardProps) => {
+const WoodCard = ({ wood , isFromSearch = false }: WoodCardProps) => {
     const router = useRouter()
 
     async function handleView() {
@@ -35,7 +36,7 @@ const WoodCard = ({ wood }: WoodCardProps) => {
             if (product) {
                 router.push({
                     pathname: "/(tabs)/product/Product",
-                    params: { productId: product.id, fromSearch: "true" },
+                    params: { productId: product.id, fromSearch: isFromSearch ? "true" : "false" },
                 });
             } else {
                 console.warn("no product found for this woodID")

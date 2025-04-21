@@ -105,7 +105,7 @@ export default function GuidesSuggestedWoods() {
                     <ActivityIndicator size="large" color="#fff" />
                 ) : filteredWoods.length > 0 ? (
                     filteredWoods.map((wood: any) => (
-                        <WoodCard key={wood.id} wood={wood} />
+                        <WoodCard key={wood.id} wood={wood} isFromSearch={false} />
                     ))
                 ) : (
                     <Text style={styles.noResultsText}>
