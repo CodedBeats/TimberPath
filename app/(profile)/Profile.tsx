@@ -52,51 +52,51 @@ export default function Profile() {
     const [ordersLoading, setOrdersLoading] = useState(true);
 
     useFocusEffect(
-      useCallback(() => {
-        const fetchProfile = async () => {
-          if (!user) {
-            console.log("err: no user logged in");
-            router.push("/SignIn");
-            return;
-          }
-    
-          try {
-            const userDocRef = doc(db, "users", user.uid);
-            const userDocSnap = await getDoc(userDocRef);
-    
-            if (userDocSnap.exists()) {
-              setUserData(userDocSnap.data() as typeof userData);
+        useCallback(() => {
+            const fetchProfile = async () => {
+            if (!user) {
+                console.log("err: no user logged in");
+                router.push("/SignIn");
+                return;
             }
-          } catch (error) {
-            console.log("err", "couldn't fetch profile data");
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        fetchProfile();
-      }, [user, db])
+        
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+        
+                if (userDocSnap.exists()) {
+                setUserData(userDocSnap.data() as typeof userData);
+                }
+            } catch (error) {
+                console.log("err", "couldn't fetch profile data");
+            } finally {
+                setLoading(false);
+            }
+            };
+        
+            fetchProfile();
+        }, [user, db])
     );
 
     useEffect(() => {
         async function fetchOrders() {
-          if (!user) return;
-          try {
-            const ordersQuery = query(
-              collection(db, "orders"),
-              where("userId", "==", user.uid)
-            );
-            const ordersSnapshot = await getDocs(ordersQuery);
-            const ordersData = ordersSnapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            setOrders(ordersData);
-          } catch (error) {
-            console.error("Error fetching orders:", error);
-          } finally {
-            setOrdersLoading(false);
-          }
+            if (!user) return;
+            try {
+                const ordersQuery = query(
+                collection(db, "orders"),
+                where("userId", "==", user.uid)
+                );
+                const ordersSnapshot = await getDocs(ordersQuery);
+                const ordersData = ordersSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+                }));
+                setOrders(ordersData);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            } finally {
+                setOrdersLoading(false);
+            }
         }
         fetchOrders();
       }, [user, db]);
@@ -154,73 +154,81 @@ export default function Profile() {
                         <Text style={styles.cellText}>Edit Profile Information</Text>
                     </View>
                 </TouchableOpacity>
-                <View style={styles.cellContainer}>
-                    <Ionicons style={styles.icon} name="language" size={20} color="black" />
-                    <Text style={styles.cellText}>Language</Text>
-                </View>
+                <TouchableOpacity onPress={() => router.push("/(profile)/ContactLang")}>
+                    <View style={styles.cellContainer}>
+                        <Ionicons style={styles.icon} name="language" size={20} color="black" />
+                        <Text style={styles.cellText}>Language</Text>
+                  </View>
+                </TouchableOpacity>
             </View>
 
 
             {/* ToS and Privacy Policy */}
             <View style={styles.badNameContainer}>
-                <View style={styles.cellContainer}>
-                    <AntDesign style={styles.icon} name="contacts" size={20} color="black" />
-                    <Text style={styles.cellText}>Contact Us</Text>
-                </View>
-                <View style={styles.cellContainer}>
-                    <AntDesign style={styles.icon} name="lock1" size={20} color="black" />
-                    <Text style={styles.cellText}>Privacy Policy</Text>
-                </View>
-                <View style={styles.cellContainer}>
-                    <MaterialCommunityIcons style={styles.icon} name="clipboard-list-outline" size={20} color="black" />
-                    <Text style={styles.cellText}>Terms of Service</Text>
-                </View>
+                <TouchableOpacity onPress={() => router.push("/(profile)/ContactLang")}>
+                    <View style={styles.cellContainer}>
+                        <AntDesign style={styles.icon} name="contacts" size={20} color="black" />
+                        <Text style={styles.cellText}>Contact Us</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push("/(profile)/ToSPP")}>
+                    <View style={styles.cellContainer}>
+                        <AntDesign style={styles.icon} name="lock1" size={20} color="black" />
+                        <Text style={styles.cellText}>Privacy Policy</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push("/(profile)/ToSPP")}>
+                    <View style={styles.cellContainer}>
+                        <MaterialCommunityIcons style={styles.icon} name="clipboard-list-outline" size={20} color="black" />
+                        <Text style={styles.cellText}>Terms of Service</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
             </LinearGradient>
 
         {/* Orders Section */}
         <View style={styles.ordersContainer}>
-          <ThemedText style={styles.ordersHeader}>Your Orders</ThemedText>
-          {ordersLoading ? (
-            <ActivityIndicator size="large" color="#fff" />
-          ) : orders.length === 0 ? (
-            <ThemedText style={styles.noOrdersText}>No orders found.</ThemedText>
-          ) : (
-            <View style={styles.ordersTable}>
-              <View style={styles.ordersRowHeader}>
-                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 2 }]}>
-                  Order Number
-                </ThemedText>
-                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
-                  Total Amount
-                </ThemedText>
-                <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
-                  Action
-                </ThemedText>
-              </View>
-              {orders.map((order) => (
-                <View key={order.id} style={styles.ordersRow}>
-                  <ThemedText style={[styles.ordersCell, { flex: 2 }]}>
-                    {order.orderNumber}
-                  </ThemedText>
-                  <ThemedText style={[styles.ordersCell, { flex: 1 }]}>
-                    ${order.total.toFixed(2)}
-                  </ThemedText>
-                  <TouchableOpacity
-                    style={styles.viewButton}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/(tabs)/product/ViewOrder",
-                        params: { order: JSON.stringify(order) },
-                      })
-                    }
-                  >
-                    <ThemedText style={styles.viewButtonText}>View</ThemedText>
-                  </TouchableOpacity>
+            <ThemedText style={styles.ordersHeader}>Your Orders</ThemedText>
+            {ordersLoading ? (
+                <ActivityIndicator size="large" color="#fff" />
+            ) : orders.length === 0 ? (
+                <ThemedText style={styles.noOrdersText}>No orders found.</ThemedText>
+            ) : (
+                <View style={styles.ordersTable}>
+                <View style={styles.ordersRowHeader}>
+                    <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 2 }]}>
+                    Order Number
+                    </ThemedText>
+                    <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
+                    Total Amount
+                    </ThemedText>
+                    <ThemedText style={[styles.ordersCell, styles.ordersHeaderCell, { flex: 1 }]}>
+                    Action
+                    </ThemedText>
                 </View>
-              ))}
-            </View>
-          )}
+                {orders.map((order) => (
+                    <View key={order.id} style={styles.ordersRow}>
+                    <ThemedText style={[styles.ordersCell, { flex: 2 }]}>
+                        {order.orderNumber}
+                    </ThemedText>
+                    <ThemedText style={[styles.ordersCell, { flex: 1 }]}>
+                        ${order.total.toFixed(2)}
+                    </ThemedText>
+                    <TouchableOpacity
+                        style={styles.viewButton}
+                        onPress={() =>
+                        router.push({
+                            pathname: "/(tabs)/product/ViewOrder",
+                            params: { order: JSON.stringify(order) },
+                        })
+                        }
+                    >
+                        <ThemedText style={styles.viewButtonText}>View</ThemedText>
+                    </TouchableOpacity>
+                    </View>
+                ))}
+                </View>
+            )}
         </View>
 
         {/* only display for admins */}
