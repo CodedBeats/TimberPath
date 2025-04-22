@@ -82,6 +82,14 @@ With both terminals open:
    Password: T!mb3Rmail
    ```
 
+5. To use the Checkout, you can use stripe test cards or just this one:
+-   **Card type:** Visa
+-   **Card number:** 4242 4242 4242 4242
+-   **Expiration date:** 01/2026
+-   **CVC:** 123
+
+
+
 ---
 
 ## 🎥 Demo
