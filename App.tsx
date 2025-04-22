@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
     return (
-        <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_51R38SNKxSIkfhvjaTLX439TkXAYYvphgr8ApMsm8ZP4AyyF0oXTSMUAs6czzE5FFxF8lNRoVA1rQJauriHDBWFjm00PK19AbOZ'}>
+        <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY}>
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Index">
                 <Stack.Screen
