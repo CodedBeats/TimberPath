@@ -53,7 +53,7 @@ export default function ProfileLayout() {
                 name="ContactLang"
                 options={{
                     headerShown: true,
-                    headerTitle: "Contact/Language",
+                    headerTitle: "Contact & Language",
                     headerTitleAlign: "center",
                     headerTitleStyle: {
                         fontSize: 20,
