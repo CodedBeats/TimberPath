@@ -272,7 +272,7 @@ export default function SignIn() {
                         {/* dont have an account? route to sign up */}
                         <View style={styles.noAccountContainer}>
                             <Text style={styles.noAccountText}>Don't have an account?{"  "}</Text>
-                            <TouchableOpacity onPress={() => router.push("/SignUp")}>
+                            <TouchableOpacity onPress={() => router.replace("/SignUp")}>
                                 <Text style={styles.noAccountTextLink}>Sign Up</Text>
                             </TouchableOpacity>
                         </View>

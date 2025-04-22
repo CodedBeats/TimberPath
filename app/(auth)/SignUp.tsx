@@ -275,7 +275,7 @@ export default function SignUp() {
                                 Already have an account?{"  "}
                             </Text>
                             <TouchableOpacity
-                                onPress={() => router.push("/SignIn")}
+                                onPress={() => router.replace("/SignIn")}
                             >
                                 <Text style={styles.noAccountTextLink}>
                                     Sign In
