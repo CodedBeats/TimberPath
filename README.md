@@ -1,4 +1,4 @@
-# TimberPath
+# The TimberPath Project
 
 <p align="center">
   <img src="./assets/images/TP-Logo.png" alt="TimberPath Logo" height="150"/>
