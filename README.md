@@ -1,16 +1,16 @@
-# Timber Path
+# TimberPath
 
 <p align="center">
-  <img src="./assets/images/TP-Logo.png" alt="Timber Path Logo" height="150"/>
+  <img src="./assets/images/TP-Logo.png" alt="TimberPath Logo" height="150"/>
 </p>
 
-<h1 align="center">Timber Path</h1>
+<h1 align="center">TimberPath</h1>
 
 ---
 
 ## 📘 Overview
 
-**Timber Path** is a mobile application that blends artificial intelligence, e-commerce, and educational content to help users identify wood types, shop timber products, and learn about sustainability. Whether you're a professional builder or a curious hobbyist, Timber Path guides you to the right timber through smart tools and curated knowledge.
+**TimberPath** is a mobile application that blends artificial intelligence, e-commerce, and educational content to help users identify wood types, shop for timber products, and learn about sustainability. Whether you're a professional builder or a curious hobbyist, TimberPath guides you through smart tools and curated knowledge.
 
 ---
 
@@ -86,14 +86,14 @@ With both terminals open:
 
 ## 🎥 Demo
 
-Watch the full demo on YouTube: [Timber Path Demo](https://www.youtube.com/watch?v=dUW-WaB5xdI)  
+Watch the full demo on YouTube: [TimberPath Demo](https://www.youtube.com/watch?v=dUW-WaB5xdI)  
 
 ---
 
 ## 👤 Developers
 
-- **Luca Haar:** [GitHub Profile](https://github.com/CodedBeats), [Email: 12030@ait.nsw.edu.au](12030@ait.nsw.edu.au)
-- **Arturo Rivera Paniza:** [GitHub Profile](https://github.com/ariverapaniza), [Email: 8566@ait.nsw.edu.au](8566@ait.nsw.edu.au)
+- **Luca Haar:** [GitHub Profile](https://github.com/CodedBeats) | **Email**: [12030@ait.nsw.edu.au](12030@ait.nsw.edu.au)
+- **Arturo Rivera Paniza:** [GitHub Profile](https://github.com/ariverapaniza) | **Email**: [8566@ait.nsw.edu.au](8566@ait.nsw.edu.au)
 
 GitHub Repo: [https://github.com/CodedBeats/TimberPath](https://github.com/CodedBeats/TimberPath)
 
