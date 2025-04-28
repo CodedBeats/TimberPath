@@ -40,6 +40,8 @@ export default function Checkout() {
   const [billingAddress, setBillingAddress] = useState("");
   const [billingCity, setBillingCity] = useState("");
   const [billingZip, setBillingZip] = useState("");
+
+  const [cardNumber, setCardNumber] = useState("");
   // error ref
   const errorRef = useRef<ErrorMessageRef>(null);
 
@@ -82,6 +84,11 @@ export default function Checkout() {
     if (!user) {
       Alert.alert("User Not Logged In", "You must be logged in to place an order.");
       triggerError(`You must be logged in to place an order`, { color: "orange", fontSize: 16 });
+      return;
+    }
+    if (cardNumber !== "4242424242424242") {
+      Alert.alert("This is not a valid card number", "Please enter a valid card number.");
+      triggerError(`Please enter a valid card number`, { color: "orange", fontSize: 16 });
       return;
     }
     setLoading(true);
@@ -153,6 +160,8 @@ export default function Checkout() {
               placeholder="4242 4242 4242 4242"
               placeholderTextColor="gray"
               keyboardType="numeric"
+              value={cardNumber}
+              onChangeText={setCardNumber}
             />
           </View>
 
